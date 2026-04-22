@@ -526,35 +526,8 @@ class DSATracker {
         }
     }
 
-    private getCategoryIcon(category: string): string {
-        const icons: Record<string, string> = {
-            'Arrays & Strings': '📝',
-            'Two Pointers': '↔️',
-            'Sliding Window': '🪟',
-            'Prefix Sum': '➕',
-            'Hash Map / Set': '🗂️',
-            'Stack': '📚',
-            'Linked List': '🔗',
-            'Binary Search': '🔍',
-            'Trees': '🌳',
-            'Graphs': '🌐',
-            'Heap / Priority Queue': '⛰️',
-            'Dynamic Programming': '📊',
-            'Backtracking': '🔙',
-            'Intervals': '⏱️',
-            'Trie': '🔤',
-            'Design': '🏗️',
-            'Matrix': '⬛',
-            'Greedy': '💰',
-            'Math & Bit Manipulation': '🔢',
-            'Divide & Conquer': '⚔️',
-            'Union-Find': '🔀',
-            'Monotonic Stack': '📈',
-            'Topological Sort': '📋',
-            'Segment Tree': '🌲',
-            'Custom Problems': '⭐'
-        };
-        return icons[category] || '📁';
+    private getCategoryIcon(_category: string): string {
+        return '';
     }
 
     private toggleSection(category: string): void {
