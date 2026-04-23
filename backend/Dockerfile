@@ -36,7 +36,7 @@ RUN addgroup -g 1001 -S appgroup && \
 WORKDIR /app
 
 # Copy binary from builder
-COPY --from=builder /app/bin/faangready-api .
+COPY --from=builder /app/bin/faangready-api ./faangready-api
 
 # Copy migrations (for runtime migration support)
 COPY --from=builder /app/migrations ./migrations
