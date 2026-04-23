@@ -584,6 +584,341 @@ class DSATracker {
         this.updateStats();
     }
 }
+class PatternsModal {
+    constructor() {
+        this.modal = document.getElementById('patternsModal');
+        this.patternsList = document.getElementById('patternsList');
+        this.patternContent = document.getElementById('patternContent');
+        this.searchInput = document.getElementById('patternSearch');
+        this.selectedPattern = null;
+        this.patterns = [];
+        this.dataAdapter = typeof dataAdapter !== 'undefined' ? dataAdapter : null;
+        this.setupEventListeners();
+        this.init();
+    }
+    async init() {
+        if (this.dataAdapter) {
+            try {
+                await this.dataAdapter.init();
+                this.patterns = await this.dataAdapter.getPatterns();
+            } catch (e) {
+                console.warn('DataAdapter init failed, falling back to patternsData:', e);
+                this.patterns = typeof patternsData !== 'undefined' ? patternsData : [];
+            }
+        } else {
+            this.patterns = typeof patternsData !== 'undefined' ? patternsData : [];
+        }
+        this.renderPatternsList();
+    }
+    setupEventListeners() {
+        document.getElementById('patternsBtn').addEventListener('click', () => this.open());
+        document.getElementById('closePatterns').addEventListener('click', () => this.close());
+        document.getElementById('patternsOverlay').addEventListener('click', () => this.close());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
+                this.close();
+            }
+        });
+        this.searchInput.addEventListener('input', (e) => {
+            this.renderPatternsList(e.target.value);
+        });
+    }
+    open() {
+        this.modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        if (!this.selectedPattern && this.patterns.length > 0) {
+            this.selectPattern(this.patterns[0].id);
+        }
+    }
+    close() {
+        this.modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    renderPatternsList(searchTerm = '') {
+        if (!this.patterns || this.patterns.length === 0) {
+            this.patternsList.innerHTML = '<p class="text-gray-500 text-sm">Patterns data not loaded</p>';
+            return;
+        }
+        const filtered = this.patterns.filter(p =>
+            p.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            p.description.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        this.patternsList.innerHTML = filtered.map(pattern => `
+            <button class="pattern-item w-full text-left px-3 py-2.5 rounded-lg transition flex items-center gap-3 ${this.selectedPattern === pattern.id ? 'bg-primary/20 text-primary' : 'text-gray-300 hover:bg-gray-800'}"
+                    data-pattern-id="${pattern.id}">
+                <span class="text-lg">${pattern.icon}</span>
+                <div class="flex-1 min-w-0">
+                    <div class="font-medium text-sm truncate">${pattern.category}</div>
+                    <div class="text-xs text-gray-500">${pattern.difficulty}</div>
+                </div>
+            </button>
+        `).join('');
+        this.patternsList.querySelectorAll('.pattern-item').forEach(item => {
+            item.addEventListener('click', () => {
+                this.selectPattern(item.dataset.patternId);
+            });
+        });
+    }
+    selectPattern(patternId) {
+        this.selectedPattern = patternId;
+        this.currentLang = 'javascript';
+        this.renderPatternsList(this.searchInput.value);
+        const pattern = this.patterns.find(p => p.id === patternId);
+        if (!pattern) return;
+
+        const codeTemplates = pattern.codeTemplates || { javascript: pattern.template || '', java: '' };
+        const commonMistakes = pattern.commonMistakes || [];
+
+        this.patternContent.innerHTML = `
+            <div class="animate-fade-in">
+                <!-- Header -->
+                <div class="flex items-start gap-4 mb-8">
+                    <div class="text-5xl">${pattern.icon}</div>
+                    <div class="flex-1">
+                        <h1 class="text-3xl font-bold text-white mb-2">${pattern.category}</h1>
+                        <p class="text-gray-400">${pattern.description}</p>
+                        <div class="flex items-center gap-4 mt-4">
+                            <span class="px-3 py-1 text-sm bg-primary/20 text-primary rounded-full">
+                                Difficulty: ${pattern.difficulty}
+                            </span>
+                            <span class="text-sm text-gray-500">
+                                Time: ${pattern.timeComplexity} | Space: ${pattern.spaceComplexity}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- When to Use -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        When to Use This Pattern
+                    </h2>
+                    <ul class="space-y-2">
+                        ${pattern.whenToUse.map(item => `
+                            <li class="flex items-start gap-2 text-gray-300">
+                                <span class="text-green-400 mt-0.5">✓</span>
+                                <span>${item}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <!-- Code Template with Language Toggle -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-white flex items-center gap-2">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                            Code Template
+                        </h2>
+                        <div class="flex bg-gray-800 rounded-lg p-1">
+                            <button class="lang-btn px-3 py-1 text-sm rounded-md transition ${this.currentLang === 'javascript' ? 'bg-primary text-white' : 'text-gray-400 hover:text-white'}" data-lang="javascript">JavaScript</button>
+                            <button class="lang-btn px-3 py-1 text-sm rounded-md transition ${this.currentLang === 'java' ? 'bg-primary text-white' : 'text-gray-400 hover:text-white'}" data-lang="java">Java</button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <pre id="mainCodeBlock" class="bg-gray-900 rounded-xl p-4 overflow-x-auto border border-gray-800 max-h-96"><code class="text-sm text-gray-300 font-mono">${this.escapeHtml(codeTemplates.javascript)}</code></pre>
+                        <button class="copy-btn absolute top-3 right-3 px-3 py-1 text-xs bg-gray-700 hover:bg-gray-600 text-gray-300 rounded transition">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Key Insights -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        Key Insights
+                    </h2>
+                    <div class="grid gap-3">
+                        ${pattern.keyInsights.map((insight, i) => `
+                            <div class="flex items-start gap-3 bg-gray-900/50 rounded-lg p-4 border border-gray-800">
+                                <span class="flex-shrink-0 w-6 h-6 bg-yellow-400/20 text-yellow-400 text-sm font-medium rounded-full flex items-center justify-center">${i + 1}</span>
+                                <p class="text-gray-300">${insight}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                ${commonMistakes.length > 0 ? `
+                <!-- Common Mistakes -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        Common Mistakes to Avoid
+                    </h2>
+                    <div class="bg-red-900/10 border border-red-900/30 rounded-xl p-4">
+                        <ul class="space-y-2">
+                            ${commonMistakes.map(mistake => `
+                                <li class="flex items-start gap-2 text-gray-300">
+                                    <span class="text-red-400 mt-0.5">✗</span>
+                                    <span>${mistake}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Pattern Variations (Expandable) -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        Pattern Variations
+                    </h2>
+                    <div class="space-y-3" id="variationsContainer">
+                        ${pattern.variations.map((v, idx) => `
+                            <div class="variation-card bg-gray-900/50 rounded-xl border border-gray-800 overflow-hidden">
+                                <button class="variation-header w-full p-4 text-left flex items-center justify-between hover:bg-gray-800/50 transition" data-idx="${idx}">
+                                    <div>
+                                        <h3 class="font-semibold text-white">${v.name}</h3>
+                                        <p class="text-sm text-gray-400 mt-1">${v.desc}</p>
+                                        ${v.when ? `<p class="text-xs text-primary mt-2">When: ${v.when}</p>` : ''}
+                                    </div>
+                                    <svg class="variation-chevron w-5 h-5 text-gray-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                                <div class="variation-content hidden border-t border-gray-800">
+                                    ${v.template ? `
+                                    <div class="p-4">
+                                        <div class="flex justify-end mb-2">
+                                            <div class="flex bg-gray-800 rounded-lg p-1">
+                                                <button class="var-lang-btn px-2 py-0.5 text-xs rounded transition bg-primary text-white" data-idx="${idx}" data-lang="javascript">JS</button>
+                                                <button class="var-lang-btn px-2 py-0.5 text-xs rounded transition text-gray-400" data-idx="${idx}" data-lang="java">Java</button>
+                                            </div>
+                                        </div>
+                                        <pre class="bg-gray-950 rounded-lg p-3 overflow-x-auto text-xs" id="varCode-${idx}"><code class="text-gray-300 font-mono">${this.escapeHtml(v.template.javascript || '')}</code></pre>
+                                    </div>
+                                    ` : ''}
+                                    ${v.problems ? `
+                                    <div class="px-4 pb-4">
+                                        <p class="text-xs text-gray-500 mb-2">Practice:</p>
+                                        <div class="flex flex-wrap gap-1">
+                                            ${v.problems.map(p => `
+                                                <a href="https://leetcode.com/problems/${this.toSlug(p)}/" target="_blank" class="px-2 py-1 bg-gray-800 hover:bg-gray-700 text-xs text-gray-300 rounded transition">${p}</a>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Common Problems -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Must-Practice Problems
+                    </h2>
+                    <div class="flex flex-wrap gap-2">
+                        ${pattern.commonProblems.map(problem => `
+                            <a href="https://leetcode.com/problems/${this.toSlug(problem)}/" target="_blank" rel="noopener noreferrer"
+                               class="px-3 py-1.5 bg-gray-800 hover:bg-primary/20 hover:text-primary text-gray-300 rounded-lg text-sm transition flex items-center gap-1 border border-gray-700 hover:border-primary/50">
+                                ${problem}
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Complexity -->
+                <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 border border-primary/20">
+                    <h2 class="text-lg font-semibold text-white mb-4">Complexity Analysis</h2>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Time Complexity</div>
+                            <div class="text-xl font-mono text-primary">${pattern.timeComplexity}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Space Complexity</div>
+                            <div class="text-xl font-mono text-secondary">${pattern.spaceComplexity}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Event listeners for language toggle
+        this.patternContent.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                this.currentLang = lang;
+                const codeBlock = document.getElementById('mainCodeBlock');
+                codeBlock.querySelector('code').textContent = codeTemplates[lang] || '';
+                this.patternContent.querySelectorAll('.lang-btn').forEach(b => {
+                    b.classList.toggle('bg-primary', b.dataset.lang === lang);
+                    b.classList.toggle('text-white', b.dataset.lang === lang);
+                    b.classList.toggle('text-gray-400', b.dataset.lang !== lang);
+                });
+            });
+        });
+
+        // Copy button for main code
+        this.patternContent.querySelector('.copy-btn').addEventListener('click', (e) => {
+            const code = document.getElementById('mainCodeBlock').querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                e.target.textContent = 'Copied!';
+                setTimeout(() => { e.target.textContent = 'Copy'; }, 2000);
+            });
+        });
+
+        // Variation expand/collapse
+        this.patternContent.querySelectorAll('.variation-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const card = header.closest('.variation-card');
+                const content = card.querySelector('.variation-content');
+                const chevron = card.querySelector('.variation-chevron');
+                content.classList.toggle('hidden');
+                chevron.classList.toggle('rotate-180');
+            });
+        });
+
+        // Variation language toggle
+        this.patternContent.querySelectorAll('.var-lang-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = btn.dataset.idx;
+                const lang = btn.dataset.lang;
+                const variation = pattern.variations[idx];
+                if (variation.template) {
+                    const codeEl = document.getElementById(`varCode-${idx}`);
+                    codeEl.querySelector('code').textContent = variation.template[lang] || '';
+                    btn.parentElement.querySelectorAll('.var-lang-btn').forEach(b => {
+                        b.classList.toggle('bg-primary', b.dataset.lang === lang);
+                        b.classList.toggle('text-white', b.dataset.lang === lang);
+                        b.classList.toggle('text-gray-400', b.dataset.lang !== lang);
+                    });
+                }
+            });
+        });
+    }
+    escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    escapeAttr(str) {
+        return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    toSlug(name) {
+        return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     new DSATracker();
+    new PatternsModal();
 });

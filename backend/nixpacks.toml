@@ -1,0 +1,5 @@
+[phases.build]
+cmds = ["go build -o bin/faangready-api ./cmd/server"]
+
+[start]
+cmd = "./bin/faangready-api"

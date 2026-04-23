@@ -2,3 +2,12 @@ node_modules/
 .DS_Store
 *.log
 .wrangler/
+
+# Backend
+backend/bin/
+backend/.env
+backend/.env.local
+backend/coverage.*
+*.crt
+*.pem
+*.key
