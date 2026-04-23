@@ -1,7 +1,7 @@
 "use strict";
 const STORAGE_KEY = 'dsa-tracker-completed';
 const questions = [
-    // ==================== Arrays & Strings ====================
+    // Arrays & Strings
     { id: 'as-1', name: 'Two Sum', url: 'https://leetcode.com/problems/two-sum', difficulty: 'Easy', pattern: 'Hash Map', companies: ['Google', 'Amazon', 'Meta', 'Apple', 'Microsoft', 'Netflix', 'LinkedIn', 'Tesla', 'Databricks'], frequency: '🔥🔥🔥', category: 'Arrays & Strings' },
     { id: 'as-2', name: '3Sum', url: 'https://leetcode.com/problems/3sum', difficulty: 'Medium', pattern: 'Two Pointers', companies: ['Google', 'Amazon', 'Apple', 'Meta', 'Tesla'], frequency: '🔥🔥🔥', category: 'Arrays & Strings' },
     { id: 'as-3', name: 'Product of Array Except Self', url: 'https://leetcode.com/problems/product-of-array-except-self', difficulty: 'Medium', pattern: 'Prefix/Suffix', companies: ['Google', 'Amazon', 'Meta', 'Apple'], frequency: '🔥🔥🔥', category: 'Arrays & Strings' },
