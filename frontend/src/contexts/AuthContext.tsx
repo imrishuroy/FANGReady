@@ -1,0 +1,129 @@
+'use client';
+
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from 'react';
+import { apiClient } from '@/lib/api';
+import type { User, RegisterRequest, LoginRequest } from '@/types';
+
+interface AuthContextType {
+  user: User | null;
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  login: (req: LoginRequest) => Promise<{ success: boolean; error?: string }>;
+  register: (req: RegisterRequest) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const ACCESS_TOKEN_KEY = 'faangready_access_token';
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refreshUser = useCallback(async () => {
+    try {
+      const response = await apiClient.getMe();
+      if (response.success) {
+        setUser(response.data);
+      } else {
+        setUser(null);
+        apiClient.setAccessToken(null);
+        localStorage.removeItem(ACCESS_TOKEN_KEY);
+      }
+    } catch {
+      setUser(null);
+      apiClient.setAccessToken(null);
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+    }
+  }, []);
+
+  useEffect(() => {
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+      if (storedToken) {
+        apiClient.setAccessToken(storedToken);
+        await refreshUser();
+      } else {
+        const newToken = await apiClient.refreshToken();
+        if (newToken) {
+          localStorage.setItem(ACCESS_TOKEN_KEY, newToken);
+          await refreshUser();
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initAuth();
+  }, [refreshUser]);
+
+  const login = useCallback(async (req: LoginRequest) => {
+    try {
+      const response = await apiClient.login(req);
+      if (response.success) {
+        setUser(response.data.user);
+        localStorage.setItem(ACCESS_TOKEN_KEY, response.data.accessToken);
+        return { success: true };
+      }
+      return { success: false, error: response.error?.message || 'Login failed' };
+    } catch {
+      return { success: false, error: 'An error occurred during login' };
+    }
+  }, []);
+
+  const register = useCallback(async (req: RegisterRequest) => {
+    try {
+      const response = await apiClient.register(req);
+      if (response.success) {
+        setUser(response.data.user);
+        localStorage.setItem(ACCESS_TOKEN_KEY, response.data.accessToken);
+        return { success: true };
+      }
+      return { success: false, error: response.error?.message || 'Registration failed' };
+    } catch {
+      return { success: false, error: 'An error occurred during registration' };
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    try {
+      await apiClient.logout();
+    } finally {
+      setUser(null);
+      apiClient.setAccessToken(null);
+      localStorage.removeItem(ACCESS_TOKEN_KEY);
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        isAuthenticated: !!user,
+        login,
+        register,
+        logout,
+        refreshUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

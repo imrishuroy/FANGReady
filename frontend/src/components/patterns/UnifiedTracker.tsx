@@ -1,50 +1,22 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Pattern, Question } from '@/types';
 import { categoryToPatternId } from '@/lib/questions';
 import PatternSection from './PatternSection';
 import patternsData from '@/lib/patterns.json';
+import { useProgress } from '@/contexts/ProgressContext';
 
 interface UnifiedTrackerProps {
   questions: Question[];
 }
 
-const STORAGE_KEY = 'faangready-completed';
-
 export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
   const patterns = patternsData as Pattern[];
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const { completed, toggleComplete, resetProgress, isLoading } = useProgress();
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [companyFilter, setCompanyFilter] = useState('');
-
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      setCompleted(new Set(JSON.parse(saved)));
-    }
-  }, []);
-
-  const toggleComplete = (id: string) => {
-    setCompleted(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...next]));
-      return next;
-    });
-  };
-
-  const resetProgress = () => {
-    if (confirm('Reset all progress? This cannot be undone.')) {
-      setCompleted(new Set());
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  };
 
   const companies = useMemo(() => {
     const set = new Set<string>();
