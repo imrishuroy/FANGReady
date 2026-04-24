@@ -8,7 +8,6 @@
 CREATE TABLE IF NOT EXISTS patterns (
     id VARCHAR(50) PRIMARY KEY,
     category VARCHAR(100) NOT NULL,
-    icon VARCHAR(10) DEFAULT '',
     difficulty VARCHAR(20) NOT NULL CHECK (difficulty IN ('Easy', 'Medium', 'Hard', 'Easy-Medium', 'Medium-Hard')),
     description TEXT NOT NULL,
     time_complexity VARCHAR(100) NOT NULL,

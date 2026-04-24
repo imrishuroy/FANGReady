@@ -3,7 +3,6 @@ package models
 type CreatePatternRequest struct {
 	ID              string             `json:"id" binding:"required,min=1,max=50"`
 	Category        string             `json:"category" binding:"required,min=1,max=100"`
-	Icon            string             `json:"icon" binding:"max=10"`
 	Difficulty      Difficulty         `json:"difficulty" binding:"required,oneof=Easy Medium Hard Easy-Medium Medium-Hard"`
 	Description     string             `json:"description" binding:"required,min=1"`
 	WhenToUse       []string           `json:"whenToUse" binding:"required,min=1,dive,min=1"`
@@ -18,7 +17,6 @@ type CreatePatternRequest struct {
 
 type UpdatePatternRequest struct {
 	Category        *string            `json:"category,omitempty" binding:"omitempty,min=1,max=100"`
-	Icon            *string            `json:"icon,omitempty" binding:"omitempty,max=10"`
 	Difficulty      *Difficulty        `json:"difficulty,omitempty" binding:"omitempty,oneof=Easy Medium Hard Easy-Medium Medium-Hard"`
 	Description     *string            `json:"description,omitempty" binding:"omitempty,min=1"`
 	WhenToUse       []string           `json:"whenToUse,omitempty" binding:"omitempty,min=1,dive,min=1"`

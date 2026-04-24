@@ -36,9 +36,9 @@ func (r *PatternRepository) Create(ctx context.Context, pattern *models.Pattern)
 	pattern.UpdatedAt = now
 
 	_, err = tx.Exec(ctx, `
-		INSERT INTO patterns (id, category, icon, difficulty, description, time_complexity, space_complexity, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-	`, pattern.ID, pattern.Category, pattern.Icon, pattern.Difficulty, pattern.Description,
+		INSERT INTO patterns (id, category, difficulty, description, time_complexity, space_complexity, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+	`, pattern.ID, pattern.Category, pattern.Difficulty, pattern.Description,
 		pattern.TimeComplexity, pattern.SpaceComplexity, pattern.CreatedAt, pattern.UpdatedAt)
 	if err != nil {
 		if strings.Contains(err.Error(), "duplicate key") {
@@ -167,9 +167,9 @@ func (r *PatternRepository) GetByID(ctx context.Context, id string) (*models.Pat
 	pattern := &models.Pattern{}
 
 	err := r.db.Pool.QueryRow(ctx, `
-		SELECT id, category, icon, difficulty, description, time_complexity, space_complexity, created_at, updated_at
+		SELECT id, category, difficulty, description, time_complexity, space_complexity, created_at, updated_at
 		FROM patterns WHERE id = $1
-	`, id).Scan(&pattern.ID, &pattern.Category, &pattern.Icon, &pattern.Difficulty, &pattern.Description,
+	`, id).Scan(&pattern.ID, &pattern.Category, &pattern.Difficulty, &pattern.Description,
 		&pattern.TimeComplexity, &pattern.SpaceComplexity, &pattern.CreatedAt, &pattern.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -370,7 +370,7 @@ func (r *PatternRepository) List(ctx context.Context, req *models.PatternListReq
 	offset := (req.Page - 1) * req.PageSize
 
 	query := fmt.Sprintf(`
-		SELECT id, category, icon, difficulty, description, time_complexity, space_complexity, created_at, updated_at
+		SELECT id, category, difficulty, description, time_complexity, space_complexity, created_at, updated_at
 		FROM patterns %s %s LIMIT $%d OFFSET $%d
 	`, whereClause, orderClause, argNum, argNum+1)
 	args = append(args, req.PageSize, offset)
@@ -384,7 +384,7 @@ func (r *PatternRepository) List(ctx context.Context, req *models.PatternListReq
 	var patterns []models.Pattern
 	for rows.Next() {
 		var p models.Pattern
-		if err := rows.Scan(&p.ID, &p.Category, &p.Icon, &p.Difficulty, &p.Description,
+		if err := rows.Scan(&p.ID, &p.Category, &p.Difficulty, &p.Description,
 			&p.TimeComplexity, &p.SpaceComplexity, &p.CreatedAt, &p.UpdatedAt); err != nil {
 			return nil, 0, err
 		}

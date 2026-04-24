@@ -41,7 +41,6 @@ type PatternVariation struct {
 type Pattern struct {
 	ID              string             `json:"id" db:"id"`
 	Category        string             `json:"category" db:"category"`
-	Icon            string             `json:"icon" db:"icon"`
 	Difficulty      Difficulty         `json:"difficulty" db:"difficulty"`
 	Description     string             `json:"description" db:"description"`
 	WhenToUse       []string           `json:"whenToUse"`
@@ -59,7 +58,6 @@ type Pattern struct {
 type PatternDB struct {
 	ID              string     `db:"id"`
 	Category        string     `db:"category"`
-	Icon            string     `db:"icon"`
 	Difficulty      string     `db:"difficulty"`
 	Description     string     `db:"description"`
 	TimeComplexity  string     `db:"time_complexity"`

@@ -20,7 +20,6 @@ func (s *PatternService) Create(ctx context.Context, req *models.CreatePatternRe
 	pattern := &models.Pattern{
 		ID:              req.ID,
 		Category:        req.Category,
-		Icon:            req.Icon,
 		Difficulty:      req.Difficulty,
 		Description:     req.Description,
 		WhenToUse:       req.WhenToUse,
@@ -79,10 +78,6 @@ func (s *PatternService) Update(ctx context.Context, id string, req *models.Upda
 		updates["category"] = *req.Category
 		existing.Category = *req.Category
 	}
-	if req.Icon != nil {
-		updates["icon"] = *req.Icon
-		existing.Icon = *req.Icon
-	}
 	if req.Difficulty != nil {
 		updates["difficulty"] = *req.Difficulty
 		existing.Difficulty = *req.Difficulty
@@ -123,7 +118,6 @@ func (s *PatternService) BulkImport(ctx context.Context, req *models.BulkImportR
 		patterns[i] = models.Pattern{
 			ID:              p.ID,
 			Category:        p.Category,
-			Icon:            p.Icon,
 			Difficulty:      p.Difficulty,
 			Description:     p.Description,
 			WhenToUse:       p.WhenToUse,
