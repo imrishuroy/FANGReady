@@ -30,6 +30,9 @@
         .progress-ring { transition: stroke-dashoffset 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.3s ease forwards; }
+        pre code { white-space: pre; tab-size: 4; }
+        .pattern-item.active { background: rgba(99, 102, 241, 0.2); color: #6366f1; }
+        #patternsModal pre { line-height: 1.6; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen">
@@ -64,6 +67,12 @@
 
                 <!-- Progress Stats -->
                 <div class="flex items-center gap-4">
+                    <button id="patternsBtn" class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary rounded-lg text-white font-medium hover:opacity-90 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        Patterns Tutorial
+                    </button>
                     <div id="progressStats" class="flex items-center gap-3 bg-gray-800 px-4 py-2 rounded-lg">
                         <svg class="w-12 h-12" viewBox="0 0 36 36">
                             <path class="text-gray-700" stroke="currentColor" stroke-width="3" fill="none"
@@ -214,6 +223,67 @@
     </footer>
 
 
+    <!-- Patterns Tutorial Modal -->
+    <div id="patternsModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="patternsOverlay"></div>
+        <div class="relative h-full overflow-hidden flex flex-col">
+            <!-- Modal Header -->
+            <div class="bg-gray-900 border-b border-gray-800 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">DSA Patterns Tutorial</h2>
+                        <p class="text-sm text-gray-400">Master these patterns to solve any coding interview problem</p>
+                    </div>
+                </div>
+                <button id="closePatterns" class="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Sidebar - Pattern List -->
+                <div class="w-72 bg-gray-900 border-r border-gray-800 overflow-y-auto scrollbar-thin">
+                    <div class="p-4">
+                        <div class="relative mb-4">
+                            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" id="patternSearch" placeholder="Search patterns..." class="w-full pl-9 pr-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm focus:outline-none focus:border-primary">
+                        </div>
+                        <div id="patternsList" class="space-y-1">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content - Pattern Details -->
+                <div class="flex-1 overflow-y-auto scrollbar-thin bg-gray-950">
+                    <div id="patternContent" class="p-8 max-w-4xl mx-auto">
+                        <!-- Pattern content populated by JS -->
+                        <div class="text-center text-gray-500 py-20">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            <p>Select a pattern from the sidebar to view its tutorial</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="patterns.js"></script>
+    <script src="models/PatternSchema.js"></script>
+    <script src="services/PatternService.js"></script>
+    <script src="services/DataAdapter.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

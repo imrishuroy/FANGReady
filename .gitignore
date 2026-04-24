@@ -7,3 +7,11 @@ node_modules/
 !.dev.vars.example
 .env*
 !.env.example
+# Backend
+backend/bin/
+backend/.env
+backend/.env.local
+backend/coverage.*
+*.crt
+*.pem
+*.key

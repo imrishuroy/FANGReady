@@ -39,35 +39,27 @@
 | # | Problem | Difficulty | Pattern | Companies | Frequency |
 |---|---------|------------|---------|-----------|-----------|
 | 1 | [Two Sum](https://leetcode.com/problems/two-sum) | Easy | Hash Map | Google, Amazon, Meta, Apple, Microsoft, Netflix, LinkedIn, Tesla, Databricks | 🔥🔥🔥 |
-| 2 | [3Sum](https://leetcode.com/problems/3sum) | Medium | Two Pointers | Google, Amazon, Apple, Meta, Tesla | 🔥🔥🔥 |
-| 3 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self) | Medium | Prefix/Suffix | Google, Amazon, Meta, Apple | 🔥🔥🔥 |
-| 4 | [Maximum Subarray](https://leetcode.com/problems/maximum-subarray) | Medium | Kadane's/DP | Amazon, Microsoft, LinkedIn, Tesla | 🔥🔥🔥 |
-| 5 | [Group Anagrams](https://leetcode.com/problems/group-anagrams) | Medium | Hash Map | Google, Amazon, Meta, Apple, Tesla, Salesforce, Adobe | 🔥🔥🔥 |
-| 6 | [Valid Anagram](https://leetcode.com/problems/valid-anagram) | Easy | Hash Map | Amazon, Google | 🔥🔥 |
-| 7 | [Contains Duplicate](https://leetcode.com/problems/contains-duplicate) | Easy | Hash Set | Amazon, Google | 🔥🔥 |
-| 8 | [Valid Palindrome](https://leetcode.com/problems/valid-palindrome) | Easy | Two Pointers | Meta, Amazon | 🔥🔥 |
-| 9 | [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii) | Easy | Two Pointers | Meta | 🔥🔥 |
-| 10 | [Move Zeroes](https://leetcode.com/problems/move-zeroes) | Easy | Two Pointers | Meta | 🔥🔥 |
-| 11 | [Rotate Image](https://leetcode.com/problems/rotate-image) | Medium | Matrix | Amazon, Microsoft, Google | 🔥🔥 |
-| 12 | [Sort Colors](https://leetcode.com/problems/sort-colors) | Medium | Dutch Flag | Microsoft, Google | 🔥🔥 |
-| 13 | [String Compression](https://leetcode.com/problems/string-compression) | Medium | Two Pointers | Google | 🔥 |
-| 14 | [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings) | Medium | String | Google | 🔥 |
-| 15 | [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix) | Easy | String | Amazon | 🔥 |
-| 16 | [Add Strings](https://leetcode.com/problems/add-strings) | Easy | Math | Meta, Google | 🔥🔥 |
-| 17 | [Add Binary](https://leetcode.com/problems/add-binary) | Easy | Math | Google | 🔥 |
-| 18 | [Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately) | Easy | Two Pointers | Google | 🔥 |
-| 19 | [Integer to English Words](https://leetcode.com/problems/integer-to-english-words) | Hard | String/Math | Amazon, Palantir | 🔥🔥 |
-| 20 | [First Missing Positive](https://leetcode.com/problems/first-missing-positive) | Hard | Cyclic Sort | Google, Tesla | 🔥🔥 |
-| 21 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water) | Hard | Two Pointers/Stack | Google, Amazon, Apple, Netflix, Palantir, Databricks | 🔥🔥🔥 |
-| 22 | [Custom Sort String](https://leetcode.com/problems/custom-sort-string) | Medium | Hash Map | Meta | 🔥🔥 |
-| 23 | [Maximum Swap](https://leetcode.com/problems/maximum-swap) | Medium | Greedy | Meta | 🔥🔥 |
-| 24 | [Reverse Integer](https://leetcode.com/problems/reverse-integer) | Medium | Math | Amazon | 🔥 |
-| 25 | [Find the Difference](https://leetcode.com/problems/find-the-difference) | Easy | Hash/XOR | Google | 🔥 |
-| 26 | [Greatest Common Divisor of Strings](https://leetcode.com/problems/greatest-common-divisor-of-strings) | Easy | Math/String | Google, Amazon | 🔥 |
-| 27 | [Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies) | Easy | Array | Amazon | 🔥 |
-| 28 | [Can Place Flowers](https://leetcode.com/problems/can-place-flowers) | Easy | Greedy | LinkedIn, Amazon | 🔥 |
-| 29 | [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string) | Easy | Two Pointers | Google | 🔥 |
-| 30 | [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence) | Medium | Greedy | Meta, Google | 🔥🔥 |
+| 2 | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self) | Medium | Prefix/Suffix | Google, Amazon, Meta, Apple | 🔥🔥🔥 |
+| 3 | [Maximum Subarray](https://leetcode.com/problems/maximum-subarray) | Medium | Kadane's/DP | Amazon, Microsoft, LinkedIn, Tesla | 🔥🔥🔥 |
+| 4 | [Group Anagrams](https://leetcode.com/problems/group-anagrams) | Medium | Hash Map | Google, Amazon, Meta, Apple, Tesla, Salesforce, Adobe | 🔥🔥🔥 |
+| 5 | [Valid Anagram](https://leetcode.com/problems/valid-anagram) | Easy | Hash Map | Amazon, Google | 🔥🔥 |
+| 6 | [Contains Duplicate](https://leetcode.com/problems/contains-duplicate) | Easy | Hash Set | Amazon, Google | 🔥🔥 |
+| 7 | [Rotate Image](https://leetcode.com/problems/rotate-image) | Medium | Matrix | Amazon, Microsoft, Google | 🔥🔥 |
+| 8 | [Sort Colors](https://leetcode.com/problems/sort-colors) | Medium | Dutch Flag | Microsoft, Google | 🔥🔥 |
+| 9 | [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings) | Medium | String | Google | 🔥 |
+| 10 | [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix) | Easy | String | Amazon | 🔥 |
+| 11 | [Add Strings](https://leetcode.com/problems/add-strings) | Easy | Math | Meta, Google | 🔥🔥 |
+| 12 | [Add Binary](https://leetcode.com/problems/add-binary) | Easy | Math | Google | 🔥 |
+| 13 | [Integer to English Words](https://leetcode.com/problems/integer-to-english-words) | Hard | String/Math | Amazon, Palantir | 🔥🔥 |
+| 14 | [First Missing Positive](https://leetcode.com/problems/first-missing-positive) | Hard | Cyclic Sort | Google, Tesla | 🔥🔥 |
+| 15 | [Custom Sort String](https://leetcode.com/problems/custom-sort-string) | Medium | Hash Map | Meta | 🔥🔥 |
+| 16 | [Maximum Swap](https://leetcode.com/problems/maximum-swap) | Medium | Greedy | Meta | 🔥🔥 |
+| 17 | [Reverse Integer](https://leetcode.com/problems/reverse-integer) | Medium | Math | Amazon | 🔥 |
+| 18 | [Find the Difference](https://leetcode.com/problems/find-the-difference) | Easy | Hash/XOR | Google | 🔥 |
+| 19 | [Greatest Common Divisor of Strings](https://leetcode.com/problems/greatest-common-divisor-of-strings) | Easy | Math/String | Google, Amazon | 🔥 |
+| 20 | [Kids With the Greatest Number of Candies](https://leetcode.com/problems/kids-with-the-greatest-number-of-candies) | Easy | Array | Amazon | 🔥 |
+| 21 | [Can Place Flowers](https://leetcode.com/problems/can-place-flowers) | Easy | Greedy | LinkedIn, Amazon | 🔥 |
+| 22 | [Increasing Triplet Subsequence](https://leetcode.com/problems/increasing-triplet-subsequence) | Medium | Greedy | Meta, Google | 🔥🔥 |
 
 ---
 
@@ -76,10 +68,18 @@
 | # | Problem | Difficulty | Pattern | Companies | Frequency |
 |---|---------|------------|---------|-----------|-----------|
 | 1 | [Container With Most Water](https://leetcode.com/problems/container-with-most-water) | Medium | Two Pointers | Google, Amazon, Apple | 🔥🔥🔥 |
-| 2 | [Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted) | Medium | Two Pointers | Google | 🔥🔥 |
-| 3 | [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list) | Medium | Fast/Slow | Meta | 🔥🔥 |
-| 4 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare) | Easy | Two Pointers | Google | 🔥 |
-| 5 | [Is Subsequence](https://leetcode.com/problems/is-subsequence) | Easy | Two Pointers | Google | 🔥 |
+| 2 | [3Sum](https://leetcode.com/problems/3sum) | Medium | Two Pointers | Google, Amazon, Apple, Meta, Tesla | 🔥🔥🔥 |
+| 3 | [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water) | Hard | Two Pointers/Stack | Google, Amazon, Apple, Netflix, Palantir, Databricks | 🔥🔥🔥 |
+| 4 | [Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted) | Medium | Two Pointers | Google | 🔥🔥 |
+| 5 | [Valid Palindrome](https://leetcode.com/problems/valid-palindrome) | Easy | Two Pointers | Meta, Amazon | 🔥🔥 |
+| 6 | [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii) | Easy | Two Pointers | Meta | 🔥🔥 |
+| 7 | [Move Zeroes](https://leetcode.com/problems/move-zeroes) | Easy | Two Pointers | Meta | 🔥🔥 |
+| 8 | [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list) | Medium | Fast/Slow | Meta | 🔥🔥 |
+| 9 | [String Compression](https://leetcode.com/problems/string-compression) | Medium | Two Pointers | Google | 🔥 |
+| 10 | [Merge Strings Alternately](https://leetcode.com/problems/merge-strings-alternately) | Easy | Two Pointers | Google | 🔥 |
+| 11 | [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string) | Easy | Two Pointers | Google | 🔥 |
+| 12 | [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare) | Easy | Two Pointers | Google | 🔥 |
+| 13 | [Is Subsequence](https://leetcode.com/problems/is-subsequence) | Easy | Two Pointers | Google | 🔥 |
 
 ---
 

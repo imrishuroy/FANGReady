@@ -1,0 +1,68 @@
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/imrishuroy/faangready-backend/internal/config"
+	"github.com/imrishuroy/faangready-backend/internal/models"
+	"github.com/imrishuroy/faangready-backend/internal/repository"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+)
+
+func main() {
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339})
+
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to load configuration")
+	}
+
+	db, err := repository.NewDatabase(&cfg.Database)
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to connect to database")
+	}
+	defer db.Close()
+
+	repo := repository.NewPatternRepository(db)
+
+	dataFile := "data/patterns.json"
+	if len(os.Args) > 1 {
+		dataFile = os.Args[1]
+	}
+
+	data, err := os.ReadFile(dataFile)
+	if err != nil {
+		log.Fatal().Err(err).Str("file", dataFile).Msg("Failed to read patterns data file")
+	}
+
+	var patternsData struct {
+		Patterns []models.Pattern `json:"patterns"`
+	}
+	if err := json.Unmarshal(data, &patternsData); err != nil {
+		var patterns []models.Pattern
+		if err := json.Unmarshal(data, &patterns); err != nil {
+			log.Fatal().Err(err).Msg("Failed to parse patterns data")
+		}
+		patternsData.Patterns = patterns
+	}
+
+	ctx := context.Background()
+	var imported, failed int
+
+	for _, pattern := range patternsData.Patterns {
+		if err := repo.Create(ctx, &pattern); err != nil {
+			log.Warn().Err(err).Str("id", pattern.ID).Msg("Failed to create pattern")
+			failed++
+		} else {
+			log.Info().Str("id", pattern.ID).Str("category", pattern.Category).Msg("Created pattern")
+			imported++
+		}
+	}
+
+	fmt.Printf("\nSeed completed: %d imported, %d failed\n", imported, failed)
+}
