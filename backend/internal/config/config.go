@@ -13,6 +13,14 @@ type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
 	Logging  LoggingConfig
+	Auth     AuthConfig
+}
+
+type AuthConfig struct {
+	JWTSecret             string
+	AccessTokenDuration   time.Duration
+	RefreshTokenDuration  time.Duration
+	BCryptCost            int
 }
 
 type ServerConfig struct {
@@ -82,6 +90,16 @@ func Load() (*Config, error) {
 			Level:  getEnv("LOG_LEVEL", "info"),
 			Format: getEnv("LOG_FORMAT", "json"),
 		},
+		Auth: AuthConfig{
+			JWTSecret:            getEnv("JWT_SECRET", ""),
+			AccessTokenDuration:  getDurationEnv("ACCESS_TOKEN_DURATION", 15*time.Minute),
+			RefreshTokenDuration: getDurationEnv("REFRESH_TOKEN_DURATION", 7*24*time.Hour),
+			BCryptCost:           getIntEnv("BCRYPT_COST", 12),
+		},
+	}
+
+	if cfg.Auth.JWTSecret == "" {
+		return nil, fmt.Errorf("JWT_SECRET environment variable is required")
 	}
 
 	return cfg, nil

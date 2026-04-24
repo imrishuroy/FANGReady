@@ -39,8 +39,12 @@ func main() {
 	patternRepo := repository.NewPatternRepository(db)
 	patternService := services.NewPatternService(patternRepo)
 
+	userRepo := repository.NewUserRepository(db)
+	authService := services.NewAuthService(userRepo, &cfg.Auth)
+	progressService := services.NewProgressService(userRepo)
+
 	gin.SetMode(cfg.Server.Mode)
-	router := setupRouter(cfg, db, patternService)
+	router := setupRouter(cfg, db, patternService, authService, progressService)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port),
@@ -79,7 +83,7 @@ func setupLogger(cfg config.LoggingConfig) {
 	}
 }
 
-func setupRouter(cfg *config.Config, db *repository.Database, patternService *services.PatternService) *gin.Engine {
+func setupRouter(cfg *config.Config, db *repository.Database, patternService *services.PatternService, authService *services.AuthService, progressService *services.ProgressService) *gin.Engine {
 	router := gin.New()
 
 	rateLimiter := middleware.NewRateLimiter(cfg.Server.RateLimitRPS, cfg.Server.RateLimitBurst)
@@ -102,10 +106,19 @@ func setupRouter(cfg *config.Config, db *repository.Database, patternService *se
 	healthHandler := handlers.NewHealthHandler(db)
 	healthHandler.RegisterRoutes(&router.RouterGroup)
 
+	authMW := middleware.NewAuthMiddleware(authService)
+	secureCookie := cfg.Server.Mode == "release"
+
 	v1 := router.Group("/api/v1")
 	{
 		patternHandler := handlers.NewPatternHandler(patternService)
 		patternHandler.RegisterRoutes(v1)
+
+		authHandler := handlers.NewAuthHandler(authService, authMW, secureCookie)
+		authHandler.RegisterRoutes(v1)
+
+		progressHandler := handlers.NewProgressHandler(progressService, authMW)
+		progressHandler.RegisterRoutes(v1)
 	}
 
 	router.NoRoute(func(c *gin.Context) {

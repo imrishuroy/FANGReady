@@ -77,3 +77,37 @@ export interface PatternsListResponse {
 export interface CategoriesResponse {
   categories: string[];
 }
+
+// Auth types
+export interface User {
+  id: string;
+  email: string;
+  name?: string;
+  emailVerified: boolean;
+}
+
+export interface AuthResponse {
+  user: User;
+  accessToken: string;
+  expiresIn: number;
+}
+
+export interface RefreshResponse {
+  accessToken: string;
+  expiresIn: number;
+}
+
+export interface ProgressResponse {
+  questionIds: string[];
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  name?: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}

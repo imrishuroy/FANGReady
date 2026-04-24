@@ -1,36 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { questions } from '@/lib/questions';
-
-const STORAGE_KEY = 'faangready-completed';
+import { useProgress } from '@/contexts/ProgressContext';
 
 export default function HeaderProgress() {
-  const [completed, setCompleted] = useState(0);
+  const { completed } = useProgress();
+  const completedCount = completed.size;
   const total = questions.length;
 
-  useEffect(() => {
-    const loadProgress = () => {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setCompleted(JSON.parse(saved).length);
-      } else {
-        setCompleted(0);
-      }
-    };
-
-    loadProgress();
-    window.addEventListener('storage', loadProgress);
-
-    const interval = setInterval(loadProgress, 500);
-
-    return () => {
-      window.removeEventListener('storage', loadProgress);
-      clearInterval(interval);
-    };
-  }, []);
-
-  const percent = total ? Math.round((completed / total) * 100) : 0;
+  const percent = total ? Math.round((completedCount / total) * 100) : 0;
 
   return (
     <div className="flex items-center gap-3">
@@ -42,7 +20,7 @@ export default function HeaderProgress() {
           />
         </div>
         <span className="text-xs text-gray-400 whitespace-nowrap">
-          {completed}/{total}
+          {completedCount}/{total}
         </span>
       </div>
       <div className="sm:hidden flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 border border-gray-700">
