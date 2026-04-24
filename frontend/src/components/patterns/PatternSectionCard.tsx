@@ -10,6 +10,7 @@ interface PatternSectionCardProps {
 }
 
 export default function PatternSectionCard({ pattern }: PatternSectionCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [currentLang, setCurrentLang] = useState<string>('java');
 
   const languageOrder = ['java', 'javascript', 'python', 'cpp', 'go'];
@@ -22,115 +23,137 @@ export default function PatternSectionCard({ pattern }: PatternSectionCardProps)
     || '';
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-xl border border-indigo-500/30 p-5 mb-4">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center text-xl">
-          {pattern.icon}
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-white font-semibold">About This Pattern</span>
-            <span className="px-2 py-0.5 text-xs bg-indigo-500/20 text-indigo-400 rounded-full">
-              {pattern.difficulty}
-            </span>
+    <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-xl border border-indigo-500/30 overflow-hidden mb-3">
+      {/* Collapsed Header - Click to Expand */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full p-4 flex items-center justify-between hover:bg-white/5 transition"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
-          <p className="text-sm text-gray-400 mt-0.5">{pattern.description}</p>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-4 text-sm text-gray-400 mb-5 pb-4 border-b border-gray-700/50">
-        <span>Time: <span className="text-indigo-400 font-mono">{pattern.timeComplexity}</span></span>
-        <span>Space: <span className="text-purple-400 font-mono">{pattern.spaceComplexity}</span></span>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
-            <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            When to Use
-          </h4>
-          <ul className="space-y-1.5">
-            {pattern.whenToUse.map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-400">
-                <span className="text-green-400 mt-0.5">&#10003;</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
-            <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-            Key Insights
-          </h4>
-          <ul className="space-y-1.5">
-            {pattern.keyInsights.map((insight, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-400">
-                <span className="text-yellow-400 font-medium">{i + 1}.</span>
-                <span>{insight}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <h4 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
-            <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-            </svg>
-            Code Template
-          </h4>
-          <LanguageToggle
-            currentLang={currentLang}
-            onChange={setCurrentLang}
-            languages={availableLanguages}
-            size="sm"
-          />
-        </div>
-        <CodeBlock code={currentCode} language={currentLang} />
-      </div>
-
-      {pattern.commonMistakes && pattern.commonMistakes.length > 0 && (
-        <div className="mb-6">
-          <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
-            <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            Common Mistakes
-          </h4>
-          <div className="bg-red-900/10 border border-red-900/30 rounded-lg p-3">
-            <ul className="space-y-1.5">
-              {pattern.commonMistakes.map((mistake, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-400">
-                  <span className="text-red-400 mt-0.5">&#10007;</span>
-                  <span>{mistake}</span>
-                </li>
-              ))}
-            </ul>
+          <div className="text-left">
+            <div className="flex items-center gap-2">
+              <span className="text-white font-semibold">About This Pattern</span>
+              <span className="px-2 py-0.5 text-xs bg-indigo-500/20 text-indigo-400 rounded-full">
+                {pattern.difficulty}
+              </span>
+            </div>
+            <p className="text-sm text-gray-400 mt-0.5">Click to learn more</p>
           </div>
         </div>
-      )}
+        <svg
+          className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ${isExpanded ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
 
-      {pattern.variations && pattern.variations.length > 0 && (
-        <div>
-          <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
-            <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z" />
-            </svg>
-            Variations
-          </h4>
-          <div className="space-y-4">
-            {pattern.variations.map((variation, idx) => (
-              <VariationInline key={variation.id || idx} variation={variation} />
-            ))}
+      {/* Expanded Content */}
+      {isExpanded && (
+        <div className="p-5 pt-2 border-t border-gray-700/50 animate-fade-in">
+          <p className="text-gray-300 mb-5 leading-relaxed">{pattern.description}</p>
+          <div className="flex items-center gap-4 text-sm text-gray-400 mb-5 pb-4 border-b border-gray-700/50">
+            <span>Time: <span className="text-indigo-400 font-mono">{pattern.timeComplexity}</span></span>
+            <span>Space: <span className="text-purple-400 font-mono">{pattern.spaceComplexity}</span></span>
           </div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                When to Use
+              </h4>
+              <ul className="space-y-1.5">
+                {pattern.whenToUse.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-gray-400">
+                    <span className="text-green-400 mt-0.5">&#10003;</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+                <svg className="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                Key Insights
+              </h4>
+              <ul className="space-y-1.5">
+                {pattern.keyInsights.map((insight, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-gray-400">
+                    <span className="text-yellow-400 font-medium">{i + 1}.</span>
+                    <span>{insight}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-semibold text-gray-300 flex items-center gap-2">
+                <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                Code Template
+              </h4>
+              <LanguageToggle
+                currentLang={currentLang}
+                onChange={setCurrentLang}
+                languages={availableLanguages}
+                size="sm"
+              />
+            </div>
+            <CodeBlock code={currentCode} language={currentLang} />
+          </div>
+
+          {pattern.commonMistakes && pattern.commonMistakes.length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+                <svg className="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Common Mistakes
+              </h4>
+              <div className="bg-red-900/10 border border-red-900/30 rounded-lg p-3">
+                <ul className="space-y-1.5">
+                  {pattern.commonMistakes.map((mistake, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-400">
+                      <span className="text-red-400 mt-0.5">&#10007;</span>
+                      <span>{mistake}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {pattern.variations && pattern.variations.length > 0 && (
+            <div>
+              <h4 className="text-sm font-semibold text-gray-300 mb-3 flex items-center gap-2">
+                <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6z" />
+                </svg>
+                Variations
+              </h4>
+              <div className="space-y-4">
+                {pattern.variations.map((variation, idx) => (
+                  <VariationInline key={variation.id || idx} variation={variation} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

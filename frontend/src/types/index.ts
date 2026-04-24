@@ -23,7 +23,6 @@ export interface PatternVariation {
 export interface Pattern {
   id: string;
   category: string;
-  icon: string;
   difficulty: 'Easy' | 'Medium' | 'Hard' | 'Easy-Medium' | 'Medium-Hard';
   description: string;
   whenToUse: string[];

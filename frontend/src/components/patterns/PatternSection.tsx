@@ -28,7 +28,6 @@ export default function PatternSection({ pattern, questions, completed, onToggle
     <section className="mb-12 scroll-mt-20" id={pattern.id}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="text-3xl">{pattern.icon}</div>
           <div>
             <h2 className="text-2xl font-bold text-white">{pattern.category}</h2>
             <div className="flex items-center gap-3 text-sm text-gray-500">

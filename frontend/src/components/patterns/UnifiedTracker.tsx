@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Pattern, Question } from '@/types';
 import { categoryToPatternId } from '@/lib/questions';
 import PatternSection from './PatternSection';
-import api from '@/services/api';
+import patternsData from '@/lib/patterns.json';
 
 interface UnifiedTrackerProps {
   questions: Question[];
@@ -13,9 +13,7 @@ interface UnifiedTrackerProps {
 const STORAGE_KEY = 'faangready-completed';
 
 export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
-  const [patterns, setPatterns] = useState<Pattern[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const patterns = patternsData as Pattern[];
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('');
@@ -26,21 +24,6 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
     if (saved) {
       setCompleted(new Set(JSON.parse(saved)));
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchPatterns = async () => {
-      try {
-        const response = await api.getPatterns({ pageSize: 50 });
-        setPatterns(response.patterns);
-      } catch (err) {
-        setError('Failed to load patterns');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPatterns();
   }, []);
 
   const toggleComplete = (id: string) => {
@@ -93,79 +76,32 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
     return map;
   }, [patterns]);
 
-  const stats = useMemo(() => {
-    const total = questions.length;
-    const done = completed.size;
-    const easy = questions.filter(q => q.difficulty === 'Easy');
-    const medium = questions.filter(q => q.difficulty === 'Medium');
-    const hard = questions.filter(q => q.difficulty === 'Hard');
-    return {
-      total,
-      done,
-      percent: total ? Math.round((done / total) * 100) : 0,
-      easy: easy.length,
-      easyDone: easy.filter(q => completed.has(q.id)).length,
-      medium: medium.length,
-      mediumDone: medium.filter(q => completed.has(q.id)).length,
-      hard: hard.length,
-      hardDone: hard.filter(q => completed.has(q.id)).length,
-    };
-  }, [questions, completed]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-500"></div>
-      </div>
-    );
-  }
-
   return (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700 col-span-2 md:col-span-1">
-          <div className="text-2xl font-bold text-indigo-400">{stats.percent}%</div>
-          <div className="text-xs text-gray-500">{stats.done}/{stats.total} Done</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-          <div className="text-2xl font-bold text-green-400">{stats.easy}</div>
-          <div className="text-xs text-gray-500">Easy</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-          <div className="text-2xl font-bold text-yellow-400">{stats.medium}</div>
-          <div className="text-xs text-gray-500">Medium</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-          <div className="text-2xl font-bold text-red-400">{stats.hard}</div>
-          <div className="text-xs text-gray-500">Hard</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-          <div className="text-2xl font-bold text-green-400">{stats.easyDone}</div>
-          <div className="text-xs text-gray-500">Easy Done</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-          <div className="text-2xl font-bold text-yellow-400">{stats.mediumDone}</div>
-          <div className="text-xs text-gray-500">Medium Done</div>
-        </div>
-        <div className="bg-gray-800 rounded-lg p-3 border border-gray-700">
-          <div className="text-2xl font-bold text-red-400">{stats.hardDone}</div>
-          <div className="text-xs text-gray-500">Hard Done</div>
-        </div>
-      </div>
-
       <div className="bg-gray-800/50 rounded-xl p-4 mb-6 border border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Filters</h2>
-          <button
-            onClick={() => {
-              setSearch('');
-              setDifficultyFilter('');
-              setCompanyFilter('');
-            }}
-            className="text-xs text-indigo-400 hover:text-indigo-300"
-          >
-            Clear All
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                setSearch('');
+                setDifficultyFilter('');
+                setCompanyFilter('');
+              }}
+              className="text-xs text-indigo-400 hover:text-indigo-300"
+            >
+              Clear Filters
+            </button>
+            <button
+              onClick={resetProgress}
+              className="text-xs text-gray-500 hover:text-red-400 transition flex items-center gap-1"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Reset Progress
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -201,46 +137,6 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-sm text-gray-500">
-          <span className="text-white font-medium">{categories.length}</span> patterns,{' '}
-          <span className="text-white font-medium">{filteredQuestions.length}</span> questions
-        </p>
-        <button
-          onClick={resetProgress}
-          className="text-xs text-gray-500 hover:text-red-400 transition"
-        >
-          Reset Progress
-        </button>
-      </div>
-
-      {error && (
-        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6">
-          <p className="text-red-400">{error}</p>
-          <p className="text-sm text-gray-500 mt-1">Pattern details may not be available.</p>
-        </div>
-      )}
-
-      {/* Pattern Navigation */}
-      <div className="bg-gray-800/50 rounded-xl p-4 mb-8 border border-gray-700">
-        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Jump to Pattern</h3>
-        <div className="flex flex-wrap gap-2">
-          {categories.map(category => {
-            const pattern = patternsByCategory.get(category);
-            const patternId = pattern?.id || category.toLowerCase().replace(/\s+/g, '-');
-            return (
-              <a
-                key={category}
-                href={`#${patternId}`}
-                className="px-3 py-1.5 bg-gray-700 hover:bg-indigo-500/20 hover:text-indigo-400 text-gray-300 rounded-lg text-sm transition border border-gray-600 hover:border-indigo-500/50"
-              >
-                {pattern?.icon || '📝'} {category}
-              </a>
-            );
-          })}
-        </div>
-      </div>
-
       {categories.map(category => {
         const pattern = patternsByCategory.get(category);
         const categoryQuestions = filteredQuestions.filter(q => q.category === category);
@@ -251,7 +147,6 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
           return (
             <section key={category} className="mb-10">
               <div className="flex items-center gap-3 mb-4">
-                <div className="text-2xl">&#128221;</div>
                 <div>
                   <h2 className="text-xl font-bold text-white">{category}</h2>
                   <span className="text-sm text-gray-500">{categoryQuestions.length} problems</span>
