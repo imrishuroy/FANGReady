@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { Pattern, Question } from '@/types';
 import { categoryToPatternId } from '@/lib/questions';
 import PatternSection from './PatternSection';
+import QuoteSection from '@/components/QuoteSection';
 import patternsData from '@/lib/patterns.json';
 import { useProgress } from '@/contexts/ProgressContext';
 
@@ -109,6 +110,8 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
         </div>
       </div>
 
+      <QuoteSection />
+
       {categories.map(category => {
         const pattern = patternsByCategory.get(category);
         const categoryQuestions = filteredQuestions.filter(q => q.category === category);
@@ -155,8 +158,14 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
                       >
                         {q.name}
                       </a>
-                      <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                      <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-gray-500">
                         <span>{q.pattern}</span>
+                        {q.companies.length > 0 && (
+                          <>
+                            <span className="text-gray-600">|</span>
+                            <span>{q.companies.join(', ')}</span>
+                          </>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-3 text-sm">

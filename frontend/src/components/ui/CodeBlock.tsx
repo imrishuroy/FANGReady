@@ -8,7 +8,6 @@ interface CodeBlockProps {
   code: string;
   language?: string;
   showCopy?: boolean;
-  maxHeight?: string;
 }
 
 const languageMap: Record<string, string> = {
@@ -48,15 +47,11 @@ const customStyle = {
 export default function CodeBlock({
   code,
   language = 'java',
-  showCopy = true,
-  maxHeight = '500px'
+  showCopy = true
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const normalizedLang = languageMap[language.toLowerCase()] || 'java';
-  const lineCount = code.split('\n').length;
-  const isLongCode = lineCount > 25;
 
   const handleCopy = async () => {
     try {
@@ -75,7 +70,6 @@ export default function CodeBlock({
     }
   };
 
-  const effectiveMaxHeight = isExpanded ? 'none' : maxHeight;
   const displayLang = normalizedLang === 'cpp' ? 'C++' : normalizedLang.charAt(0).toUpperCase() + normalizedLang.slice(1);
 
   return (
@@ -91,28 +85,6 @@ export default function CodeBlock({
           <span className="text-xs text-gray-400 ml-2 font-medium">{displayLang}</span>
         </div>
         <div className="flex items-center gap-2">
-          {isLongCode && (
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="px-2 py-1 text-xs bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 rounded transition flex items-center gap-1"
-            >
-              {isExpanded ? (
-                <>
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                  </svg>
-                  Collapse
-                </>
-              ) : (
-                <>
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                  Expand ({lineCount} lines)
-                </>
-              )}
-            </button>
-          )}
           {showCopy && (
             <button
               onClick={handleCopy}
@@ -143,10 +115,7 @@ export default function CodeBlock({
       </div>
 
       {/* Code content */}
-      <div
-        className="overflow-auto scrollbar-thin"
-        style={{ maxHeight: effectiveMaxHeight }}
-      >
+      <div className="overflow-auto scrollbar-thin">
         <SyntaxHighlighter
           language={normalizedLang}
           style={customStyle}
@@ -174,10 +143,6 @@ export default function CodeBlock({
         </SyntaxHighlighter>
       </div>
 
-      {/* Scroll indicator for long code */}
-      {!isExpanded && isLongCode && (
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#011627] to-transparent pointer-events-none" />
-      )}
     </div>
   );
 }

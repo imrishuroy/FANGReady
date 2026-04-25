@@ -195,7 +195,7 @@ function VariationInline({ variation }: { variation: Pattern['variations'][0] })
               size="sm"
             />
           </div>
-          <CodeBlock code={currentCode} language={currentLang} maxHeight="300px" />
+          <CodeBlock code={currentCode} language={currentLang} />
         </div>
       )}
 
