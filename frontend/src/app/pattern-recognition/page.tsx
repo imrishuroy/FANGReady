@@ -686,6 +686,74 @@ for (const num of nums) {
       },
       problems: ['Kth Largest Element', 'Top K Frequent Elements', 'Merge K Sorted Lists'],
     },
+    {
+      id: 'expand-center',
+      name: 'Expand Around Center',
+      when: 'Palindrome substrings, longest palindrome, O(1) space vs O(n²) DP',
+      template: {
+        java: `// Expand Around Center - O(n²) time, O(1) space
+// For each center, expand outward while chars match
+public String longestPalindrome(String s) {
+    int start = 0, end = 0;
+    for (int i = 0; i < s.length(); i++) {
+        int len1 = expand(s, i, i);     // odd length
+        int len2 = expand(s, i, i + 1); // even length
+        int len = Math.max(len1, len2);
+        if (len > end - start) {
+            start = i - (len - 1) / 2;
+            end = i + len / 2;
+        }
+    }
+    return s.substring(start, end + 1);
+}
+
+int expand(String s, int l, int r) {
+    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+        l--; r++;
+    }
+    return r - l - 1;
+}`,
+        python: `# Expand Around Center - O(n²) time, O(1) space
+def longestPalindrome(s):
+    def expand(l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l -= 1
+            r += 1
+        return r - l - 1
+
+    start = end = 0
+    for i in range(len(s)):
+        len1 = expand(i, i)      # odd length
+        len2 = expand(i, i + 1)  # even length
+        max_len = max(len1, len2)
+        if max_len > end - start:
+            start = i - (max_len - 1) // 2
+            end = i + max_len // 2
+    return s[start:end + 1]`,
+        javascript: `// Expand Around Center - O(n²) time, O(1) space
+function longestPalindrome(s) {
+    const expand = (l, r) => {
+        while (l >= 0 && r < s.length && s[l] === s[r]) {
+            l--; r++;
+        }
+        return r - l - 1;
+    };
+
+    let start = 0, end = 0;
+    for (let i = 0; i < s.length; i++) {
+        const len1 = expand(i, i);     // odd length
+        const len2 = expand(i, i + 1); // even length
+        const len = Math.max(len1, len2);
+        if (len > end - start) {
+            start = i - Math.floor((len - 1) / 2);
+            end = i + Math.floor(len / 2);
+        }
+    }
+    return s.substring(start, end + 1);
+}`,
+      },
+      problems: ['Longest Palindromic Substring', 'Palindromic Substrings', 'Valid Palindrome II'],
+    },
   ];
 
   const selected = patterns.find(p => p.id === selectedPattern);

@@ -18,6 +18,7 @@ export interface PatternVariation {
   when?: string;
   template?: VariationTemplate;
   problems?: string[];
+  guide?: string;
 }
 
 export interface Pattern {

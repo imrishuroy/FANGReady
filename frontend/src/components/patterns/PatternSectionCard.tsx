@@ -160,11 +160,12 @@ export default function PatternSectionCard({ pattern }: PatternSectionCardProps)
   );
 }
 
-function VariationInline({ variation }: { variation: Pattern['variations'][0] }) {
+function VariationInline({ variation }: { variation: Pattern['variations'][0] & { guide?: string } }) {
   const [currentLang, setCurrentLang] = useState<string>('java');
 
   const hasTemplate = variation.template && (variation.template.javascript || variation.template.java);
   const hasProblems = variation.problems && variation.problems.length > 0;
+  const hasGuide = !!variation.guide;
 
   const languageOrder = ['java', 'javascript', 'python', 'cpp', 'go'];
   const availableLanguages = variation.template
@@ -178,7 +179,20 @@ function VariationInline({ variation }: { variation: Pattern['variations'][0] })
   return (
     <div className="bg-gray-900/50 rounded-lg border border-gray-800 p-4">
       <div className="mb-3">
-        <h5 className="font-medium text-white text-sm">{variation.name}</h5>
+        <div className="flex items-center justify-between">
+          <h5 className="font-medium text-white text-sm">{variation.name}</h5>
+          {hasGuide && (
+            <a
+              href={variation.guide}
+              className="px-2 py-1 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-400 text-xs rounded transition flex items-center gap-1"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+              Full Guide
+            </a>
+          )}
+        </div>
         <p className="text-xs text-gray-500 mt-1">{variation.desc}</p>
         {variation.when && (
           <p className="text-xs text-indigo-400 mt-1">When: {variation.when}</p>
