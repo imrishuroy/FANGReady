@@ -487,6 +487,25 @@
           "Burst Balloons",
           "Matrix Chain Multiplication"
         ]
+      },
+      {
+        "id": "dp-var-7",
+        "name": "Expand Around Center",
+        "desc": "Find palindromes by expanding outward from each possible center. O(n²) time, O(1) space - better than DP for substring problems.",
+        "when": "Palindrome SUBSTRING problems (contiguous). Counting palindromes, finding longest, validating with modifications. NOT for subsequences.",
+        "guide": "/guides/expand-around-center",
+        "template": {
+          "java": "// Expand Around Center Pattern\n// Time: O(n²) | Space: O(1)\n\n// Count all palindromic substrings\npublic int countSubstrings(String s) {\n    int count = 0;\n    for (int i = 0; i < s.length(); i++) {\n        count += expand(s, i, i);      // Odd length\n        count += expand(s, i, i + 1);  // Even length\n    }\n    return count;\n}\n\nprivate int expand(String s, int left, int right) {\n    int count = 0;\n    while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {\n        count++;\n        left--;\n        right++;\n    }\n    return count;\n}\n\n// Longest Palindromic Substring\npublic String longestPalindrome(String s) {\n    int start = 0, end = 0;\n    for (int i = 0; i < s.length(); i++) {\n        int len1 = expandLen(s, i, i);\n        int len2 = expandLen(s, i, i + 1);\n        int len = Math.max(len1, len2);\n        if (len > end - start) {\n            start = i - (len - 1) / 2;\n            end = i + len / 2;\n        }\n    }\n    return s.substring(start, end + 1);\n}\n\nprivate int expandLen(String s, int l, int r) {\n    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {\n        l--; r++;\n    }\n    return r - l - 1;\n}\n\n// Valid Palindrome II - can remove one char\npublic boolean validPalindrome(String s) {\n    int l = 0, r = s.length() - 1;\n    while (l < r) {\n        if (s.charAt(l) != s.charAt(r)) {\n            return isPalin(s, l + 1, r) || isPalin(s, l, r - 1);\n        }\n        l++; r--;\n    }\n    return true;\n}\n\nprivate boolean isPalin(String s, int l, int r) {\n    while (l < r) {\n        if (s.charAt(l++) != s.charAt(r--)) return false;\n    }\n    return true;\n}",
+          "javascript": "// Expand Around Center Pattern\n// Time: O(n²) | Space: O(1)\n\n// Count all palindromic substrings\nfunction countSubstrings(s) {\n    let count = 0;\n    for (let i = 0; i < s.length; i++) {\n        count += expand(s, i, i);      // Odd length\n        count += expand(s, i, i + 1);  // Even length\n    }\n    return count;\n}\n\nfunction expand(s, left, right) {\n    let count = 0;\n    while (left >= 0 && right < s.length && s[left] === s[right]) {\n        count++;\n        left--;\n        right++;\n    }\n    return count;\n}\n\n// Longest Palindromic Substring\nfunction longestPalindrome(s) {\n    let start = 0, end = 0;\n    for (let i = 0; i < s.length; i++) {\n        const len1 = expandLen(s, i, i);\n        const len2 = expandLen(s, i, i + 1);\n        const len = Math.max(len1, len2);\n        if (len > end - start) {\n            start = i - Math.floor((len - 1) / 2);\n            end = i + Math.floor(len / 2);\n        }\n    }\n    return s.substring(start, end + 1);\n}\n\nfunction expandLen(s, l, r) {\n    while (l >= 0 && r < s.length && s[l] === s[r]) {\n        l--; r++;\n    }\n    return r - l - 1;\n}\n\n// Valid Palindrome II - can remove one char\nfunction validPalindrome(s) {\n    let l = 0, r = s.length - 1;\n    while (l < r) {\n        if (s[l] !== s[r]) {\n            return isPalin(s, l + 1, r) || isPalin(s, l, r - 1);\n        }\n        l++; r--;\n    }\n    return true;\n}\n\nfunction isPalin(s, l, r) {\n    while (l < r) {\n        if (s[l++] !== s[r--]) return false;\n    }\n    return true;\n}"
+        },
+        "problems": [
+          "Palindromic Substrings",
+          "Longest Palindromic Substring",
+          "Valid Palindrome",
+          "Valid Palindrome II",
+          "Palindrome Partitioning",
+          "Palindrome Partitioning II"
+        ]
       }
     ],
     "commonProblems": [
