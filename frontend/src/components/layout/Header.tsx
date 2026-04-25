@@ -39,7 +39,7 @@ export default function Header() {
               <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
                 FANGReady
               </h1>
-              <p className="text-xs text-gray-500">Master DSA Patterns</p>
+              <p className="text-xs text-gray-500">Your Path to Big Tech Offers</p>
             </div>
           </Link>
 

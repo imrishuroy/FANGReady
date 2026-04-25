@@ -79,12 +79,12 @@ export default function PatternSection({ pattern, questions, completed, onToggle
               >
                 {q.name}
               </a>
-              <div className="flex items-center gap-2 mt-1 text-xs">
+              <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
                 <span className="text-gray-500">{q.pattern}</span>
                 {q.companies.length > 0 && (
                   <>
                     <span className="text-gray-600">|</span>
-                    <span className="text-gray-500">{q.companies.slice(0, 3).join(', ')}{q.companies.length > 3 ? '...' : ''}</span>
+                    <span className="text-gray-500">{q.companies.join(', ')}</span>
                   </>
                 )}
               </div>
