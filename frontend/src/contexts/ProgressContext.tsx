@@ -19,6 +19,7 @@ interface ProgressContextType {
   toggleComplete: (id: string) => void;
   resetProgress: () => void;
   syncFromLocal: () => Promise<void>;
+  celebrationKey: number;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -28,6 +29,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [hasSynced, setHasSynced] = useState(false);
+  const [celebrationKey, setCelebrationKey] = useState(0);
 
   // Load progress on mount and when auth state changes
   useEffect(() => {
@@ -104,6 +106,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         newCompleted.delete(id);
       } else {
         newCompleted.add(id);
+        setCelebrationKey(prev => prev + 1);
       }
 
       setCompleted(newCompleted);
@@ -177,6 +180,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         toggleComplete,
         resetProgress,
         syncFromLocal,
+        celebrationKey,
       }}
     >
       {children}

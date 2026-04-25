@@ -7,6 +7,7 @@ import PatternSection from './PatternSection';
 import QuoteSection from '@/components/QuoteSection';
 import patternsData from '@/lib/patterns.json';
 import { useProgress } from '@/contexts/ProgressContext';
+import Confetti from '@/components/ui/Confetti';
 
 interface UnifiedTrackerProps {
   questions: Question[];
@@ -14,7 +15,7 @@ interface UnifiedTrackerProps {
 
 export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
   const patterns = patternsData as Pattern[];
-  const { completed, toggleComplete, resetProgress, isLoading } = useProgress();
+  const { completed, toggleComplete, resetProgress, isLoading, celebrationKey } = useProgress();
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('');
   const [companyFilter, setCompanyFilter] = useState('');
@@ -51,6 +52,7 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
 
   return (
     <div>
+      {celebrationKey > 0 && <Confetti key={celebrationKey} />}
       <div className="bg-gray-800/50 rounded-xl p-4 mb-6 border border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Filters</h2>
