@@ -79,18 +79,28 @@ export default function Header() {
 
             {/* Auth */}
             {isLoading ? (
-              <div className="w-16 h-4 bg-gray-700 rounded animate-pulse" />
+              <div className="w-8 h-8 bg-gray-700 rounded-full animate-pulse" />
             ) : isAuthenticated ? (
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}
-                  className="text-sm text-gray-400 hover:text-white transition"
+                  className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-medium hover:opacity-90 transition"
                 >
-                  {user?.name || user?.email?.split('@')[0] || 'Account'}
+                  {(() => {
+                    const name = user?.name || user?.email?.split('@')[0] || 'U';
+                    const parts = name.split(' ');
+                    if (parts.length >= 2) {
+                      return (parts[0][0] + parts[1][0]).toUpperCase();
+                    }
+                    return name[0].toUpperCase();
+                  })()}
                 </button>
 
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1 z-50">
+                    <div className="px-4 py-2 text-sm text-gray-400 border-b border-gray-700 truncate">
+                      {user?.name || user?.email?.split('@')[0]}
+                    </div>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition"
