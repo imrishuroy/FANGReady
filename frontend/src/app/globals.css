@@ -53,6 +53,22 @@ body {
   animation: fadeIn 0.3s ease forwards;
 }
 
+/* Confetti explosion from center */
+@keyframes explode {
+  0% {
+    transform: translate(-50%, -50%) translate(0px, 0px) scale(0.3) rotate(0deg);
+    opacity: 0.5;
+  }
+  8% {
+    transform: translate(-50%, -50%) translate(calc(var(--end-x) * 0.08), calc(var(--end-y) * 0.08)) scale(1) rotate(calc(var(--rotation) * 0.05));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--end-x), var(--end-y)) scale(0.4) rotate(var(--rotation));
+    opacity: 0;
+  }
+}
+
 /* Code styling */
 pre code {
   white-space: pre;
