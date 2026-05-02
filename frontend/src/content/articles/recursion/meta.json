@@ -1,0 +1,55 @@
+{
+  "title": "Mastering Recursion",
+  "slug": "recursion",
+  "description": "A comprehensive guide to understanding and mastering recursion for coding interviews",
+  "author": "Rishu Kumar",
+  "authorAvatar": "RK",
+  "publishedAt": "2026-02-13",
+  "difficulty": "intermediate",
+  "estimatedTime": "2 hours",
+  "tags": ["Recursion", "Fundamentals", "Interview Prep"],
+  "sections": [
+    {
+      "slug": "fundamentals",
+      "title": "Fundamentals of Recursion",
+      "description": "Learn the basics of recursion, base cases, and how the call stack works",
+      "order": 1,
+      "estimatedTime": "20 min"
+    },
+    {
+      "slug": "types",
+      "title": "Types of Recursion",
+      "description": "Explore direct, indirect, tail, head, tree, and mutual recursion",
+      "order": 2,
+      "estimatedTime": "25 min"
+    },
+    {
+      "slug": "numbers",
+      "title": "Recursion with Numbers",
+      "description": "Solve number problems: factorial, fibonacci, power, GCD, and more",
+      "order": 3,
+      "estimatedTime": "20 min"
+    },
+    {
+      "slug": "strings",
+      "title": "Recursion with Strings",
+      "description": "Master string manipulation: reverse, palindrome, permutations",
+      "order": 4,
+      "estimatedTime": "20 min"
+    },
+    {
+      "slug": "arrays",
+      "title": "Recursion with Arrays",
+      "description": "Array operations: search, sort, and divide-and-conquer algorithms",
+      "order": 5,
+      "estimatedTime": "20 min"
+    },
+    {
+      "slug": "data-structures",
+      "title": "Recursion with Data Structures",
+      "description": "Apply recursion to linked lists, trees, and graphs",
+      "order": 6,
+      "estimatedTime": "25 min"
+    }
+  ]
+}

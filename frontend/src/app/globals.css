@@ -1,114 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+/* ========================================
+   DESIGN SYSTEM (Indigo/Purple + Glass)
+   ======================================== */
 :root {
-  --background: #030712;
-  --foreground: #f3f4f6;
+  /* Colors - Indigo/Purple palette */
+  --bg-base: #030712;
+  --bg-surface: rgba(17, 24, 39, 0.8);
+  --bg-elevated: rgba(31, 41, 55, 0.7);
+  --bg-hover: rgba(55, 65, 81, 0.6);
+
+  --accent-1: #6366f1;
+  --accent-2: #a855f7;
+  --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+
+  --text-1: #f9fafb;
+  --text-2: #9ca3af;
+  --text-3: #6b7280;
+
+  --border-1: rgba(99, 102, 241, 0.15);
+  --border-2: rgba(99, 102, 241, 0.4);
+
+  /* Typography */
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Spacing & Radius */
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-full: 9999px;
+
+  /* Effects */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 16px 32px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 60px rgba(99, 102, 241, 0.2), 0 0 100px rgba(168, 85, 247, 0.1);
+
+  /* Glass effect */
+  --blur: 20px;
+  --card-bg: rgba(17, 24, 39, 0.6);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-1);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(168, 85, 247, 0.1), transparent),
+    #030712;
+  color: var(--text-1);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+code, pre {
+  font-family: var(--font-mono);
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--bg-base);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 3px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+  background: var(--bg-hover);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-in {
   animation: fadeIn 0.3s ease forwards;
 }
 
-/* Confetti explosion from center */
-@keyframes explode {
-  0% {
-    transform: translate(-50%, -50%) translate(0px, 0px) scale(0.3) rotate(0deg);
-    opacity: 0.5;
-  }
-  8% {
-    transform: translate(-50%, -50%) translate(calc(var(--end-x) * 0.08), calc(var(--end-y) * 0.08)) scale(1) rotate(calc(var(--rotation) * 0.05));
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) translate(var(--end-x), var(--end-y)) scale(0.4) rotate(var(--rotation));
-    opacity: 0;
-  }
-}
-
 /* Code styling */
-pre code {
-  white-space: pre;
-  tab-size: 2;
-}
+pre code { white-space: pre; tab-size: 2; }
+pre { line-height: 1.6; }
 
-pre {
-  line-height: 1.6;
-}
+.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: var(--bg-elevated) transparent; }
 
-/* Code block scrollbar */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 4px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
-}
-
-.scrollbar-thin::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Firefox scrollbar */
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: #374151 transparent;
-}
-
-/* Line clamp */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

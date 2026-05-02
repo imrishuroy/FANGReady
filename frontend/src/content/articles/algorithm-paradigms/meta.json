@@ -1,0 +1,48 @@
+{
+  "title": "Recursion vs Backtracking vs DP vs Greedy",
+  "slug": "algorithm-paradigms",
+  "description": "Learn how to identify which algorithm paradigm to use - a practical comparison guide with decision frameworks, problem patterns, and real examples",
+  "author": "Rishu Kumar",
+  "authorAvatar": "RK",
+  "publishedAt": "2026-05-02",
+  "difficulty": "intermediate",
+  "estimatedTime": "30 min",
+  "tags": ["Algorithms", "DP", "Interview Prep"],
+  "sections": [
+    {
+      "slug": "quick-comparison",
+      "title": "Quick Comparison Table",
+      "description": "Side-by-side comparison of all four paradigms at a glance",
+      "order": 1,
+      "estimatedTime": "5 min"
+    },
+    {
+      "slug": "key-differences",
+      "title": "Key Differences Explained",
+      "description": "Understanding what makes each approach unique with visual examples",
+      "order": 2,
+      "estimatedTime": "8 min"
+    },
+    {
+      "slug": "how-to-identify",
+      "title": "How to Identify the Right Approach",
+      "description": "Decision framework and problem keywords that reveal the pattern",
+      "order": 3,
+      "estimatedTime": "8 min"
+    },
+    {
+      "slug": "constraints-guide",
+      "title": "Constraints-Based Selection",
+      "description": "Using input size and time limits to choose the right approach",
+      "order": 4,
+      "estimatedTime": "5 min"
+    },
+    {
+      "slug": "common-pitfalls",
+      "title": "Common Pitfalls & Traps",
+      "description": "When greedy seems right but isn't, and other common mistakes",
+      "order": 5,
+      "estimatedTime": "4 min"
+    }
+  ]
+}
