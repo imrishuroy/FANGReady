@@ -1,5 +1,5 @@
 import { questions } from '@/lib/questions';
-import UnifiedTracker from '@/components/patterns/UnifiedTracker';
+import Dashboard from '@/components/patterns/Dashboard';
 
 export const metadata = {
   title: 'FANGReady - Master DSA Patterns',
@@ -9,8 +9,7 @@ export const metadata = {
 export default function Home() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-
-      <UnifiedTracker questions={questions} />
+      <Dashboard questions={questions} />
     </div>
   );
 }

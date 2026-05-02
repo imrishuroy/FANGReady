@@ -14,10 +14,13 @@ export default function QuoteSection() {
   return (
     <div className="mt-4 mb-4 text-center">
       <blockquote className="max-w-3xl mx-auto">
-        <p className="text-xl italic text-gray-300 leading-relaxed">
-          "{quote.text}"
+        <p
+          className="text-xl italic leading-relaxed"
+          style={{ color: 'var(--text-2)', fontFamily: 'var(--font-body)' }}
+        >
+          &ldquo;{quote.text}&rdquo;
         </p>
-        <footer className="mt-2 text-gray-500">
+        <footer className="mt-2" style={{ color: 'var(--text-3)' }}>
           — {quote.author}
         </footer>
       </blockquote>

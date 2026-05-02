@@ -21,6 +21,15 @@ export interface PatternVariation {
   guide?: string;
 }
 
+export interface TutorialSection {
+  title: string;
+  content: string;
+  code?: {
+    java?: string;
+    javascript?: string;
+  };
+}
+
 export interface Pattern {
   id: string;
   category: string;
@@ -34,6 +43,7 @@ export interface Pattern {
   commonProblems: string[];
   timeComplexity: string;
   spaceComplexity: string;
+  tutorial?: TutorialSection[];
   createdAt: string;
   updatedAt: string;
 }
