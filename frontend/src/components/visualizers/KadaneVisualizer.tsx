@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 interface Step {
   index: number;
   num: number;
   currentSum: number;
   maxSum: number;
-  decision: 'extend' | 'start';
+  decision: "extend" | "start";
   subarrayStart: number;
   subarrayEnd: number;
 }
@@ -19,8 +19,10 @@ export default function KadaneVisualizer() {
   const [nums] = useState([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
   const [currentStep, setCurrentStep] = useState(-1);
   const [steps, setSteps] = useState<Step[]>([]);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState("Click Play to find the maximum subarray sum");
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to find the maximum subarray sum",
+  );
 
   const generateSteps = useCallback(() => {
     const result: Step[] = [];
@@ -35,7 +37,7 @@ export default function KadaneVisualizer() {
       num: nums[0],
       currentSum: nums[0],
       maxSum: nums[0],
-      decision: 'start',
+      decision: "start",
       subarrayStart: 0,
       subarrayEnd: 0,
     });
@@ -44,14 +46,14 @@ export default function KadaneVisualizer() {
       const extendSum = currentSum + nums[i];
       const startNew = nums[i];
 
-      let decision: 'extend' | 'start';
+      let decision: "extend" | "start";
       if (startNew > extendSum) {
         currentSum = startNew;
         start = i;
-        decision = 'start';
+        decision = "start";
       } else {
         currentSum = extendSum;
-        decision = 'extend';
+        decision = "extend";
       }
 
       if (currentSum > maxSum) {
@@ -78,7 +80,7 @@ export default function KadaneVisualizer() {
     const newSteps = generateSteps();
     setSteps(newSteps);
     setCurrentStep(-1);
-    setPhase('init');
+    setPhase("init");
     setMessage("Click Play to find the maximum subarray sum");
     setIsPlaying(false);
   }, [generateSteps]);
@@ -91,19 +93,23 @@ export default function KadaneVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         setCurrentStep(0);
         const step = steps[0];
-        setMessage(`i=0: Start with nums[0]=${step.num}. currentSum=${step.currentSum}, maxSum=${step.maxSum}`);
+        setMessage(
+          `i=0: Start with nums[0]=${step.num}. currentSum=${step.currentSum}, maxSum=${step.maxSum}`,
+        );
         return;
       }
 
       const nextStep = currentStep + 1;
       if (nextStep >= steps.length) {
-        setPhase('done');
+        setPhase("done");
         const finalStep = steps[steps.length - 1];
-        setMessage(`Done! Maximum subarray sum = ${finalStep.maxSum} (indices ${finalStep.subarrayStart} to ${finalStep.subarrayEnd})`);
+        setMessage(
+          `Done! Maximum subarray sum = ${finalStep.maxSum} (indices ${finalStep.subarrayStart} to ${finalStep.subarrayEnd})`,
+        );
         setIsPlaying(false);
         return;
       }
@@ -112,17 +118,22 @@ export default function KadaneVisualizer() {
       const step = steps[nextStep];
       const prevSum = steps[nextStep - 1].currentSum;
 
-      if (step.decision === 'start') {
-        setMessage(`i=${step.index}: ${step.num} > ${prevSum} + ${step.num} = ${prevSum + step.num}. Start new subarray! currentSum=${step.currentSum}`);
+      if (step.decision === "start") {
+        setMessage(
+          `i=${step.index}: ${step.num} > ${prevSum} + ${step.num} = ${prevSum + step.num}. Start new subarray! currentSum=${step.currentSum}`,
+        );
       } else {
-        setMessage(`i=${step.index}: ${prevSum} + ${step.num} = ${step.currentSum} >= ${step.num}. Extend subarray. currentSum=${step.currentSum}`);
+        setMessage(
+          `i=${step.index}: ${prevSum} + ${step.num} = ${step.currentSum} >= ${step.num}. Extend subarray. currentSum=${step.currentSum}`,
+        );
       }
     }, speed);
 
     return () => clearTimeout(timer);
   }, [isPlaying, phase, currentStep, steps, speed]);
 
-  const current = currentStep >= 0 && currentStep < steps.length ? steps[currentStep] : null;
+  const current =
+    currentStep >= 0 && currentStep < steps.length ? steps[currentStep] : null;
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
@@ -138,12 +149,12 @@ export default function KadaneVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -174,7 +185,9 @@ export default function KadaneVisualizer() {
               initial={{ scale: 1.3 }}
               animate={{ scale: 1 }}
               className={`font-bold text-xl ${
-                current && current.currentSum > 0 ? 'text-green-400' : 'text-red-400'
+                current && current.currentSum > 0
+                  ? "text-green-400"
+                  : "text-red-400"
               }`}
             >
               {current?.currentSum ?? 0}
@@ -198,7 +211,10 @@ export default function KadaneVisualizer() {
           <div className="text-sm text-gray-400 mb-2">Array:</div>
           <div className="flex gap-1 justify-center flex-wrap">
             {nums.map((num, idx) => {
-              const isInMaxSubarray = current && idx >= current.subarrayStart && idx <= current.subarrayEnd;
+              const isInMaxSubarray =
+                current &&
+                idx >= current.subarrayStart &&
+                idx <= current.subarrayEnd;
               const isCurrent = current && idx === current.index;
 
               return (
@@ -206,15 +222,23 @@ export default function KadaneVisualizer() {
                   key={idx}
                   animate={{
                     backgroundColor: isCurrent
-                      ? '#eab308'
+                      ? "#eab308"
                       : isInMaxSubarray
-                      ? '#22c55e'
-                      : '#374151',
+                        ? "#22c55e"
+                        : "#374151",
                     scale: isCurrent ? 1.15 : 1,
                   }}
                   className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-sm"
                 >
-                  <span className={isCurrent ? 'text-black' : isInMaxSubarray ? 'text-black' : 'text-white'}>
+                  <span
+                    className={
+                      isCurrent
+                        ? "text-black"
+                        : isInMaxSubarray
+                          ? "text-black"
+                          : "text-white"
+                    }
+                  >
                     {num}
                   </span>
                 </motion.div>
@@ -231,22 +255,24 @@ export default function KadaneVisualizer() {
         </div>
 
         {/* Decision indicator */}
-        {current && phase === 'running' && (
+        {current && phase === "running" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={`mb-4 p-3 rounded-lg text-center font-medium ${
-              current.decision === 'start'
-                ? 'bg-blue-500/20 border border-blue-500/50 text-blue-400'
-                : 'bg-green-500/20 border border-green-500/50 text-green-400'
+              current.decision === "start"
+                ? "bg-blue-500/20 border border-blue-500/50 text-blue-400"
+                : "bg-green-500/20 border border-green-500/50 text-green-400"
             }`}
           >
-            {current.decision === 'start' ? '🔄 Start New Subarray' : '➕ Extend Subarray'}
+            {current.decision === "start"
+              ? "🔄 Start New Subarray"
+              : "➕ Extend Subarray"}
           </motion.div>
         )}
 
         {/* Final result */}
-        {phase === 'done' && current && (
+        {phase === "done" && current && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -256,8 +282,11 @@ export default function KadaneVisualizer() {
               Maximum Sum = {current.maxSum}
             </div>
             <div className="text-gray-400 text-sm mt-1">
-              Subarray: [{nums.slice(current.subarrayStart, current.subarrayEnd + 1).join(', ')}]
-              (indices {current.subarrayStart} to {current.subarrayEnd})
+              Subarray: [
+              {nums
+                .slice(current.subarrayStart, current.subarrayEnd + 1)
+                .join(", ")}
+              ] (indices {current.subarrayStart} to {current.subarrayEnd})
             </div>
           </motion.div>
         )}
@@ -268,9 +297,9 @@ export default function KadaneVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -291,9 +320,9 @@ export default function KadaneVisualizer() {
         {/* Key insight */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-amber-400">Key Insight:</strong>{' '}
-            At each position, decide: extend previous subarray or start fresh?
-            If previous sum is negative, starting fresh is always better.
+            <strong className="text-amber-400">Key Insight:</strong> At each
+            position, decide: extend previous subarray or start fresh? If
+            previous sum is negative, starting fresh is always better.
           </p>
         </div>
       </div>

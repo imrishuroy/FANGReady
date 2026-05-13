@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 export default function ContainerWaterVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -13,8 +13,10 @@ export default function ContainerWaterVisualizer() {
   const [currentArea, setCurrentArea] = useState(0);
   const [bestLeft, setBestLeft] = useState(-1);
   const [bestRight, setBestRight] = useState(-1);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find maximum water container');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to find maximum water container",
+  );
 
   const reset = useCallback(() => {
     setLeft(0);
@@ -23,8 +25,8 @@ export default function ContainerWaterVisualizer() {
     setCurrentArea(0);
     setBestLeft(-1);
     setBestRight(-1);
-    setPhase('init');
-    setMessage('Click Play to find maximum water container');
+    setPhase("init");
+    setMessage("Click Play to find maximum water container");
     setIsPlaying(false);
   }, [heights.length]);
 
@@ -32,8 +34,8 @@ export default function ContainerWaterVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         const width = right - left;
         const h = Math.min(heights[left], heights[right]);
         const area = width * h;
@@ -41,11 +43,15 @@ export default function ContainerWaterVisualizer() {
         setMaxArea(area);
         setBestLeft(left);
         setBestRight(right);
-        setMessage(`Area = min(${heights[left]}, ${heights[right]}) × ${width} = ${area}`);
-      } else if (phase === 'running') {
+        setMessage(
+          `Area = min(${heights[left]}, ${heights[right]}) × ${width} = ${area}`,
+        );
+      } else if (phase === "running") {
         if (left >= right) {
-          setPhase('done');
-          setMessage(`Done! Maximum area = ${maxArea} at indices [${bestLeft}, ${bestRight}]`);
+          setPhase("done");
+          setMessage(
+            `Done! Maximum area = ${maxArea} at indices [${bestLeft}, ${bestRight}]`,
+          );
           setIsPlaying(false);
           return;
         }
@@ -65,17 +71,31 @@ export default function ContainerWaterVisualizer() {
 
         // Move the shorter line
         if (heights[left] < heights[right]) {
-          setMessage(`height[${left}]=${heights[left]} < height[${right}]=${heights[right]}, move left pointer`);
+          setMessage(
+            `height[${left}]=${heights[left]} < height[${right}]=${heights[right]}, move left pointer`,
+          );
           setLeft(left + 1);
         } else {
-          setMessage(`height[${left}]=${heights[left]} >= height[${right}]=${heights[right]}, move right pointer`);
+          setMessage(
+            `height[${left}]=${heights[left]} >= height[${right}]=${heights[right]}, move right pointer`,
+          );
           setRight(right - 1);
         }
       }
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, left, right, heights, maxArea, bestLeft, bestRight, speed]);
+  }, [
+    isPlaying,
+    phase,
+    left,
+    right,
+    heights,
+    maxArea,
+    bestLeft,
+    bestRight,
+    speed,
+  ]);
 
   const maxHeight = Math.max(...heights);
   const barWidth = 30;
@@ -86,7 +106,9 @@ export default function ContainerWaterVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Container With Most Water</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Container With Most Water
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Move shorter line inward to find maximum area
         </p>
@@ -97,12 +119,12 @@ export default function ContainerWaterVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -128,7 +150,9 @@ export default function ContainerWaterVisualizer() {
         <div className="mb-4 grid grid-cols-2 gap-4">
           <div className="p-3 bg-gray-800/50 rounded-lg">
             <span className="text-gray-400 text-sm">Current Area: </span>
-            <span className="text-cyan-400 font-bold text-xl">{currentArea}</span>
+            <span className="text-cyan-400 font-bold text-xl">
+              {currentArea}
+            </span>
           </div>
           <div className="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
             <span className="text-gray-400 text-sm">Max Area: </span>
@@ -138,14 +162,20 @@ export default function ContainerWaterVisualizer() {
 
         {/* Container visualization */}
         <div className="mb-4 flex justify-center overflow-x-auto">
-          <svg width={svgWidth} height={svgHeight} className="bg-gray-800/30 rounded-lg">
+          <svg
+            width={svgWidth}
+            height={svgHeight}
+            className="bg-gray-800/30 rounded-lg"
+          >
             {/* Water area */}
-            {phase !== 'init' && (
+            {phase !== "init" && (
               <motion.rect
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.3 }}
                 x={left * (barWidth + gap) + barWidth / 2}
-                y={svgHeight - 20 - Math.min(heights[left], heights[right]) * 25}
+                y={
+                  svgHeight - 20 - Math.min(heights[left], heights[right]) * 25
+                }
                 width={(right - left) * (barWidth + gap)}
                 height={Math.min(heights[left], heights[right]) * 25}
                 fill="#06b6d4"
@@ -162,13 +192,14 @@ export default function ContainerWaterVisualizer() {
                   height={h * 25}
                   rx={4}
                   animate={{
-                    fill: idx === bestLeft || idx === bestRight
-                      ? '#22c55e'
-                      : idx === left
-                      ? '#3b82f6'
-                      : idx === right
-                      ? '#f59e0b'
-                      : '#4b5563',
+                    fill:
+                      idx === bestLeft || idx === bestRight
+                        ? "#22c55e"
+                        : idx === left
+                          ? "#3b82f6"
+                          : idx === right
+                            ? "#f59e0b"
+                            : "#4b5563",
                   }}
                 />
                 <text
@@ -205,7 +236,7 @@ export default function ContainerWaterVisualizer() {
         </div>
 
         {/* Formula */}
-        {phase !== 'init' && (
+        {phase !== "init" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -230,9 +261,9 @@ export default function ContainerWaterVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -241,9 +272,9 @@ export default function ContainerWaterVisualizer() {
         {/* Key insight */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-cyan-400">Key Insight:</strong>{' '}
-            Always move the shorter line. The shorter line limits height, so keeping it
-            can only decrease area as width shrinks.
+            <strong className="text-cyan-400">Key Insight:</strong> Always move
+            the shorter line. The shorter line limits height, so keeping it can
+            only decrease area as width shrinks.
           </p>
         </div>
       </div>

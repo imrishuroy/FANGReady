@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { Pattern, Question } from '@/types';
-import PatternSectionCard from './PatternSectionCard';
+import { useMemo } from "react";
+import { Pattern, Question } from "@/types";
+import PatternSectionCard from "./PatternSectionCard";
 
 interface PatternSectionProps {
   pattern: Pattern;
@@ -12,16 +12,25 @@ interface PatternSectionProps {
 }
 
 const difficultyColors: Record<string, string> = {
-  Easy: 'text-green-400',
-  Medium: 'text-yellow-400',
-  Hard: 'text-red-400',
+  Easy: "text-green-400",
+  Medium: "text-yellow-400",
+  Hard: "text-red-400",
 };
 
-export default function PatternSection({ pattern, questions, completed, onToggleComplete }: PatternSectionProps) {
+export default function PatternSection({
+  pattern,
+  questions,
+  completed,
+  onToggleComplete,
+}: PatternSectionProps) {
   const stats = useMemo(() => {
     const total = questions.length;
-    const done = questions.filter(q => completed.has(q.id)).length;
-    return { total, done, percent: total ? Math.round((done / total) * 100) : 0 };
+    const done = questions.filter((q) => completed.has(q.id)).length;
+    return {
+      total,
+      done,
+      percent: total ? Math.round((done / total) * 100) : 0,
+    };
   }, [questions, completed]);
 
   return (
@@ -29,10 +38,14 @@ export default function PatternSection({ pattern, questions, completed, onToggle
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div>
-            <h2 className="text-2xl font-bold text-white">{pattern.category}</h2>
+            <h2 className="text-2xl font-bold text-white">
+              {pattern.category}
+            </h2>
             <div className="flex items-center gap-3 text-sm text-gray-500">
               <span>{questions.length} problems</span>
-              <span className="text-indigo-400">{stats.done}/{stats.total} done</span>
+              <span className="text-indigo-400">
+                {stats.done}/{stats.total} done
+              </span>
               <div className="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-indigo-500 transition-all duration-300"
@@ -47,25 +60,39 @@ export default function PatternSection({ pattern, questions, completed, onToggle
       <PatternSectionCard pattern={pattern} />
 
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-gray-300 mb-3">Practice Problems</h3>
+        <h3 className="text-lg font-semibold text-gray-300 mb-3">
+          Practice Problems
+        </h3>
         {questions.map((q) => (
           <div
             key={q.id}
             className={`flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg border transition hover:translate-x-1 ${
-              completed.has(q.id) ? 'border-green-500/30 bg-green-500/5' : 'border-gray-700'
+              completed.has(q.id)
+                ? "border-green-500/30 bg-green-500/5"
+                : "border-gray-700"
             }`}
           >
             <button
               onClick={() => onToggleComplete(q.id)}
               className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition flex-shrink-0 ${
                 completed.has(q.id)
-                  ? 'bg-green-500 border-green-500'
-                  : 'border-gray-600 hover:border-green-500'
+                  ? "bg-green-500 border-green-500"
+                  : "border-gray-600 hover:border-green-500"
               }`}
             >
               {completed.has(q.id) && (
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               )}
             </button>
@@ -84,14 +111,18 @@ export default function PatternSection({ pattern, questions, completed, onToggle
                 {q.companies.length > 0 && (
                   <>
                     <span className="text-gray-600">|</span>
-                    <span className="text-gray-500">{q.companies.join(', ')}</span>
+                    <span className="text-gray-500">
+                      {q.companies.join(", ")}
+                    </span>
                   </>
                 )}
               </div>
             </div>
 
             <div className="flex items-center gap-3 text-sm">
-              <span className={difficultyColors[q.difficulty]}>{q.difficulty}</span>
+              <span className={difficultyColors[q.difficulty]}>
+                {q.difficulty}
+              </span>
               <span title="Frequency">{q.frequency}</span>
             </div>
           </div>

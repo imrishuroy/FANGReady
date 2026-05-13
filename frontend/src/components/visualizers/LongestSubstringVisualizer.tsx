@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function LongestSubstringVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,10 +11,14 @@ export default function LongestSubstringVisualizer() {
   const [seen, setSeen] = useState<Set<string>>(new Set());
   const [maxLen, setMaxLen] = useState(0);
   const [maxWindow, setMaxWindow] = useState<[number, number] | null>(null);
-  const [phase, setPhase] = useState<'init' | 'expanding' | 'shrinking' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find longest substring without repeating characters');
+  const [phase, setPhase] = useState<
+    "init" | "expanding" | "shrinking" | "done"
+  >("init");
+  const [message, setMessage] = useState(
+    "Click Play to find longest substring without repeating characters",
+  );
 
-  const str = 'abcabcbb';
+  const str = "abcabcbb";
 
   const reset = useCallback(() => {
     setLeft(0);
@@ -22,8 +26,10 @@ export default function LongestSubstringVisualizer() {
     setSeen(new Set());
     setMaxLen(0);
     setMaxWindow(null);
-    setPhase('init');
-    setMessage('Click Play to find longest substring without repeating characters');
+    setPhase("init");
+    setMessage(
+      "Click Play to find longest substring without repeating characters",
+    );
     setIsPlaying(false);
   }, []);
 
@@ -31,14 +37,16 @@ export default function LongestSubstringVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('expanding');
+      if (phase === "init") {
+        setPhase("expanding");
         setRight(0);
-        setMessage('Starting: Try to expand the window to the right');
-      } else if (phase === 'expanding') {
+        setMessage("Starting: Try to expand the window to the right");
+      } else if (phase === "expanding") {
         if (right >= str.length) {
-          setPhase('done');
-          setMessage(`Done! Longest substring without repeating: "${str.slice(maxWindow![0], maxWindow![1] + 1)}" (length ${maxLen})`);
+          setPhase("done");
+          setMessage(
+            `Done! Longest substring without repeating: "${str.slice(maxWindow![0], maxWindow![1] + 1)}" (length ${maxLen})`,
+          );
           setIsPlaying(false);
           return;
         }
@@ -47,7 +55,7 @@ export default function LongestSubstringVisualizer() {
 
         if (seen.has(char)) {
           // Duplicate found - need to shrink
-          setPhase('shrinking');
+          setPhase("shrinking");
           setMessage(`'${char}' already in window! Need to shrink from left`);
         } else {
           // Can expand
@@ -61,22 +69,26 @@ export default function LongestSubstringVisualizer() {
             setMaxWindow([left, right]);
           }
 
-          setMessage(`Add '${char}'. Window = "${str.slice(left, right + 1)}" (len=${windowLen})`);
+          setMessage(
+            `Add '${char}'. Window = "${str.slice(left, right + 1)}" (len=${windowLen})`,
+          );
           setRight(right + 1);
         }
-      } else if (phase === 'shrinking') {
+      } else if (phase === "shrinking") {
         const charToAdd = str[right];
         const charToRemove = str[left];
 
         const newSeen = new Set(seen);
         newSeen.delete(charToRemove);
         setSeen(newSeen);
-        setMessage(`Remove '${charToRemove}' from left. Looking for '${charToAdd}'...`);
+        setMessage(
+          `Remove '${charToRemove}' from left. Looking for '${charToAdd}'...`,
+        );
         setLeft(left + 1);
 
         // Check if we can now add the character
         if (charToRemove === charToAdd) {
-          setPhase('expanding');
+          setPhase("expanding");
         }
       }
     }, speed);
@@ -87,7 +99,9 @@ export default function LongestSubstringVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Longest Substring Without Repeating</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Longest Substring Without Repeating
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Variable-size window with Set for uniqueness
         </p>
@@ -98,12 +112,12 @@ export default function LongestSubstringVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -129,12 +143,17 @@ export default function LongestSubstringVisualizer() {
         <div className="mb-4">
           <div className="text-sm text-gray-400 mb-2">String: "{str}"</div>
           <div className="flex gap-1">
-            {str.split('').map((char, idx) => {
-              const inWindow = idx >= left && idx < (right >= 0 ? right + 1 : 0);
+            {str.split("").map((char, idx) => {
+              const inWindow =
+                idx >= left && idx < (right >= 0 ? right + 1 : 0);
               const isRight = idx === right;
-              const isLeft = idx === left && phase !== 'init';
+              const isLeft = idx === left && phase !== "init";
               const isDuplicate = isRight && seen.has(char);
-              const isMaxWindow = maxWindow && idx >= maxWindow[0] && idx <= maxWindow[1] && phase === 'done';
+              const isMaxWindow =
+                maxWindow &&
+                idx >= maxWindow[0] &&
+                idx <= maxWindow[1] &&
+                phase === "done";
 
               return (
                 <motion.div
@@ -145,21 +164,25 @@ export default function LongestSubstringVisualizer() {
                   }}
                   className={`w-10 h-12 rounded-lg flex flex-col items-center justify-center font-mono relative ${
                     isDuplicate
-                      ? 'bg-red-500 text-white ring-2 ring-red-300'
+                      ? "bg-red-500 text-white ring-2 ring-red-300"
                       : isMaxWindow
-                      ? 'bg-green-500 text-white'
-                      : inWindow
-                      ? 'bg-purple-500 text-white'
-                      : 'bg-gray-700 text-gray-300'
+                        ? "bg-green-500 text-white"
+                        : inWindow
+                          ? "bg-purple-500 text-white"
+                          : "bg-gray-700 text-gray-300"
                   }`}
                 >
                   <span className="text-lg font-bold">{char}</span>
                   <span className="text-xs opacity-70">{idx}</span>
                   {isLeft && (
-                    <div className="absolute -top-6 text-xs text-yellow-400 font-bold">L</div>
+                    <div className="absolute -top-6 text-xs text-yellow-400 font-bold">
+                      L
+                    </div>
                   )}
                   {isRight && (
-                    <div className="absolute -top-6 text-xs text-blue-400 font-bold">R</div>
+                    <div className="absolute -top-6 text-xs text-blue-400 font-bold">
+                      R
+                    </div>
                   )}
                 </motion.div>
               );
@@ -169,7 +192,9 @@ export default function LongestSubstringVisualizer() {
 
         {/* Seen characters */}
         <div className="mb-4">
-          <div className="text-sm text-gray-400 mb-2">Characters in Window (Set):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Characters in Window (Set):
+          </div>
           <div className="bg-gray-800/50 rounded-lg p-3 min-h-[48px]">
             <div className="flex gap-2 flex-wrap">
               <AnimatePresence>
@@ -216,18 +241,18 @@ export default function LongestSubstringVisualizer() {
         <div className="mb-4 flex gap-2">
           <div
             className={`flex-1 p-2 rounded-lg text-center text-sm font-medium ${
-              phase === 'expanding'
-                ? 'bg-green-500 text-white'
-                : 'bg-gray-800 text-gray-500'
+              phase === "expanding"
+                ? "bg-green-500 text-white"
+                : "bg-gray-800 text-gray-500"
             }`}
           >
             Expanding →
           </div>
           <div
             className={`flex-1 p-2 rounded-lg text-center text-sm font-medium ${
-              phase === 'shrinking'
-                ? 'bg-red-500 text-white'
-                : 'bg-gray-800 text-gray-500'
+              phase === "shrinking"
+                ? "bg-red-500 text-white"
+                : "bg-gray-800 text-gray-500"
             }`}
           >
             ← Shrinking
@@ -240,11 +265,11 @@ export default function LongestSubstringVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : phase === 'shrinking'
-              ? 'bg-red-500/10 border border-red-500/30 text-red-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : phase === "shrinking"
+                ? "bg-red-500/10 border border-red-500/30 text-red-400"
+                : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -253,9 +278,10 @@ export default function LongestSubstringVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-purple-400">Key Insight:</strong>{' '}
-            Use a Set to track characters in window. When duplicate found, shrink from left
-            until the duplicate is removed. Update max AFTER shrinking (when window is valid).
+            <strong className="text-purple-400">Key Insight:</strong> Use a Set
+            to track characters in window. When duplicate found, shrink from
+            left until the duplicate is removed. Update max AFTER shrinking
+            (when window is valid).
           </p>
         </div>
       </div>

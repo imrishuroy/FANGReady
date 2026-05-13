@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { ArticleMeta, ArticleSection } from '@/content/articles';
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { ArticleMeta, ArticleSection } from "@/content/articles";
 
 interface SinglePageArticleLayoutProps {
   article: ArticleMeta;
@@ -11,18 +11,24 @@ interface SinglePageArticleLayoutProps {
 
 export default function SinglePageArticleLayout({
   article,
-  sectionComponents
+  sectionComponents,
 }: SinglePageArticleLayoutProps) {
-  const [activeSection, setActiveSection] = useState<string>(article.sections[0]?.slug || '');
+  const [activeSection, setActiveSection] = useState<string>(
+    article.sections[0]?.slug || "",
+  );
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner': return 'bg-green-500/20 text-green-400 border-green-500/30';
-      case 'intermediate': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-      case 'advanced': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+      case "beginner":
+        return "bg-green-500/20 text-green-400 border-green-500/30";
+      case "intermediate":
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
+      case "advanced":
+        return "bg-red-500/20 text-red-400 border-red-500/30";
+      default:
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
 
@@ -33,8 +39,9 @@ export default function SinglePageArticleLayout({
         const element = sectionRefs.current[hash];
         if (element) {
           const yOffset = -80;
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
           setActiveSection(hash);
         }
       }, 100);
@@ -44,7 +51,7 @@ export default function SinglePageArticleLayout({
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -60% 0px',
+      rootMargin: "-20% 0px -60% 0px",
       threshold: 0,
     };
 
@@ -52,12 +59,15 @@ export default function SinglePageArticleLayout({
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
-          window.history.replaceState(null, '', `#${entry.target.id}`);
+          window.history.replaceState(null, "", `#${entry.target.id}`);
         }
       });
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions,
+    );
 
     article.sections.forEach((section) => {
       const element = sectionRefs.current[section.slug];
@@ -73,36 +83,43 @@ export default function SinglePageArticleLayout({
     const element = sectionRefs.current[sectionSlug];
     if (element) {
       const yOffset = -80;
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
-  const currentSectionIndex = article.sections.findIndex(s => s.slug === activeSection);
-  const progress = article.sections.length > 0
-    ? ((currentSectionIndex + 1) / article.sections.length) * 100
-    : 0;
+  const currentSectionIndex = article.sections.findIndex(
+    (s) => s.slug === activeSection,
+  );
+  const progress =
+    article.sections.length > 0
+      ? ((currentSectionIndex + 1) / article.sections.length) * 100
+      : 0;
 
   return (
     <div className="min-h-screen bg-gray-950">
       {/* Fixed Sidebar TOC */}
       <aside
         className={`${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } fixed top-0 left-0 w-72 h-screen z-30 transition-transform duration-300 hidden lg:block`}
       >
         <div className="h-full overflow-y-auto border-r border-gray-800 bg-gray-950">
           <div className="p-4 pt-6">
             {/* Article Info */}
             <div className="mb-6">
-              <Link href="/articles" className="text-xs text-indigo-400 hover:text-indigo-300 mb-2 inline-block">
+              <Link
+                href="/articles"
+                className="text-xs text-indigo-400 hover:text-indigo-300 mb-2 inline-block"
+              >
                 &larr; All Articles
               </Link>
-              <h2 className="text-lg font-bold text-white">
-                {article.title}
-              </h2>
+              <h2 className="text-lg font-bold text-white">{article.title}</h2>
               <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                <span className={`px-2 py-0.5 rounded border ${getDifficultyColor(article.difficulty)}`}>
+                <span
+                  className={`px-2 py-0.5 rounded border ${getDifficultyColor(article.difficulty)}`}
+                >
                   {article.difficulty}
                 </span>
                 <span>{article.estimatedTime}</span>
@@ -123,19 +140,23 @@ export default function SinglePageArticleLayout({
                     onClick={() => scrollToSection(section.slug)}
                     className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-lg transition group text-left ${
                       isActive
-                        ? 'bg-indigo-500/20 text-indigo-300'
-                        : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                        ? "bg-indigo-500/20 text-indigo-300"
+                        : "text-gray-400 hover:bg-gray-800 hover:text-white"
                     }`}
                   >
-                    <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition ${
-                      isActive
-                        ? 'bg-indigo-500 text-white'
-                        : 'bg-gray-700 text-gray-400 group-hover:bg-gray-600'
-                    }`}>
+                    <span
+                      className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition ${
+                        isActive
+                          ? "bg-indigo-500 text-white"
+                          : "bg-gray-700 text-gray-400 group-hover:bg-gray-600"
+                      }`}
+                    >
                       {index + 1}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <div className={`text-sm font-medium ${isActive ? 'text-white' : ''}`}>
+                      <div
+                        className={`text-sm font-medium ${isActive ? "text-white" : ""}`}
+                      >
                         {section.title}
                       </div>
                       <div className="text-xs text-gray-500 mt-0.5">
@@ -151,7 +172,9 @@ export default function SinglePageArticleLayout({
             <div className="mt-6 pt-6 border-t border-gray-800">
               <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
                 <span>Reading progress</span>
-                <span>{currentSectionIndex + 1}/{article.sections.length}</span>
+                <span>
+                  {currentSectionIndex + 1}/{article.sections.length}
+                </span>
               </div>
               <div className="h-1.5 bg-gray-800 rounded-full overflow-hidden">
                 <div
@@ -169,7 +192,9 @@ export default function SinglePageArticleLayout({
                 </div>
                 <div>
                   <div className="text-sm text-white">{article.author}</div>
-                  <div className="text-xs text-gray-500">{article.publishedAt}</div>
+                  <div className="text-xs text-gray-500">
+                    {article.publishedAt}
+                  </div>
                 </div>
               </div>
             </div>
@@ -181,45 +206,65 @@ export default function SinglePageArticleLayout({
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="fixed top-1/2 -translate-y-1/2 z-40 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white p-1.5 rounded-r-lg border border-l-0 border-gray-700 transition hidden lg:block"
-        style={{ left: sidebarOpen ? '18rem' : '0' }}
+        style={{ left: sidebarOpen ? "18rem" : "0" }}
       >
         <svg
-          className={`w-4 h-4 transition-transform ${sidebarOpen ? '' : 'rotate-180'}`}
+          className={`w-4 h-4 transition-transform ${sidebarOpen ? "" : "rotate-180"}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
       {/* Main Content - with margin for sidebar on desktop */}
-      <main className={`${sidebarOpen ? 'lg:ml-72' : 'lg:ml-0'} transition-[margin] duration-300`}>
+      <main
+        className={`${sidebarOpen ? "lg:ml-72" : "lg:ml-0"} transition-[margin] duration-300`}
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
           {/* Mobile Header */}
           <div className="lg:hidden mb-8">
-            <Link href="/articles" className="text-sm text-indigo-400 hover:text-indigo-300 mb-4 inline-block">
+            <Link
+              href="/articles"
+              className="text-sm text-indigo-400 hover:text-indigo-300 mb-4 inline-block"
+            >
               &larr; All Articles
             </Link>
             <div className="flex items-center gap-3 mb-3">
-              <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getDifficultyColor(article.difficulty)}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium border ${getDifficultyColor(article.difficulty)}`}
+              >
                 {article.difficulty}
               </span>
-              <span className="text-gray-500 text-sm">{article.estimatedTime}</span>
+              <span className="text-gray-500 text-sm">
+                {article.estimatedTime}
+              </span>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-3">{article.title}</h1>
+            <h1 className="text-3xl font-bold text-white mb-3">
+              {article.title}
+            </h1>
             <p className="text-gray-400">{article.description}</p>
           </div>
 
           {/* Desktop Header */}
           <header className="hidden lg:block mb-12">
             <div className="flex items-center gap-3 mb-4">
-              <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getDifficultyColor(article.difficulty)}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium border ${getDifficultyColor(article.difficulty)}`}
+              >
                 {article.difficulty}
               </span>
               <span className="text-gray-500">{article.estimatedTime}</span>
             </div>
-            <h1 className="text-4xl font-bold text-white mb-4">{article.title}</h1>
+            <h1 className="text-4xl font-bold text-white mb-4">
+              {article.title}
+            </h1>
             <p className="text-xl text-gray-400">{article.description}</p>
           </header>
 
@@ -238,7 +283,9 @@ export default function SinglePageArticleLayout({
               <section
                 key={section.slug}
                 id={section.slug}
-                ref={(el) => { sectionRefs.current[section.slug] = el; }}
+                ref={(el) => {
+                  sectionRefs.current[section.slug] = el;
+                }}
                 className="scroll-mt-20"
               >
                 {index > 0 && (
@@ -248,7 +295,9 @@ export default function SinglePageArticleLayout({
                   <SectionComponent />
                 ) : (
                   <div className="text-center py-12">
-                    <h2 className="text-xl text-gray-400">Section content not found</h2>
+                    <h2 className="text-xl text-gray-400">
+                      Section content not found
+                    </h2>
                   </div>
                 )}
               </section>
@@ -259,15 +308,29 @@ export default function SinglePageArticleLayout({
           <div className="mt-16 pt-8 border-t border-gray-800">
             <div className="bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-xl border border-indigo-500/30 p-6 text-center">
               <div className="text-3xl mb-3">&#127881;</div>
-              <h3 className="text-xl font-bold text-white mb-2">You&apos;ve completed this article!</h3>
-              <p className="text-gray-400 mb-6">Ready to explore more topics?</p>
+              <h3 className="text-xl font-bold text-white mb-2">
+                You&apos;ve completed this article!
+              </h3>
+              <p className="text-gray-400 mb-6">
+                Ready to explore more topics?
+              </p>
               <Link
                 href="/articles"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-medium rounded-lg transition"
               >
                 Browse More Articles
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             </div>
@@ -303,7 +366,7 @@ export default function SinglePageArticleLayout({
 function MobileTOC({
   sections,
   activeSection,
-  onSectionClick
+  onSectionClick,
 }: {
   sections: ArticleSection[];
   activeSection: string;
@@ -317,14 +380,21 @@ function MobileTOC({
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between px-4 py-3 bg-gray-900 rounded-lg border border-gray-800"
       >
-        <span className="text-sm font-medium text-white">Table of Contents</span>
+        <span className="text-sm font-medium text-white">
+          Table of Contents
+        </span>
         <svg
-          className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -339,15 +409,17 @@ function MobileTOC({
               }}
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${
                 activeSection === section.slug
-                  ? 'bg-indigo-500/20 text-indigo-300'
-                  : 'text-gray-400 hover:bg-gray-800'
+                  ? "bg-indigo-500/20 text-indigo-300"
+                  : "text-gray-400 hover:bg-gray-800"
               }`}
             >
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
-                activeSection === section.slug
-                  ? 'bg-indigo-500 text-white'
-                  : 'bg-gray-700 text-gray-400'
-              }`}>
+              <span
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+                  activeSection === section.slug
+                    ? "bg-indigo-500 text-white"
+                    : "bg-gray-700 text-gray-400"
+                }`}
+              >
                 {index + 1}
               </span>
               <span className="text-sm">{section.title}</span>
@@ -362,14 +434,14 @@ function MobileTOC({
 function MobileFloatingTOC({
   sections,
   activeSection,
-  onSectionClick
+  onSectionClick,
 }: {
   sections: ArticleSection[];
   activeSection: string;
   onSectionClick: (slug: string) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const currentIndex = sections.findIndex(s => s.slug === activeSection);
+  const currentIndex = sections.findIndex((s) => s.slug === activeSection);
 
   return (
     <div className="lg:hidden fixed bottom-4 right-4 z-50">
@@ -384,15 +456,17 @@ function MobileFloatingTOC({
               }}
               className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left ${
                 activeSection === section.slug
-                  ? 'bg-indigo-500/20 text-indigo-300'
-                  : 'text-gray-400 hover:bg-gray-800'
+                  ? "bg-indigo-500/20 text-indigo-300"
+                  : "text-gray-400 hover:bg-gray-800"
               }`}
             >
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
-                activeSection === section.slug
-                  ? 'bg-indigo-500 text-white'
-                  : 'bg-gray-700 text-gray-400'
-              }`}>
+              <span
+                className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+                  activeSection === section.slug
+                    ? "bg-indigo-500 text-white"
+                    : "bg-gray-700 text-gray-400"
+                }`}
+              >
                 {index + 1}
               </span>
               <span className="text-sm truncate">{section.title}</span>
@@ -406,11 +480,23 @@ function MobileFloatingTOC({
         className="w-12 h-12 bg-indigo-500 hover:bg-indigo-400 text-white rounded-full shadow-lg flex items-center justify-center transition"
       >
         {isOpen ? (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         ) : (
-          <div className="text-xs font-bold">{currentIndex + 1}/{sections.length}</div>
+          <div className="text-xs font-bold">
+            {currentIndex + 1}/{sections.length}
+          </div>
         )}
       </button>
     </div>

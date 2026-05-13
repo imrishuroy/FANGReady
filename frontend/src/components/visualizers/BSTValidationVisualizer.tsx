@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 interface TreeNode {
   val: number;
@@ -39,13 +39,19 @@ export default function BSTValidationVisualizer() {
   const [stepIndex, setStepIndex] = useState(-1);
   const [visitedNodes, setVisitedNodes] = useState<number[]>([]);
   const [invalidNode, setInvalidNode] = useState<number | null>(null);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to validate BST with bounds checking');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to validate BST with bounds checking",
+  );
 
   const generateSteps = useCallback((): Step[] => {
     const result: Step[] = [];
 
-    const validate = (node: TreeNode | null, min: number, max: number): boolean => {
+    const validate = (
+      node: TreeNode | null,
+      min: number,
+      max: number,
+    ): boolean => {
       if (!node) return true;
 
       const isValid = node.val > min && node.val < max;
@@ -61,7 +67,10 @@ export default function BSTValidationVisualizer() {
 
       if (!isValid) return false;
 
-      return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+      return (
+        validate(node.left, min, node.val) &&
+        validate(node.right, node.val, max)
+      );
     };
 
     validate(invalidTree, -Infinity, Infinity);
@@ -73,8 +82,8 @@ export default function BSTValidationVisualizer() {
     setStepIndex(-1);
     setVisitedNodes([]);
     setInvalidNode(null);
-    setPhase('init');
-    setMessage('Click Play to validate BST with bounds checking');
+    setPhase("init");
+    setMessage("Click Play to validate BST with bounds checking");
     setIsPlaying(false);
   }, [generateSteps]);
 
@@ -86,15 +95,19 @@ export default function BSTValidationVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         setStepIndex(0);
-        setMessage('Starting validation with range (-∞, +∞)');
-      } else if (phase === 'running') {
+        setMessage("Starting validation with range (-∞, +∞)");
+      } else if (phase === "running") {
         if (stepIndex >= steps.length) {
-          setPhase('done');
+          setPhase("done");
           const isValid = !invalidNode;
-          setMessage(isValid ? 'Valid BST!' : `Invalid BST! Node ${invalidNode} violates BST property.`);
+          setMessage(
+            isValid
+              ? "Valid BST!"
+              : `Invalid BST! Node ${invalidNode} violates BST property.`,
+          );
           setIsPlaying(false);
           return;
         }
@@ -105,8 +118,10 @@ export default function BSTValidationVisualizer() {
 
         if (!step.valid) {
           setInvalidNode(step.node);
-          setPhase('done');
-          setMessage(`Invalid! Node ${step.node} is NOT in valid range (${step.min === -Infinity ? '-∞' : step.min}, ${step.max === Infinity ? '+∞' : step.max})`);
+          setPhase("done");
+          setMessage(
+            `Invalid! Node ${step.node} is NOT in valid range (${step.min === -Infinity ? "-∞" : step.min}, ${step.max === Infinity ? "+∞" : step.max})`,
+          );
           setIsPlaying(false);
           return;
         }
@@ -118,7 +133,8 @@ export default function BSTValidationVisualizer() {
     return () => clearTimeout(timer);
   }, [isPlaying, phase, stepIndex, steps, invalidNode, speed]);
 
-  const currentStep = stepIndex >= 0 && stepIndex < steps.length ? steps[stepIndex] : null;
+  const currentStep =
+    stepIndex >= 0 && stepIndex < steps.length ? steps[stepIndex] : null;
 
   const getNodePosition = (val: number): { x: number; y: number } => {
     const positions: Record<number, { x: number; y: number }> = {
@@ -143,7 +159,13 @@ export default function BSTValidationVisualizer() {
           cy={pos.y}
           r={22}
           animate={{
-            fill: isInvalid ? '#ef4444' : isCurrent ? '#eab308' : isVisited ? '#22c55e' : '#374151',
+            fill: isInvalid
+              ? "#ef4444"
+              : isCurrent
+                ? "#eab308"
+                : isVisited
+                  ? "#22c55e"
+                  : "#374151",
             scale: isCurrent ? 1.2 : 1,
           }}
           className="stroke-gray-600 stroke-2"
@@ -152,7 +174,7 @@ export default function BSTValidationVisualizer() {
           x={pos.x}
           y={pos.y + 5}
           textAnchor="middle"
-          className={`text-sm font-bold ${isCurrent || isInvalid ? 'fill-black' : 'fill-white'}`}
+          className={`text-sm font-bold ${isCurrent || isInvalid ? "fill-black" : "fill-white"}`}
         >
           {val}
         </text>
@@ -176,8 +198,8 @@ export default function BSTValidationVisualizer() {
   };
 
   const formatBound = (val: number) => {
-    if (val === -Infinity) return '-∞';
-    if (val === Infinity) return '+∞';
+    if (val === -Infinity) return "-∞";
+    if (val === Infinity) return "+∞";
     return val.toString();
   };
 
@@ -195,12 +217,12 @@ export default function BSTValidationVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -232,7 +254,12 @@ export default function BSTValidationVisualizer() {
             {/* Nodes */}
             {[5, 4, 7, 6].map(renderNode)}
             {/* Labels showing bounds */}
-            <text x="150" y="70" textAnchor="middle" className="fill-gray-500 text-xs">
+            <text
+              x="150"
+              y="70"
+              textAnchor="middle"
+              className="fill-gray-500 text-xs"
+            >
               root
             </text>
           </svg>
@@ -247,15 +274,25 @@ export default function BSTValidationVisualizer() {
           >
             <div className="text-sm text-gray-400 mb-1">Current Check:</div>
             <div className="font-mono text-lg">
-              <span className="text-gray-400">{formatBound(currentStep.min)}</span>
+              <span className="text-gray-400">
+                {formatBound(currentStep.min)}
+              </span>
               <span className="text-orange-400"> &lt; </span>
-              <span className={currentStep.valid ? 'text-green-400' : 'text-red-400'}>
+              <span
+                className={
+                  currentStep.valid ? "text-green-400" : "text-red-400"
+                }
+              >
                 {currentStep.node}
               </span>
               <span className="text-orange-400"> &lt; </span>
-              <span className="text-gray-400">{formatBound(currentStep.max)}</span>
-              <span className={`ml-2 ${currentStep.valid ? 'text-green-400' : 'text-red-400'}`}>
-                {currentStep.valid ? '✓' : '✗'}
+              <span className="text-gray-400">
+                {formatBound(currentStep.max)}
+              </span>
+              <span
+                className={`ml-2 ${currentStep.valid ? "text-green-400" : "text-red-400"}`}
+              >
+                {currentStep.valid ? "✓" : "✗"}
               </span>
             </div>
           </motion.div>
@@ -264,8 +301,9 @@ export default function BSTValidationVisualizer() {
         {/* Explanation of the invalid node */}
         <div className="mb-4 p-3 bg-gray-800/50 rounded-lg">
           <div className="text-sm text-gray-400">
-            <strong className="text-orange-400">Tree Structure:</strong> Node 6 is in the RIGHT subtree of node 4,
-            but 4 is in the LEFT subtree of root 5. So 6 must be less than 5, but it's not!
+            <strong className="text-orange-400">Tree Structure:</strong> Node 6
+            is in the RIGHT subtree of node 4, but 4 is in the LEFT subtree of
+            root 5. So 6 must be less than 5, but it's not!
           </div>
         </div>
 
@@ -277,10 +315,11 @@ export default function BSTValidationVisualizer() {
               <div
                 key={idx}
                 className={`text-sm font-mono px-2 py-1 rounded ${
-                  step.valid ? 'text-green-400' : 'text-red-400 bg-red-500/10'
+                  step.valid ? "text-green-400" : "text-red-400 bg-red-500/10"
                 }`}
               >
-                {formatBound(step.min)} &lt; {step.node} &lt; {formatBound(step.max)} {step.valid ? '✓' : '✗'}
+                {formatBound(step.min)} &lt; {step.node} &lt;{" "}
+                {formatBound(step.max)} {step.valid ? "✓" : "✗"}
               </div>
             ))}
           </div>
@@ -292,11 +331,11 @@ export default function BSTValidationVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
+            phase === "done"
               ? invalidNode
-                ? 'bg-red-500/10 border border-red-500/30 text-red-400'
-                : 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+                ? "bg-red-500/10 border border-red-500/30 text-red-400"
+                : "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -305,8 +344,8 @@ export default function BSTValidationVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-orange-400">Key Insight:</strong>{' '}
-            Pass valid range (min, max) DOWN the tree. Left child inherits (min, node.val),
+            <strong className="text-orange-400">Key Insight:</strong> Pass valid
+            range (min, max) DOWN the tree. Left child inherits (min, node.val),
             right child inherits (node.val, max).
           </p>
         </div>

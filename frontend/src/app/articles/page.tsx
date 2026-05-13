@@ -1,15 +1,19 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { articles } from '@/content/articles';
+import Link from "next/link";
+import { articles } from "@/content/articles";
 
 export default function ArticlesPage() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner': return 'bg-green-500/20 text-green-400';
-      case 'intermediate': return 'bg-yellow-500/20 text-yellow-400';
-      case 'advanced': return 'bg-red-500/20 text-red-400';
-      default: return 'bg-gray-500/20 text-gray-400';
+      case "beginner":
+        return "bg-green-500/20 text-green-400";
+      case "intermediate":
+        return "bg-yellow-500/20 text-yellow-400";
+      case "advanced":
+        return "bg-red-500/20 text-red-400";
+      default:
+        return "bg-gray-500/20 text-gray-400";
     }
   };
 
@@ -17,14 +21,18 @@ export default function ArticlesPage() {
     <div className="min-h-screen bg-gray-950">
       <div className="max-w-6xl mx-auto px-4 py-12">
         <header className="mb-12">
-          <Link href="/" className="text-indigo-400 hover:text-indigo-300 text-sm mb-4 inline-block">
+          <Link
+            href="/"
+            className="text-indigo-400 hover:text-indigo-300 text-sm mb-4 inline-block"
+          >
             Back to Home
           </Link>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             Articles
           </h1>
           <p className="text-xl text-gray-400 max-w-2xl">
-            Deep dives into programming concepts, data structures, algorithms, and interview preparation strategies.
+            Deep dives into programming concepts, data structures, algorithms,
+            and interview preparation strategies.
           </p>
         </header>
 
@@ -40,10 +48,14 @@ export default function ArticlesPage() {
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
                       <div className="flex items-center gap-2 mb-3">
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(article.difficulty)}`}>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(article.difficulty)}`}
+                        >
                           {article.difficulty}
                         </span>
-                        <span className="text-gray-500 text-sm">{article.estimatedTime}</span>
+                        <span className="text-gray-500 text-sm">
+                          {article.estimatedTime}
+                        </span>
                       </div>
                       <h2 className="text-2xl font-bold text-white group-hover:text-indigo-400 transition mb-2">
                         {article.title}
@@ -58,8 +70,12 @@ export default function ArticlesPage() {
                         {article.authorAvatar}
                       </div>
                       <div>
-                        <div className="text-sm text-white">{article.author}</div>
-                        <div className="text-xs text-gray-500">{article.publishedAt}</div>
+                        <div className="text-sm text-white">
+                          {article.author}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {article.publishedAt}
+                        </div>
                       </div>
                     </div>
 
@@ -104,9 +120,12 @@ export default function ArticlesPage() {
         </div>
 
         <div className="mt-16 p-8 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-2xl border border-indigo-500/20 text-center">
-          <h3 className="text-2xl font-bold text-white mb-2">More Articles Coming Soon</h3>
+          <h3 className="text-2xl font-bold text-white mb-2">
+            More Articles Coming Soon
+          </h3>
           <p className="text-gray-400 mb-6">
-            We are working on comprehensive guides for Dynamic Programming, Graph Algorithms, System Design, and more.
+            We are working on comprehensive guides for Dynamic Programming,
+            Graph Algorithms, System Design, and more.
           </p>
           <button className="px-6 py-3 bg-indigo-500 text-white rounded-lg font-medium hover:bg-indigo-400 transition">
             Get Notified

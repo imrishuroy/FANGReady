@@ -20,7 +20,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "FANGReady - Your Path to Big Tech Offers",
-  description: "Master DSA patterns and ace your FAANG interviews with curated problems and tutorials.",
+  description:
+    "Master DSA patterns and ace your FAANG interviews with curated problems and tutorials.",
 };
 
 export default function RootLayout({
@@ -33,7 +34,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col text-gray-100" suppressHydrationWarning>
+      <body
+        className="min-h-full flex flex-col text-gray-100"
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <AuthProvider>
             <ProgressProvider>

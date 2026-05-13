@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 interface Step {
   left: number;
   right: number;
   mid: number;
-  comparison: 'equal' | 'less' | 'greater';
+  comparison: "equal" | "less" | "greater";
   message: string;
 }
 
@@ -20,7 +20,7 @@ export default function BinarySearchVisualizer() {
   const [right, setRight] = useState(8);
   const [mid, setMid] = useState(-1);
   const [found, setFound] = useState<number | null>(null);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(`Click Play to search for ${target}`);
   const [stepIndex, setStepIndex] = useState(-1);
   const [steps, setSteps] = useState<Step[]>([]);
@@ -28,30 +28,37 @@ export default function BinarySearchVisualizer() {
 
   const generateSteps = useCallback(() => {
     const allSteps: Step[] = [];
-    let l = 0, r = nums.length - 1;
+    let l = 0,
+      r = nums.length - 1;
 
     while (l <= r) {
       const m = l + Math.floor((r - l) / 2);
 
       if (nums[m] === target) {
         allSteps.push({
-          left: l, right: r, mid: m,
-          comparison: 'equal',
-          message: `mid=${m}, nums[${m}]=${nums[m]} === ${target}. Found!`
+          left: l,
+          right: r,
+          mid: m,
+          comparison: "equal",
+          message: `mid=${m}, nums[${m}]=${nums[m]} === ${target}. Found!`,
         });
         break;
       } else if (nums[m] < target) {
         allSteps.push({
-          left: l, right: r, mid: m,
-          comparison: 'less',
-          message: `mid=${m}, nums[${m}]=${nums[m]} < ${target}. Search right half.`
+          left: l,
+          right: r,
+          mid: m,
+          comparison: "less",
+          message: `mid=${m}, nums[${m}]=${nums[m]} < ${target}. Search right half.`,
         });
         l = m + 1;
       } else {
         allSteps.push({
-          left: l, right: r, mid: m,
-          comparison: 'greater',
-          message: `mid=${m}, nums[${m}]=${nums[m]} > ${target}. Search left half.`
+          left: l,
+          right: r,
+          mid: m,
+          comparison: "greater",
+          message: `mid=${m}, nums[${m}]=${nums[m]} > ${target}. Search left half.`,
         });
         r = m - 1;
       }
@@ -66,7 +73,7 @@ export default function BinarySearchVisualizer() {
     setMid(-1);
     setFound(null);
     setEliminated(new Set());
-    setPhase('init');
+    setPhase("init");
     setMessage(`Click Play to search for ${target}`);
     setStepIndex(-1);
     setSteps(generateSteps());
@@ -81,17 +88,17 @@ export default function BinarySearchVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         setStepIndex(0);
         const step = steps[0];
         setLeft(step.left);
         setRight(step.right);
         setMid(step.mid);
         setMessage(step.message);
-        if (step.comparison === 'equal') {
+        if (step.comparison === "equal") {
           setFound(step.mid);
-          setPhase('done');
+          setPhase("done");
           setIsPlaying(false);
         }
         return;
@@ -99,7 +106,7 @@ export default function BinarySearchVisualizer() {
 
       const nextStepIdx = stepIndex + 1;
       if (nextStepIdx >= steps.length) {
-        setPhase('done');
+        setPhase("done");
         if (found === null) {
           setMessage(`Target ${target} not found in the array`);
         }
@@ -110,11 +117,11 @@ export default function BinarySearchVisualizer() {
       // Mark eliminated indices
       const prevStep = steps[stepIndex];
       const newEliminated = new Set(eliminated);
-      if (prevStep.comparison === 'less') {
+      if (prevStep.comparison === "less") {
         for (let i = prevStep.left; i <= prevStep.mid; i++) {
           newEliminated.add(i);
         }
-      } else if (prevStep.comparison === 'greater') {
+      } else if (prevStep.comparison === "greater") {
         for (let i = prevStep.mid; i <= prevStep.right; i++) {
           newEliminated.add(i);
         }
@@ -128,9 +135,9 @@ export default function BinarySearchVisualizer() {
       setMid(step.mid);
       setMessage(step.message);
 
-      if (step.comparison === 'equal') {
+      if (step.comparison === "equal") {
         setFound(step.mid);
-        setPhase('done');
+        setPhase("done");
         setIsPlaying(false);
       }
     }, speed);
@@ -152,12 +159,12 @@ export default function BinarySearchVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -190,8 +197,8 @@ export default function BinarySearchVisualizer() {
           <div className="text-sm text-gray-400 mb-2">Sorted Array:</div>
           <div className="flex gap-1 justify-center flex-wrap">
             {nums.map((num, idx) => {
-              const isLeft = idx === left && phase !== 'init';
-              const isRight = idx === right && phase !== 'init';
+              const isLeft = idx === left && phase !== "init";
+              const isRight = idx === right && phase !== "init";
               const isMid = idx === mid;
               const isFound = idx === found;
               const isEliminated = eliminated.has(idx);
@@ -201,26 +208,38 @@ export default function BinarySearchVisualizer() {
                   <motion.div
                     animate={{
                       backgroundColor: isFound
-                        ? '#22c55e'
+                        ? "#22c55e"
                         : isMid
-                        ? '#eab308'
-                        : isEliminated
-                        ? '#1f2937'
-                        : '#4b5563',
+                          ? "#eab308"
+                          : isEliminated
+                            ? "#1f2937"
+                            : "#4b5563",
                       opacity: isEliminated ? 0.4 : 1,
                       scale: isMid ? 1.15 : 1,
                     }}
                     className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-sm"
                   >
-                    <span className={isFound || isMid ? 'text-black' : 'text-white'}>
+                    <span
+                      className={isFound || isMid ? "text-black" : "text-white"}
+                    >
                       {num}
                     </span>
                   </motion.div>
                   <div className="text-xs text-gray-500 mt-1">{idx}</div>
                   <div className="h-5 flex gap-0.5 mt-1">
-                    {isLeft && <span className="text-blue-400 text-xs font-bold">L</span>}
-                    {isMid && <span className="text-yellow-400 text-xs font-bold">M</span>}
-                    {isRight && <span className="text-purple-400 text-xs font-bold">R</span>}
+                    {isLeft && (
+                      <span className="text-blue-400 text-xs font-bold">L</span>
+                    )}
+                    {isMid && (
+                      <span className="text-yellow-400 text-xs font-bold">
+                        M
+                      </span>
+                    )}
+                    {isRight && (
+                      <span className="text-purple-400 text-xs font-bold">
+                        R
+                      </span>
+                    )}
                   </div>
                 </div>
               );
@@ -229,7 +248,7 @@ export default function BinarySearchVisualizer() {
         </div>
 
         {/* Pointers info */}
-        {phase !== 'init' && (
+        {phase !== "init" && (
           <div className="mb-4 grid grid-cols-3 gap-2 text-center text-sm">
             <div className="p-2 bg-blue-500/20 rounded-lg">
               <span className="text-blue-400">Left: {left}</span>
@@ -254,7 +273,8 @@ export default function BinarySearchVisualizer() {
               Found {target} at index {found}!
             </span>
             <div className="text-gray-400 text-sm mt-1">
-              Completed in {stepIndex + 1} step{stepIndex > 0 ? 's' : ''} (log₂{nums.length} ≈ {Math.ceil(Math.log2(nums.length))})
+              Completed in {stepIndex + 1} step{stepIndex > 0 ? "s" : ""} (log₂
+              {nums.length} ≈ {Math.ceil(Math.log2(nums.length))})
             </div>
           </motion.div>
         )}
@@ -265,11 +285,11 @@ export default function BinarySearchVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
+            phase === "done"
               ? found !== null
-                ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-                : 'bg-red-500/10 border border-red-500/30 text-red-400'
-              : 'bg-gray-800 text-gray-300'
+                ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                : "bg-red-500/10 border border-red-500/30 text-red-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -294,9 +314,9 @@ export default function BinarySearchVisualizer() {
         {/* Key insight */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-blue-400">Key Insight:</strong>{' '}
-            Each comparison eliminates half the remaining elements.
-            For n elements, we need at most log₂(n) comparisons.
+            <strong className="text-blue-400">Key Insight:</strong> Each
+            comparison eliminates half the remaining elements. For n elements,
+            we need at most log₂(n) comparisons.
           </p>
         </div>
       </div>

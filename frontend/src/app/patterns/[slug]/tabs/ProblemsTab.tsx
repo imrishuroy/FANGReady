@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useMemo, useEffect } from 'react';
-import Link from 'next/link';
-import { Question, Problem } from '@/types';
-import { apiClient } from '@/lib/api';
+import { useState, useMemo, useEffect } from "react";
+import Link from "next/link";
+import { Question, Problem } from "@/types";
+import { apiClient } from "@/lib/api";
 
 interface ProblemsTabProps {
   questions: Question[];
@@ -12,26 +12,37 @@ interface ProblemsTabProps {
 }
 
 const difficultyColors: Record<string, string> = {
-  Easy: 'text-green-400',
-  Medium: 'text-yellow-400',
-  Hard: 'text-red-400',
+  Easy: "text-green-400",
+  Medium: "text-yellow-400",
+  Hard: "text-red-400",
 };
 
 const difficultyOrder = { Easy: 0, Medium: 1, Hard: 2 };
 
-type SortOption = 'difficulty' | 'frequency' | 'name' | 'status';
+type SortOption = "difficulty" | "frequency" | "name" | "status";
 
 // Convert problem name to slug format
 function nameToSlug(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
 
-export default function ProblemsTab({ questions, completed, onToggleComplete }: ProblemsTabProps) {
-  const [search, setSearch] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<string>('');
-  const [showCompleted, setShowCompleted] = useState<'all' | 'completed' | 'todo'>('all');
-  const [sortBy, setSortBy] = useState<SortOption>('difficulty');
-  const [availableProblems, setAvailableProblems] = useState<Set<string>>(new Set());
+export default function ProblemsTab({
+  questions,
+  completed,
+  onToggleComplete,
+}: ProblemsTabProps) {
+  const [search, setSearch] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState<string>("");
+  const [showCompleted, setShowCompleted] = useState<
+    "all" | "completed" | "todo"
+  >("all");
+  const [sortBy, setSortBy] = useState<SortOption>("difficulty");
+  const [availableProblems, setAvailableProblems] = useState<Set<string>>(
+    new Set(),
+  );
 
   // Fetch problems available in our database
   useEffect(() => {
@@ -39,7 +50,9 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
       try {
         const response = await apiClient.getProblems({ limit: 100 });
         if (response.success && response.data.problems) {
-          const slugs = new Set(response.data.problems.map((p: Problem) => p.slug));
+          const slugs = new Set(
+            response.data.problems.map((p: Problem) => p.slug),
+          );
           setAvailableProblems(slugs);
         }
       } catch {
@@ -55,34 +68,35 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
     // Search filter
     if (search) {
       const query = search.toLowerCase();
-      result = result.filter(q =>
-        q.name.toLowerCase().includes(query) ||
-        q.pattern.toLowerCase().includes(query)
+      result = result.filter(
+        (q) =>
+          q.name.toLowerCase().includes(query) ||
+          q.pattern.toLowerCase().includes(query),
       );
     }
 
     // Difficulty filter
     if (difficultyFilter) {
-      result = result.filter(q => q.difficulty === difficultyFilter);
+      result = result.filter((q) => q.difficulty === difficultyFilter);
     }
 
     // Status filter
-    if (showCompleted === 'completed') {
-      result = result.filter(q => completed.has(q.id));
-    } else if (showCompleted === 'todo') {
-      result = result.filter(q => !completed.has(q.id));
+    if (showCompleted === "completed") {
+      result = result.filter((q) => completed.has(q.id));
+    } else if (showCompleted === "todo") {
+      result = result.filter((q) => !completed.has(q.id));
     }
 
     // Sort
     result.sort((a, b) => {
       switch (sortBy) {
-        case 'difficulty':
+        case "difficulty":
           return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
-        case 'frequency':
+        case "frequency":
           return b.frequency.length - a.frequency.length;
-        case 'name':
+        case "name":
           return a.name.localeCompare(b.name);
-        case 'status':
+        case "status":
           return (completed.has(a.id) ? 1 : 0) - (completed.has(b.id) ? 1 : 0);
         default:
           return 0;
@@ -94,10 +108,10 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
 
   const stats = {
     total: questions.length,
-    completed: questions.filter(q => completed.has(q.id)).length,
-    easy: questions.filter(q => q.difficulty === 'Easy').length,
-    medium: questions.filter(q => q.difficulty === 'Medium').length,
-    hard: questions.filter(q => q.difficulty === 'Hard').length,
+    completed: questions.filter((q) => completed.has(q.id)).length,
+    easy: questions.filter((q) => q.difficulty === "Easy").length,
+    medium: questions.filter((q) => q.difficulty === "Medium").length,
+    hard: questions.filter((q) => q.difficulty === "Hard").length,
   };
 
   return (
@@ -109,7 +123,9 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
           <div className="text-sm text-gray-500">Total</div>
         </div>
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 text-center">
-          <div className="text-2xl font-bold text-indigo-400">{stats.completed}</div>
+          <div className="text-2xl font-bold text-indigo-400">
+            {stats.completed}
+          </div>
           <div className="text-sm text-gray-500">Solved</div>
         </div>
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 text-center">
@@ -117,7 +133,9 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
           <div className="text-sm text-gray-500">Easy</div>
         </div>
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 text-center">
-          <div className="text-2xl font-bold text-yellow-400">{stats.medium}</div>
+          <div className="text-2xl font-bold text-yellow-400">
+            {stats.medium}
+          </div>
           <div className="text-sm text-gray-500">Medium</div>
         </div>
         <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 text-center">
@@ -131,8 +149,18 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="md:col-span-2">
             <div className="relative">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
               </svg>
               <input
                 type="text"
@@ -157,7 +185,9 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
 
           <select
             value={showCompleted}
-            onChange={(e) => setShowCompleted(e.target.value as 'all' | 'completed' | 'todo')}
+            onChange={(e) =>
+              setShowCompleted(e.target.value as "all" | "completed" | "todo")
+            }
             className="px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-indigo-500"
           >
             <option value="all">All Status</option>
@@ -168,19 +198,21 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
 
         <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-800">
           <span className="text-sm text-gray-500">Sort by:</span>
-          {(['difficulty', 'frequency', 'name', 'status'] as SortOption[]).map(option => (
-            <button
-              key={option}
-              onClick={() => setSortBy(option)}
-              className={`text-sm px-3 py-1.5 rounded-lg transition-colors ${
-                sortBy === option
-                  ? 'bg-indigo-500/20 text-indigo-400'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {option.charAt(0).toUpperCase() + option.slice(1)}
-            </button>
-          ))}
+          {(["difficulty", "frequency", "name", "status"] as SortOption[]).map(
+            (option) => (
+              <button
+                key={option}
+                onClick={() => setSortBy(option)}
+                className={`text-sm px-3 py-1.5 rounded-lg transition-colors ${
+                  sortBy === option
+                    ? "bg-indigo-500/20 text-indigo-400"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                {option.charAt(0).toUpperCase() + option.slice(1)}
+              </button>
+            ),
+          )}
         </div>
       </div>
 
@@ -191,8 +223,8 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
             key={q.id}
             className={`flex items-center gap-4 p-4 bg-gray-900 rounded-xl border transition-all hover:translate-x-1 ${
               completed.has(q.id)
-                ? 'border-green-500/30 bg-green-500/5'
-                : 'border-gray-800 hover:border-gray-700'
+                ? "border-green-500/30 bg-green-500/5"
+                : "border-gray-800 hover:border-gray-700"
             }`}
           >
             {/* Number */}
@@ -205,13 +237,23 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
               onClick={() => onToggleComplete(q.id)}
               className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition flex-shrink-0 ${
                 completed.has(q.id)
-                  ? 'bg-green-500 border-green-500'
-                  : 'border-gray-600 hover:border-green-500'
+                  ? "bg-green-500 border-green-500"
+                  : "border-gray-600 hover:border-green-500"
               }`}
             >
               {completed.has(q.id) && (
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               )}
             </button>
@@ -241,7 +283,7 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
                   <>
                     <span className="text-gray-700">•</span>
                     <span className="text-gray-500 truncate max-w-[200px]">
-                      {q.companies.slice(0, 3).join(', ')}
+                      {q.companies.slice(0, 3).join(", ")}
                       {q.companies.length > 3 && ` +${q.companies.length - 3}`}
                     </span>
                   </>
@@ -251,7 +293,9 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
 
             {/* Metadata */}
             <div className="flex items-center gap-4">
-              <span className={`text-sm font-medium ${difficultyColors[q.difficulty]}`}>
+              <span
+                className={`text-sm font-medium ${difficultyColors[q.difficulty]}`}
+              >
                 {q.difficulty}
               </span>
               <span className="text-sm" title="Frequency">
@@ -272,8 +316,18 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
                   className="p-2 text-gray-500 hover:text-indigo-400 transition"
                   title="Open on LeetCode"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
                   </svg>
                 </a>
               )}

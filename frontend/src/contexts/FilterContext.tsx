@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface FilterContextType {
   companyFilter: string;
@@ -10,7 +10,7 @@ interface FilterContextType {
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export function FilterProvider({ children }: { children: ReactNode }) {
-  const [companyFilter, setCompanyFilter] = useState('');
+  const [companyFilter, setCompanyFilter] = useState("");
 
   return (
     <FilterContext.Provider value={{ companyFilter, setCompanyFilter }}>
@@ -22,7 +22,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
 export function useFilter() {
   const context = useContext(FilterContext);
   if (!context) {
-    throw new Error('useFilter must be used within a FilterProvider');
+    throw new Error("useFilter must be used within a FilterProvider");
   }
   return context;
 }

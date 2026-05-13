@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function SubarraySumKVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -9,11 +9,15 @@ export default function SubarraySumKVisualizer() {
   const [currentIdx, setCurrentIdx] = useState(-1);
   const [sum, setSum] = useState(0);
   const [count, setCount] = useState(0);
-  const [prefixMap, setPrefixMap] = useState<Map<number, number>>(new Map([[0, 1]]));
+  const [prefixMap, setPrefixMap] = useState<Map<number, number>>(
+    new Map([[0, 1]]),
+  );
   const [foundSubarrays, setFoundSubarrays] = useState<[number, number][]>([]);
   const [lookingFor, setLookingFor] = useState<number | null>(null);
-  const [phase, setPhase] = useState<'init' | 'processing' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to count subarrays with sum = 3');
+  const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to count subarrays with sum = 3",
+  );
 
   const arr = [1, 2, 1, 1, 1];
   const k = 3;
@@ -25,7 +29,7 @@ export default function SubarraySumKVisualizer() {
     setPrefixMap(new Map([[0, 1]]));
     setFoundSubarrays([]);
     setLookingFor(null);
-    setPhase('init');
+    setPhase("init");
     setMessage(`Click Play to count subarrays with sum = ${k}`);
     setIsPlaying(false);
   }, []);
@@ -34,13 +38,13 @@ export default function SubarraySumKVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('processing');
+      if (phase === "init") {
+        setPhase("processing");
         setMessage(`Initialize: map = {0: 1}, sum = 0, count = 0`);
         setCurrentIdx(0);
-      } else if (phase === 'processing') {
+      } else if (phase === "processing") {
         if (currentIdx >= arr.length) {
-          setPhase('done');
+          setPhase("done");
           setMessage(`Done! Found ${count} subarrays with sum = ${k}`);
           setIsPlaying(false);
           return;
@@ -58,7 +62,10 @@ export default function SubarraySumKVisualizer() {
         // Find subarrays ending here
         if (complementCount > 0) {
           // This is a simplification - in reality we'd track all positions
-          setFoundSubarrays([...foundSubarrays, [Math.max(0, currentIdx - 1), currentIdx]]);
+          setFoundSubarrays([
+            ...foundSubarrays,
+            [Math.max(0, currentIdx - 1), currentIdx],
+          ]);
         }
 
         // Update map
@@ -70,9 +77,13 @@ export default function SubarraySumKVisualizer() {
         setPrefixMap(newMap);
 
         if (complementCount > 0) {
-          setMessage(`arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Found ${complementCount}! count=${newCount}`);
+          setMessage(
+            `arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Found ${complementCount}! count=${newCount}`,
+          );
         } else {
-          setMessage(`arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Not found. count=${newCount}`);
+          setMessage(
+            `arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Not found. count=${newCount}`,
+          );
         }
 
         setCurrentIdx(currentIdx + 1);
@@ -80,12 +91,25 @@ export default function SubarraySumKVisualizer() {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, currentIdx, sum, count, prefixMap, foundSubarrays, arr, k, speed]);
+  }, [
+    isPlaying,
+    phase,
+    currentIdx,
+    sum,
+    count,
+    prefixMap,
+    foundSubarrays,
+    arr,
+    k,
+    speed,
+  ]);
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-pink-500/10 to-rose-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Subarray Sum Equals K</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Subarray Sum Equals K
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Prefix Sum + HashMap: Look for complement (sum - k)
         </p>
@@ -96,12 +120,12 @@ export default function SubarraySumKVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -142,10 +166,10 @@ export default function SubarraySumKVisualizer() {
                 }}
                 className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center font-mono ${
                   idx === currentIdx
-                    ? 'bg-yellow-500 text-black ring-2 ring-yellow-300'
+                    ? "bg-yellow-500 text-black ring-2 ring-yellow-300"
                     : idx < currentIdx
-                    ? 'bg-gray-600 text-gray-300'
-                    : 'bg-gray-700 text-gray-300'
+                      ? "bg-gray-600 text-gray-300"
+                      : "bg-gray-700 text-gray-300"
                 }`}
               >
                 <span className="text-lg font-bold">{val}</span>
@@ -164,7 +188,7 @@ export default function SubarraySumKVisualizer() {
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">Looking For</div>
             <div className="text-2xl font-bold text-orange-400">
-              {lookingFor !== null ? lookingFor : '-'}
+              {lookingFor !== null ? lookingFor : "-"}
             </div>
             <div className="text-xs text-gray-500">sum - k</div>
           </div>
@@ -176,7 +200,9 @@ export default function SubarraySumKVisualizer() {
 
         {/* HashMap */}
         <div className="mb-4">
-          <div className="text-sm text-gray-400 mb-2">Prefix Sum Map (sum → count):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Prefix Sum Map (sum → count):
+          </div>
           <div className="bg-gray-800/50 rounded-lg p-3">
             <div className="flex flex-wrap gap-2">
               <AnimatePresence>
@@ -187,8 +213,8 @@ export default function SubarraySumKVisualizer() {
                     animate={{ opacity: 1, scale: 1 }}
                     className={`px-3 py-2 rounded-lg font-mono text-sm ${
                       key === lookingFor
-                        ? 'bg-orange-500 text-white ring-2 ring-orange-300'
-                        : 'bg-gray-700 text-gray-300'
+                        ? "bg-orange-500 text-white ring-2 ring-orange-300"
+                        : "bg-gray-700 text-gray-300"
                     }`}
                   >
                     {key}: {value}
@@ -203,7 +229,7 @@ export default function SubarraySumKVisualizer() {
         {count > 0 && (
           <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
             <div className="text-sm text-green-400">
-              Found {count} subarray{count > 1 ? 's' : ''} with sum = {k}
+              Found {count} subarray{count > 1 ? "s" : ""} with sum = {k}
             </div>
           </div>
         )}
@@ -214,9 +240,9 @@ export default function SubarraySumKVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -225,9 +251,9 @@ export default function SubarraySumKVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-pink-400">Key Insight:</strong>{' '}
-            If prefix[j] - prefix[i] = k, then subarray [i+1, j] sums to k.
-            So we look for (currentSum - k) in the HashMap.
+            <strong className="text-pink-400">Key Insight:</strong> If prefix[j]
+            - prefix[i] = k, then subarray [i+1, j] sums to k. So we look for
+            (currentSum - k) in the HashMap.
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TrieNode {
   char: string;
@@ -14,54 +14,81 @@ interface TrieNode {
 export default function TrieInsertVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(800);
-  const [root, setRoot] = useState<TrieNode>({ char: '', children: new Map(), isEnd: false, x: 200, y: 30 });
-  const [words] = useState(['cat', 'car', 'card']);
+  const [root, setRoot] = useState<TrieNode>({
+    char: "",
+    children: new Map(),
+    isEnd: false,
+    x: 200,
+    y: 30,
+  });
+  const [words] = useState(["cat", "car", "card"]);
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(-1);
   const [currentPath, setCurrentPath] = useState<string[]>([]);
-  const [phase, setPhase] = useState<'init' | 'inserting' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to insert words into the Trie');
+  const [phase, setPhase] = useState<"init" | "inserting" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to insert words into the Trie",
+  );
 
   const reset = useCallback(() => {
-    setRoot({ char: '', children: new Map(), isEnd: false, x: 200, y: 30 });
+    setRoot({ char: "", children: new Map(), isEnd: false, x: 200, y: 30 });
     setWordIndex(0);
     setCharIndex(-1);
     setCurrentPath([]);
-    setPhase('init');
-    setMessage('Click Play to insert words into the Trie');
+    setPhase("init");
+    setMessage("Click Play to insert words into the Trie");
     setIsPlaying(false);
   }, []);
 
-  const calculatePositions = useCallback((node: TrieNode, depth: number, leftBound: number, rightBound: number): void => {
-    const children = Array.from(node.children.values());
-    const width = rightBound - leftBound;
-    const childWidth = width / (children.length || 1);
+  const calculatePositions = useCallback(
+    (
+      node: TrieNode,
+      depth: number,
+      leftBound: number,
+      rightBound: number,
+    ): void => {
+      const children = Array.from(node.children.values());
+      const width = rightBound - leftBound;
+      const childWidth = width / (children.length || 1);
 
-    children.forEach((child, idx) => {
-      child.x = leftBound + childWidth * idx + childWidth / 2;
-      child.y = 30 + depth * 60;
-      calculatePositions(child, depth + 1, leftBound + childWidth * idx, leftBound + childWidth * (idx + 1));
-    });
-  }, []);
+      children.forEach((child, idx) => {
+        child.x = leftBound + childWidth * idx + childWidth / 2;
+        child.y = 30 + depth * 60;
+        calculatePositions(
+          child,
+          depth + 1,
+          leftBound + childWidth * idx,
+          leftBound + childWidth * (idx + 1),
+        );
+      });
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('inserting');
+      if (phase === "init") {
+        setPhase("inserting");
         setCharIndex(0);
         setMessage(`Inserting "${words[wordIndex]}"...`);
-      } else if (phase === 'inserting') {
+      } else if (phase === "inserting") {
         const word = words[wordIndex];
 
         if (charIndex >= word.length) {
           // Mark end of word
           setRoot((prev) => {
-            const newRoot = JSON.parse(JSON.stringify(prev, (key, value) =>
-              value instanceof Map ? { dataType: 'Map', value: Array.from(value.entries()) } : value
-            ), (key, value) =>
-              value && value.dataType === 'Map' ? new Map(value.value) : value
+            const newRoot = JSON.parse(
+              JSON.stringify(prev, (key, value) =>
+                value instanceof Map
+                  ? { dataType: "Map", value: Array.from(value.entries()) }
+                  : value,
+              ),
+              (key, value) =>
+                value && value.dataType === "Map"
+                  ? new Map(value.value)
+                  : value,
             );
 
             let node = newRoot;
@@ -78,9 +105,9 @@ export default function TrieInsertVisualizer() {
 
           // Move to next word
           if (wordIndex + 1 >= words.length) {
-            setPhase('done');
+            setPhase("done");
             setTimeout(() => {
-              setMessage(`Done! Inserted all words: [${words.join(', ')}]`);
+              setMessage(`Done! Inserted all words: [${words.join(", ")}]`);
               setIsPlaying(false);
             }, speed);
           } else {
@@ -99,10 +126,14 @@ export default function TrieInsertVisualizer() {
         setCurrentPath(newPath);
 
         setRoot((prev) => {
-          const newRoot = JSON.parse(JSON.stringify(prev, (key, value) =>
-            value instanceof Map ? { dataType: 'Map', value: Array.from(value.entries()) } : value
-          ), (key, value) =>
-            value && value.dataType === 'Map' ? new Map(value.value) : value
+          const newRoot = JSON.parse(
+            JSON.stringify(prev, (key, value) =>
+              value instanceof Map
+                ? { dataType: "Map", value: Array.from(value.entries()) }
+                : value,
+            ),
+            (key, value) =>
+              value && value.dataType === "Map" ? new Map(value.value) : value,
           );
 
           let node = newRoot;
@@ -132,18 +163,29 @@ export default function TrieInsertVisualizer() {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, wordIndex, charIndex, words, currentPath, calculatePositions, speed]);
+  }, [
+    isPlaying,
+    phase,
+    wordIndex,
+    charIndex,
+    words,
+    currentPath,
+    calculatePositions,
+    speed,
+  ]);
 
   const renderNode = (node: TrieNode, path: string[]): React.ReactNode => {
-    const isInPath = path.length > 0 && currentPath.slice(0, path.length).join('') === path.join('');
-    const isCurrentNode = path.join('') === currentPath.join('');
+    const isInPath =
+      path.length > 0 &&
+      currentPath.slice(0, path.length).join("") === path.join("");
+    const isCurrentNode = path.join("") === currentPath.join("");
 
     return (
-      <g key={path.join('') || 'root'}>
+      <g key={path.join("") || "root"}>
         {/* Edges to children */}
         {Array.from(node.children.entries()).map(([char, child]) => (
           <line
-            key={`edge-${path.join('')}-${char}`}
+            key={`edge-${path.join("")}-${char}`}
             x1={node.x}
             y1={node.y + 20}
             x2={child.x}
@@ -158,7 +200,13 @@ export default function TrieInsertVisualizer() {
           cy={node.y}
           r={20}
           animate={{
-            fill: isCurrentNode ? '#eab308' : isInPath ? '#3b82f6' : node.isEnd ? '#22c55e' : '#374151',
+            fill: isCurrentNode
+              ? "#eab308"
+              : isInPath
+                ? "#3b82f6"
+                : node.isEnd
+                  ? "#22c55e"
+                  : "#374151",
             scale: isCurrentNode ? 1.2 : 1,
           }}
           className="stroke-gray-500 stroke-2"
@@ -169,9 +217,9 @@ export default function TrieInsertVisualizer() {
           x={node.x}
           y={node.y + 5}
           textAnchor="middle"
-          className={`text-sm font-bold ${isCurrentNode ? 'fill-black' : 'fill-white'}`}
+          className={`text-sm font-bold ${isCurrentNode ? "fill-black" : "fill-white"}`}
         >
-          {node.char || '∅'}
+          {node.char || "∅"}
         </text>
 
         {/* isEnd indicator */}
@@ -186,7 +234,7 @@ export default function TrieInsertVisualizer() {
 
         {/* Render children */}
         {Array.from(node.children.entries()).map(([char, child]) =>
-          renderNode(child, [...path, char])
+          renderNode(child, [...path, char]),
         )}
       </g>
     );
@@ -206,12 +254,12 @@ export default function TrieInsertVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -242,14 +290,14 @@ export default function TrieInsertVisualizer() {
                 key={word}
                 className={`px-3 py-1 rounded-lg font-mono text-sm ${
                   idx < wordIndex
-                    ? 'bg-green-500/30 text-green-300'
-                    : idx === wordIndex && phase === 'inserting'
-                    ? 'bg-yellow-500 text-black'
-                    : 'bg-gray-700 text-gray-300'
+                    ? "bg-green-500/30 text-green-300"
+                    : idx === wordIndex && phase === "inserting"
+                      ? "bg-yellow-500 text-black"
+                      : "bg-gray-700 text-gray-300"
                 }`}
               >
                 {word}
-                {idx === wordIndex && phase === 'inserting' && (
+                {idx === wordIndex && phase === "inserting" && (
                   <span className="ml-1 text-xs">
                     [{charIndex}/{word.length}]
                   </span>
@@ -288,9 +336,9 @@ export default function TrieInsertVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -299,8 +347,8 @@ export default function TrieInsertVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-violet-400">Key Insight:</strong>{' '}
-            Shared prefixes share nodes. "cat", "car", "card" all share "ca" prefix.
+            <strong className="text-violet-400">Key Insight:</strong> Shared
+            prefixes share nodes. "cat", "car", "card" all share "ca" prefix.
           </p>
         </div>
       </div>

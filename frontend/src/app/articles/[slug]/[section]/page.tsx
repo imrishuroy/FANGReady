@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
-import { articles, getArticleBySlug, getSection } from '@/content/articles';
+import { redirect } from "next/navigation";
+import { articles, getArticleBySlug, getSection } from "@/content/articles";
 
 export function generateStaticParams() {
   const params: { slug: string; section: string }[] = [];

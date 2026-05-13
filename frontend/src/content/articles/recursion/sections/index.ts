@@ -1,9 +1,9 @@
-import FundamentalsSection from './fundamentals';
-import TypesSection from './types';
-import NumbersSection from './numbers';
-import StringsSection from './strings';
-import ArraysSection from './arrays';
-import DataStructuresSection from './data-structures';
+import FundamentalsSection from "./fundamentals";
+import TypesSection from "./types";
+import NumbersSection from "./numbers";
+import StringsSection from "./strings";
+import ArraysSection from "./arrays";
+import DataStructuresSection from "./data-structures";
 
 export const sections: Record<string, React.ComponentType> = {
   fundamentals: FundamentalsSection,
@@ -11,9 +11,11 @@ export const sections: Record<string, React.ComponentType> = {
   numbers: NumbersSection,
   strings: StringsSection,
   arrays: ArraysSection,
-  'data-structures': DataStructuresSection,
+  "data-structures": DataStructuresSection,
 };
 
-export function getSectionComponent(sectionSlug: string): React.ComponentType | undefined {
+export function getSectionComponent(
+  sectionSlug: string,
+): React.ComponentType | undefined {
   return sections[sectionSlug];
 }

@@ -1,5 +1,5 @@
-import recursionMeta from './recursion/meta.json';
-import algorithmParadigmsMeta from './algorithm-paradigms/meta.json';
+import recursionMeta from "./recursion/meta.json";
+import algorithmParadigmsMeta from "./algorithm-paradigms/meta.json";
 
 export interface ArticleSection {
   slug: string;
@@ -16,7 +16,7 @@ export interface ArticleMeta {
   author: string;
   authorAvatar: string;
   publishedAt: string;
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  difficulty: "beginner" | "intermediate" | "advanced";
   estimatedTime: string;
   tags: string[];
   sections: ArticleSection[];
@@ -28,7 +28,7 @@ export const articles: ArticleMeta[] = [
 ];
 
 export function getArticleBySlug(slug: string): ArticleMeta | undefined {
-  return articles.find(article => article.slug === slug);
+  return articles.find((article) => article.slug === slug);
 }
 
 export function getArticleSections(articleSlug: string): ArticleSection[] {
@@ -36,7 +36,10 @@ export function getArticleSections(articleSlug: string): ArticleSection[] {
   return article?.sections || [];
 }
 
-export function getSection(articleSlug: string, sectionSlug: string): ArticleSection | undefined {
+export function getSection(
+  articleSlug: string,
+  sectionSlug: string,
+): ArticleSection | undefined {
   const sections = getArticleSections(articleSlug);
-  return sections.find(section => section.slug === sectionSlug);
+  return sections.find((section) => section.slug === sectionSlug);
 }

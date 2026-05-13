@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   createContext,
@@ -7,11 +7,11 @@ import {
   useEffect,
   useCallback,
   type ReactNode,
-} from 'react';
-import { useAuth } from './AuthContext';
-import { apiClient } from '@/lib/api';
+} from "react";
+import { useAuth } from "./AuthContext";
+import { apiClient } from "@/lib/api";
 
-const STORAGE_KEY = 'faangready-completed';
+const STORAGE_KEY = "faangready-completed";
 
 interface ProgressContextType {
   completed: Set<string>;
@@ -22,7 +22,9 @@ interface ProgressContextType {
   celebrationKey: number;
 }
 
-const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
+const ProgressContext = createContext<ProgressContextType | undefined>(
+  undefined,
+);
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated, user } = useAuth();
@@ -106,7 +108,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         newCompleted.delete(id);
       } else {
         newCompleted.add(id);
-        setCelebrationKey(prev => prev + 1);
+        setCelebrationKey((prev) => prev + 1);
       }
 
       setCompleted(newCompleted);
@@ -126,11 +128,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([...newCompleted]));
       }
     },
-    [completed, isAuthenticated]
+    [completed, isAuthenticated],
   );
 
   const resetProgress = useCallback(async () => {
-    if (!confirm('Reset all progress? This cannot be undone.')) {
+    if (!confirm("Reset all progress? This cannot be undone.")) {
       return;
     }
 
@@ -191,7 +193,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 export function useProgress() {
   const context = useContext(ProgressContext);
   if (context === undefined) {
-    throw new Error('useProgress must be used within a ProgressProvider');
+    throw new Error("useProgress must be used within a ProgressProvider");
   }
   return context;
 }

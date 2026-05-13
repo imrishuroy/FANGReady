@@ -1,25 +1,28 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Pattern } from '@/types';
-import CodeBlock from '@/components/ui/CodeBlock';
-import LanguageToggle from '@/components/ui/LanguageToggle';
+import { useState } from "react";
+import { Pattern } from "@/types";
+import CodeBlock from "@/components/ui/CodeBlock";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 
 interface CheatsheetTabProps {
   pattern: Pattern;
 }
 
 export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
-  const [currentLang, setCurrentLang] = useState<string>('java');
+  const [currentLang, setCurrentLang] = useState<string>("java");
 
-  const languageOrder = ['java', 'javascript', 'python', 'cpp', 'go'];
-  const availableLanguages = languageOrder.filter(
-    lang => pattern.codeTemplates[lang as keyof typeof pattern.codeTemplates]?.trim()
+  const languageOrder = ["java", "javascript", "python", "cpp", "go"];
+  const availableLanguages = languageOrder.filter((lang) =>
+    pattern.codeTemplates[lang as keyof typeof pattern.codeTemplates]?.trim(),
   );
 
-  const currentCode = pattern.codeTemplates[currentLang as keyof typeof pattern.codeTemplates]
-    || pattern.codeTemplates[availableLanguages[0] as keyof typeof pattern.codeTemplates]
-    || '';
+  const currentCode =
+    pattern.codeTemplates[currentLang as keyof typeof pattern.codeTemplates] ||
+    pattern.codeTemplates[
+      availableLanguages[0] as keyof typeof pattern.codeTemplates
+    ] ||
+    "";
 
   return (
     <div className="space-y-6">
@@ -32,7 +35,10 @@ export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
           </h3>
           <ul className="space-y-2">
             {pattern.whenToUse.map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-gray-300 text-sm">
+              <li
+                key={i}
+                className="flex items-start gap-2 text-gray-300 text-sm"
+              >
                 <span className="text-green-400 mt-0.5">•</span>
                 <span>{item}</span>
               </li>
@@ -47,7 +53,10 @@ export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
           </h3>
           <ul className="space-y-2">
             {pattern.keyInsights.map((insight, i) => (
-              <li key={i} className="flex items-start gap-2 text-gray-300 text-sm">
+              <li
+                key={i}
+                className="flex items-start gap-2 text-gray-300 text-sm"
+              >
                 <span className="text-yellow-400 font-medium">{i + 1}.</span>
                 <span>{insight}</span>
               </li>
@@ -64,7 +73,10 @@ export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
           </h3>
           <ul className="space-y-2">
             {pattern.commonMistakes.map((mistake, i) => (
-              <li key={i} className="flex items-start gap-2 text-gray-300 text-sm">
+              <li
+                key={i}
+                className="flex items-start gap-2 text-gray-300 text-sm"
+              >
                 <span className="text-red-400">✗</span>
                 <span>{mistake}</span>
               </li>
@@ -93,11 +105,15 @@ export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
       <div className="flex items-center gap-6 text-sm">
         <div className="flex items-center gap-2">
           <span className="text-gray-500">Time:</span>
-          <span className="font-mono text-indigo-400">{pattern.timeComplexity}</span>
+          <span className="font-mono text-indigo-400">
+            {pattern.timeComplexity}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-gray-500">Space:</span>
-          <span className="font-mono text-purple-400">{pattern.spaceComplexity}</span>
+          <span className="font-mono text-purple-400">
+            {pattern.spaceComplexity}
+          </span>
         </div>
       </div>
     </div>

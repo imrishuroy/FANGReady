@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface HashEntry {
   value: number;
@@ -14,9 +14,15 @@ export default function TwoSumVisualizer() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hashMap, setHashMap] = useState<Map<number, number>>(new Map());
   const [found, setFound] = useState<[number, number] | null>(null);
-  const [currentComplement, setCurrentComplement] = useState<number | null>(null);
-  const [message, setMessage] = useState('Click Play to find two numbers that sum to target');
-  const [phase, setPhase] = useState<'init' | 'checking' | 'adding' | 'found' | 'done'>('init');
+  const [currentComplement, setCurrentComplement] = useState<number | null>(
+    null,
+  );
+  const [message, setMessage] = useState(
+    "Click Play to find two numbers that sum to target",
+  );
+  const [phase, setPhase] = useState<
+    "init" | "checking" | "adding" | "found" | "done"
+  >("init");
 
   const nums = [2, 7, 11, 15, 3, 6];
   const target = 9;
@@ -26,8 +32,8 @@ export default function TwoSumVisualizer() {
     setHashMap(new Map());
     setFound(null);
     setCurrentComplement(null);
-    setPhase('init');
-    setMessage('Click Play to find two numbers that sum to target');
+    setPhase("init");
+    setMessage("Click Play to find two numbers that sum to target");
     setIsPlaying(false);
   }, []);
 
@@ -36,8 +42,8 @@ export default function TwoSumVisualizer() {
 
     const timer = setTimeout(() => {
       if (currentIndex >= nums.length) {
-        setPhase('done');
-        setMessage('No pair found that sums to target');
+        setPhase("done");
+        setMessage("No pair found that sums to target");
         setIsPlaying(false);
         return;
       }
@@ -45,23 +51,29 @@ export default function TwoSumVisualizer() {
       const currentNum = nums[currentIndex];
       const complement = target - currentNum;
 
-      if (phase === 'init' || phase === 'adding') {
-        setPhase('checking');
+      if (phase === "init" || phase === "adding") {
+        setPhase("checking");
         setCurrentComplement(complement);
-        setMessage(`At index ${currentIndex}: nums[${currentIndex}] = ${currentNum}. Looking for complement ${target} - ${currentNum} = ${complement}`);
-      } else if (phase === 'checking') {
+        setMessage(
+          `At index ${currentIndex}: nums[${currentIndex}] = ${currentNum}. Looking for complement ${target} - ${currentNum} = ${complement}`,
+        );
+      } else if (phase === "checking") {
         if (hashMap.has(complement)) {
           const complementIndex = hashMap.get(complement)!;
           setFound([complementIndex, currentIndex]);
-          setPhase('found');
-          setMessage(`Found! nums[${complementIndex}] + nums[${currentIndex}] = ${complement} + ${currentNum} = ${target}`);
+          setPhase("found");
+          setMessage(
+            `Found! nums[${complementIndex}] + nums[${currentIndex}] = ${complement} + ${currentNum} = ${target}`,
+          );
           setIsPlaying(false);
         } else {
-          setPhase('adding');
+          setPhase("adding");
           const newMap = new Map(hashMap);
           newMap.set(currentNum, currentIndex);
           setHashMap(newMap);
-          setMessage(`${complement} not in map. Adding {${currentNum}: ${currentIndex}} to map.`);
+          setMessage(
+            `${complement} not in map. Adding {${currentNum}: ${currentIndex}} to map.`,
+          );
           setCurrentIndex(currentIndex + 1);
           setCurrentComplement(null);
         }
@@ -73,21 +85,23 @@ export default function TwoSumVisualizer() {
 
   const getArrayCellStyle = (index: number) => {
     if (found && (index === found[0] || index === found[1])) {
-      return 'bg-green-500 text-white';
+      return "bg-green-500 text-white";
     }
     if (index === currentIndex) {
-      return 'bg-yellow-500 text-black';
+      return "bg-yellow-500 text-black";
     }
     if (index < currentIndex) {
-      return 'bg-blue-500/30 border-blue-500';
+      return "bg-blue-500/30 border-blue-500";
     }
-    return 'bg-gray-700';
+    return "bg-gray-700";
   };
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-pink-500/10 to-rose-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Two Sum: Complement Lookup</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Two Sum: Complement Lookup
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Use HashMap to find pair summing to target in O(n)
         </p>
@@ -107,7 +121,9 @@ export default function TwoSumVisualizer() {
               className="bg-purple-500/20 border border-purple-500 rounded-lg px-4 py-2"
             >
               <span className="text-gray-400 text-sm">Looking for: </span>
-              <span className="text-2xl font-bold text-purple-400">{currentComplement}</span>
+              <span className="text-2xl font-bold text-purple-400">
+                {currentComplement}
+              </span>
             </motion.div>
           )}
         </div>
@@ -116,12 +132,12 @@ export default function TwoSumVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'found' || phase === 'done'}
+            disabled={phase === "found" || phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -145,7 +161,9 @@ export default function TwoSumVisualizer() {
 
         {/* Array Visualization */}
         <div className="mb-6">
-          <div className="text-sm text-gray-400 mb-2">nums = [{nums.join(', ')}]</div>
+          <div className="text-sm text-gray-400 mb-2">
+            nums = [{nums.join(", ")}]
+          </div>
           <div className="flex gap-2">
             {nums.map((num, idx) => (
               <motion.div
@@ -165,7 +183,9 @@ export default function TwoSumVisualizer() {
 
         {/* HashMap Visualization */}
         <div className="mb-4">
-          <div className="text-sm text-gray-400 mb-2">HashMap: value → index</div>
+          <div className="text-sm text-gray-400 mb-2">
+            HashMap: value → index
+          </div>
           <div className="bg-gray-800/50 rounded-lg p-4 min-h-[80px]">
             <div className="flex flex-wrap gap-2">
               <AnimatePresence>
@@ -177,8 +197,8 @@ export default function TwoSumVisualizer() {
                     exit={{ opacity: 0, scale: 0 }}
                     className={`px-3 py-2 rounded-lg font-mono text-sm ${
                       currentComplement === value
-                        ? 'bg-green-500 text-white ring-2 ring-green-300'
-                        : 'bg-blue-500/30 border border-blue-500 text-blue-300'
+                        ? "bg-green-500 text-white ring-2 ring-green-300"
+                        : "bg-blue-500/30 border border-blue-500 text-blue-300"
                     }`}
                   >
                     {value} → {index}
@@ -186,14 +206,16 @@ export default function TwoSumVisualizer() {
                 ))}
               </AnimatePresence>
               {hashMap.size === 0 && (
-                <span className="text-gray-500">Empty - will store {'{value: index}'}</span>
+                <span className="text-gray-500">
+                  Empty - will store {"{value: index}"}
+                </span>
               )}
             </div>
           </div>
         </div>
 
         {/* Current calculation */}
-        {currentIndex < nums.length && phase !== 'found' && (
+        {currentIndex < nums.length && phase !== "found" && (
           <div className="p-3 bg-gray-800/50 rounded-lg mb-4">
             <code className="text-sm font-mono">
               <span className="text-gray-400">complement = </span>
@@ -201,8 +223,10 @@ export default function TwoSumVisualizer() {
               <span className="text-gray-400"> - </span>
               <span className="text-yellow-400">{nums[currentIndex]}</span>
               <span className="text-gray-400"> = </span>
-              <span className="text-purple-400">{target - nums[currentIndex]}</span>
-              {phase === 'checking' && (
+              <span className="text-purple-400">
+                {target - nums[currentIndex]}
+              </span>
+              {phase === "checking" && (
                 <span className="ml-4">
                   {hashMap.has(target - nums[currentIndex]) ? (
                     <span className="text-green-400">✓ Found in map!</span>
@@ -221,11 +245,11 @@ export default function TwoSumVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'found'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : phase === 'done'
-              ? 'bg-red-500/10 border border-red-500/30 text-red-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "found"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : phase === "done"
+                ? "bg-red-500/10 border border-red-500/30 text-red-400"
+                : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -250,8 +274,8 @@ export default function TwoSumVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-pink-400">Key Insight:</strong>{' '}
-            For each number, check if its complement (target - num) exists in the map.
+            <strong className="text-pink-400">Key Insight:</strong> For each
+            number, check if its complement (target - num) exists in the map.
             Check BEFORE adding to avoid matching element with itself.
           </p>
         </div>

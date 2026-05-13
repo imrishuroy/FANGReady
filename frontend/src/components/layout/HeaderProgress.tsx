@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { questions } from '@/lib/questions';
-import { useProgress } from '@/contexts/ProgressContext';
+import { questions } from "@/lib/questions";
+import { useProgress } from "@/contexts/ProgressContext";
 
 export default function HeaderProgress() {
   const { completed } = useProgress();
@@ -37,7 +37,13 @@ export default function HeaderProgress() {
             className="transition-all duration-500"
           />
           <defs>
-            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient
+              id="progressGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
               <stop offset="0%" stopColor="#6366f1" />
               <stop offset="100%" stopColor="#a855f7" />
             </linearGradient>
@@ -49,7 +55,9 @@ export default function HeaderProgress() {
       </div>
       <div className="hidden sm:block">
         <p className="text-sm text-gray-400">Completed</p>
-        <p className="text-base font-semibold text-indigo-400">{completedCount} / {total}</p>
+        <p className="text-base font-semibold text-indigo-400">
+          {completedCount} / {total}
+        </p>
       </div>
     </div>
   );

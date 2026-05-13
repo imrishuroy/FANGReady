@@ -13,7 +13,7 @@ import type {
   SubmitCodeRequest,
   RunCodeRequest,
   RunCodeResponse,
-} from '@/types';
+} from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,22 +31,23 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     const url = `${API_BASE_URL}${endpoint}`;
     const headers: HeadersInit = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options.headers,
     };
 
     if (this.accessToken) {
-      (headers as Record<string, string>)['Authorization'] = `Bearer ${this.accessToken}`;
+      (headers as Record<string, string>)["Authorization"] =
+        `Bearer ${this.accessToken}`;
     }
 
     const response = await fetch(url, {
       ...options,
       headers,
-      credentials: 'include',
+      credentials: "include",
     });
 
     const data: ApiResponse<T> = await response.json();
@@ -54,11 +55,12 @@ class ApiClient {
     if (!response.ok && response.status === 401 && this.accessToken) {
       const newToken = await this.refreshToken();
       if (newToken) {
-        (headers as Record<string, string>)['Authorization'] = `Bearer ${newToken}`;
+        (headers as Record<string, string>)["Authorization"] =
+          `Bearer ${newToken}`;
         const retryResponse = await fetch(url, {
           ...options,
           headers,
-          credentials: 'include',
+          credentials: "include",
         });
         return retryResponse.json();
       }
@@ -75,8 +77,8 @@ class ApiClient {
     this.refreshPromise = (async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/v1/auth/refresh`, {
-          method: 'POST',
-          credentials: 'include',
+          method: "POST",
+          credentials: "include",
         });
 
         if (!response.ok) {
@@ -103,8 +105,8 @@ class ApiClient {
 
   // Auth endpoints
   async register(req: RegisterRequest): Promise<ApiResponse<AuthResponse>> {
-    const response = await this.request<AuthResponse>('/api/v1/auth/register', {
-      method: 'POST',
+    const response = await this.request<AuthResponse>("/api/v1/auth/register", {
+      method: "POST",
       body: JSON.stringify(req),
     });
     if (response.success && response.data.accessToken) {
@@ -114,8 +116,8 @@ class ApiClient {
   }
 
   async login(req: LoginRequest): Promise<ApiResponse<AuthResponse>> {
-    const response = await this.request<AuthResponse>('/api/v1/auth/login', {
-      method: 'POST',
+    const response = await this.request<AuthResponse>("/api/v1/auth/login", {
+      method: "POST",
       body: JSON.stringify(req),
     });
     if (response.success && response.data.accessToken) {
@@ -125,32 +127,40 @@ class ApiClient {
   }
 
   async logout(): Promise<ApiResponse<{ message: string }>> {
-    const response = await this.request<{ message: string }>('/api/v1/auth/logout', {
-      method: 'POST',
-    });
+    const response = await this.request<{ message: string }>(
+      "/api/v1/auth/logout",
+      {
+        method: "POST",
+      },
+    );
     this.accessToken = null;
     return response;
   }
 
   async getMe(): Promise<ApiResponse<User>> {
-    return this.request<User>('/api/v1/user/me');
+    return this.request<User>("/api/v1/user/me");
   }
 
   // Progress endpoints
   async getProgress(): Promise<ApiResponse<ProgressResponse>> {
-    return this.request<ProgressResponse>('/api/v1/progress');
+    return this.request<ProgressResponse>("/api/v1/progress");
   }
 
-  async toggleProgress(questionId: string, completed: boolean): Promise<ApiResponse<ProgressResponse>> {
-    return this.request<ProgressResponse>('/api/v1/progress/toggle', {
-      method: 'POST',
+  async toggleProgress(
+    questionId: string,
+    completed: boolean,
+  ): Promise<ApiResponse<ProgressResponse>> {
+    return this.request<ProgressResponse>("/api/v1/progress/toggle", {
+      method: "POST",
       body: JSON.stringify({ questionId, completed }),
     });
   }
 
-  async syncProgress(questionIds: string[]): Promise<ApiResponse<ProgressResponse>> {
-    return this.request<ProgressResponse>('/api/v1/progress/sync', {
-      method: 'POST',
+  async syncProgress(
+    questionIds: string[],
+  ): Promise<ApiResponse<ProgressResponse>> {
+    return this.request<ProgressResponse>("/api/v1/progress/sync", {
+      method: "POST",
       body: JSON.stringify({ questionIds }),
     });
   }
@@ -164,34 +174,38 @@ class ApiClient {
     search?: string;
   }): Promise<ApiResponse<ProblemListResponse>> {
     const searchParams = new URLSearchParams();
-    if (params?.page) searchParams.set('page', params.page.toString());
-    if (params?.limit) searchParams.set('limit', params.limit.toString());
-    if (params?.difficulty) searchParams.set('difficulty', params.difficulty);
-    if (params?.patternId) searchParams.set('patternId', params.patternId);
-    if (params?.search) searchParams.set('search', params.search);
+    if (params?.page) searchParams.set("page", params.page.toString());
+    if (params?.limit) searchParams.set("limit", params.limit.toString());
+    if (params?.difficulty) searchParams.set("difficulty", params.difficulty);
+    if (params?.patternId) searchParams.set("patternId", params.patternId);
+    if (params?.search) searchParams.set("search", params.search);
     const query = searchParams.toString();
-    return this.request<ProblemListResponse>(`/api/v1/problems${query ? `?${query}` : ''}`);
+    return this.request<ProblemListResponse>(
+      `/api/v1/problems${query ? `?${query}` : ""}`,
+    );
   }
 
-  async getProblemBySlug(slug: string): Promise<ApiResponse<ProblemDetailResponse>> {
+  async getProblemBySlug(
+    slug: string,
+  ): Promise<ApiResponse<ProblemDetailResponse>> {
     return this.request<ProblemDetailResponse>(`/api/v1/problems/${slug}`);
   }
 
   async getLanguages(): Promise<ApiResponse<Language[]>> {
-    return this.request<Language[]>('/api/v1/languages');
+    return this.request<Language[]>("/api/v1/languages");
   }
 
   // Submission endpoints
   async submitCode(req: SubmitCodeRequest): Promise<ApiResponse<Submission>> {
-    return this.request<Submission>('/api/v1/submissions', {
-      method: 'POST',
+    return this.request<Submission>("/api/v1/submissions", {
+      method: "POST",
       body: JSON.stringify(req),
     });
   }
 
   async runCode(req: RunCodeRequest): Promise<ApiResponse<RunCodeResponse>> {
-    return this.request<RunCodeResponse>('/api/v1/submissions/run', {
-      method: 'POST',
+    return this.request<RunCodeResponse>("/api/v1/submissions/run", {
+      method: "POST",
       body: JSON.stringify(req),
     });
   }
@@ -201,7 +215,7 @@ class ApiClient {
   }
 
   async getSubmissions(problemId?: string): Promise<ApiResponse<Submission[]>> {
-    const query = problemId ? `?problemId=${problemId}` : '';
+    const query = problemId ? `?problemId=${problemId}` : "";
     return this.request<Submission[]>(`/api/v1/submissions${query}`);
   }
 }

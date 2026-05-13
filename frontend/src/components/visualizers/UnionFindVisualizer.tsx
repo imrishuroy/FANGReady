@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface UFState {
   parent: number[];
@@ -16,19 +16,21 @@ export default function UnionFindVisualizer() {
     rank: [0, 0, 0, 0, 0, 0],
   });
   const [operations] = useState<[string, number, number][]>([
-    ['union', 0, 1],
-    ['union', 2, 3],
-    ['union', 4, 5],
-    ['union', 1, 3],
-    ['find', 4, -1],
-    ['union', 3, 5],
-    ['find', 0, -1],
+    ["union", 0, 1],
+    ["union", 2, 3],
+    ["union", 4, 5],
+    ["union", 1, 3],
+    ["find", 4, -1],
+    ["union", 3, 5],
+    ["find", 0, -1],
   ]);
   const [opIndex, setOpIndex] = useState(0);
   const [highlighted, setHighlighted] = useState<number[]>([]);
   const [pathNodes, setPathNodes] = useState<number[]>([]);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to see Union-Find operations');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to see Union-Find operations",
+  );
 
   const reset = useCallback(() => {
     setState({
@@ -38,31 +40,36 @@ export default function UnionFindVisualizer() {
     setOpIndex(0);
     setHighlighted([]);
     setPathNodes([]);
-    setPhase('init');
-    setMessage('Click Play to see Union-Find operations');
+    setPhase("init");
+    setMessage("Click Play to see Union-Find operations");
     setIsPlaying(false);
   }, []);
 
-  const find = useCallback((parent: number[], x: number): [number, number[]] => {
-    const path: number[] = [x];
-    while (parent[x] !== x) {
-      x = parent[x];
-      path.push(x);
-    }
-    return [x, path];
-  }, []);
+  const find = useCallback(
+    (parent: number[], x: number): [number, number[]] => {
+      const path: number[] = [x];
+      while (parent[x] !== x) {
+        x = parent[x];
+        path.push(x);
+      }
+      return [x, path];
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
       }
 
       if (opIndex >= operations.length) {
-        setPhase('done');
-        setMessage('All operations complete! Notice how path compression flattened the trees.');
+        setPhase("done");
+        setMessage(
+          "All operations complete! Notice how path compression flattened the trees.",
+        );
         setIsPlaying(false);
         setHighlighted([]);
         setPathNodes([]);
@@ -71,22 +78,24 @@ export default function UnionFindVisualizer() {
 
       const [op, x, y] = operations[opIndex];
 
-      if (op === 'find') {
+      if (op === "find") {
         const [root, path] = find(state.parent, x);
         setPathNodes(path);
         setHighlighted([x, root]);
-        setMessage(`find(${x}): Following path ${path.join(' → ')} = ${root}`);
+        setMessage(`find(${x}): Following path ${path.join(" → ")} = ${root}`);
 
         // Apply path compression
         setTimeout(() => {
-          setState(prev => {
+          setState((prev) => {
             const newParent = [...prev.parent];
             for (const node of path) {
               newParent[node] = root;
             }
             return { ...prev, parent: newParent };
           });
-          setMessage(`find(${x}): Path compression applied! All nodes now point to ${root}`);
+          setMessage(
+            `find(${x}): Path compression applied! All nodes now point to ${root}`,
+          );
         }, speed / 2);
       } else {
         // Union operation
@@ -97,23 +106,31 @@ export default function UnionFindVisualizer() {
         setPathNodes([...pathX, ...pathY]);
 
         if (rootX === rootY) {
-          setMessage(`union(${x}, ${y}): Already in same set (root = ${rootX})`);
+          setMessage(
+            `union(${x}, ${y}): Already in same set (root = ${rootX})`,
+          );
         } else {
-          setState(prev => {
+          setState((prev) => {
             const newParent = [...prev.parent];
             const newRank = [...prev.rank];
 
             // Union by rank
             if (newRank[rootX] < newRank[rootY]) {
               newParent[rootX] = rootY;
-              setMessage(`union(${x}, ${y}): rank[${rootX}] < rank[${rootY}], attach ${rootX} under ${rootY}`);
+              setMessage(
+                `union(${x}, ${y}): rank[${rootX}] < rank[${rootY}], attach ${rootX} under ${rootY}`,
+              );
             } else if (newRank[rootX] > newRank[rootY]) {
               newParent[rootY] = rootX;
-              setMessage(`union(${x}, ${y}): rank[${rootX}] > rank[${rootY}], attach ${rootY} under ${rootX}`);
+              setMessage(
+                `union(${x}, ${y}): rank[${rootX}] > rank[${rootY}], attach ${rootY} under ${rootX}`,
+              );
             } else {
               newParent[rootY] = rootX;
               newRank[rootX]++;
-              setMessage(`union(${x}, ${y}): Equal ranks, attach ${rootY} under ${rootX}, increase rank`);
+              setMessage(
+                `union(${x}, ${y}): Equal ranks, attach ${rootY} under ${rootX}, increase rank`,
+              );
             }
 
             return { parent: newParent, rank: newRank };
@@ -157,7 +174,7 @@ export default function UnionFindVisualizer() {
             animate={{ opacity: 1 }}
             className="stroke-gray-500 stroke-2"
             markerEnd="url(#arrowhead)"
-          />
+          />,
         );
       }
     });
@@ -177,12 +194,12 @@ export default function UnionFindVisualizer() {
             r={24}
             animate={{
               fill: isHighlighted
-                ? '#eab308'
+                ? "#eab308"
                 : isInPath
-                ? '#3b82f6'
-                : isRoot
-                ? '#22c55e'
-                : '#374151',
+                  ? "#3b82f6"
+                  : isRoot
+                    ? "#22c55e"
+                    : "#374151",
               scale: isHighlighted ? 1.2 : 1,
             }}
             className="stroke-gray-600 stroke-2"
@@ -191,7 +208,7 @@ export default function UnionFindVisualizer() {
             x={pos.x}
             y={pos.y + 5}
             textAnchor="middle"
-            className={`text-sm font-bold ${isHighlighted ? 'fill-black' : 'fill-white'}`}
+            className={`text-sm font-bold ${isHighlighted ? "fill-black" : "fill-white"}`}
           >
             {i}
           </text>
@@ -205,7 +222,7 @@ export default function UnionFindVisualizer() {
               root
             </text>
           )}
-        </g>
+        </g>,
       );
     });
 
@@ -215,7 +232,9 @@ export default function UnionFindVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Union-Find Operations</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Union-Find Operations
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Watch union and find with path compression
         </p>
@@ -226,12 +245,12 @@ export default function UnionFindVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -262,13 +281,14 @@ export default function UnionFindVisualizer() {
                 key={idx}
                 className={`px-2 py-1 rounded text-xs font-mono ${
                   idx < opIndex
-                    ? 'bg-green-500/30 text-green-300'
-                    : idx === opIndex && phase === 'running'
-                    ? 'bg-yellow-500 text-black'
-                    : 'bg-gray-700 text-gray-300'
+                    ? "bg-green-500/30 text-green-300"
+                    : idx === opIndex && phase === "running"
+                      ? "bg-yellow-500 text-black"
+                      : "bg-gray-700 text-gray-300"
                 }`}
               >
-                {op}({x}{y >= 0 ? `, ${y}` : ''})
+                {op}({x}
+                {y >= 0 ? `, ${y}` : ""})
               </div>
             ))}
           </div>
@@ -300,9 +320,13 @@ export default function UnionFindVisualizer() {
             {state.parent.map((p, i) => (
               <div key={i} className="text-center">
                 <div className="text-xs text-gray-500 mb-1">{i}</div>
-                <div className={`w-8 h-8 rounded flex items-center justify-center font-mono text-sm ${
-                  p === i ? 'bg-green-500/30 text-green-300' : 'bg-gray-700 text-gray-300'
-                }`}>
+                <div
+                  className={`w-8 h-8 rounded flex items-center justify-center font-mono text-sm ${
+                    p === i
+                      ? "bg-green-500/30 text-green-300"
+                      : "bg-gray-700 text-gray-300"
+                  }`}
+                >
                   {p}
                 </div>
               </div>
@@ -316,9 +340,9 @@ export default function UnionFindVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface Particle {
   id: number;
@@ -12,7 +12,17 @@ interface Particle {
   rotation: number;
 }
 
-const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#22c55e', '#eab308', '#06b6d4', '#f97316', '#ef4444', '#10b981'];
+const COLORS = [
+  "#6366f1",
+  "#a855f7",
+  "#ec4899",
+  "#22c55e",
+  "#eab308",
+  "#06b6d4",
+  "#f97316",
+  "#ef4444",
+  "#10b981",
+];
 
 export default function Confetti() {
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -53,16 +63,18 @@ export default function Confetti() {
         <div
           key={particle.id}
           className="absolute left-1/2 top-1/2 will-change-transform"
-          style={{
-            width: particle.size,
-            height: particle.size * (particle.id % 3 === 0 ? 1 : 1.4),
-            backgroundColor: particle.color,
-            borderRadius: particle.id % 4 === 0 ? '50%' : '2px',
-            animation: `explode 1.6s ease-out ${particle.delay}s forwards`,
-            '--end-x': `${particle.endX}px`,
-            '--end-y': `${particle.endY}px`,
-            '--rotation': `${particle.rotation}deg`,
-          } as React.CSSProperties}
+          style={
+            {
+              width: particle.size,
+              height: particle.size * (particle.id % 3 === 0 ? 1 : 1.4),
+              backgroundColor: particle.color,
+              borderRadius: particle.id % 4 === 0 ? "50%" : "2px",
+              animation: `explode 1.6s ease-out ${particle.delay}s forwards`,
+              "--end-x": `${particle.endX}px`,
+              "--end-y": `${particle.endY}px`,
+              "--rotation": `${particle.rotation}deg`,
+            } as React.CSSProperties
+          }
         />
       ))}
     </div>

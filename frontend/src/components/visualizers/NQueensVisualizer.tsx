@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-type BoardState = ('.' | 'Q' | 'X')[][];
+type BoardState = ("." | "Q" | "X")[][];
 
 interface Step {
   board: BoardState;
   row: number;
   col: number;
-  action: 'try' | 'place' | 'conflict' | 'backtrack' | 'solution';
+  action: "try" | "place" | "conflict" | "backtrack" | "solution";
   message: string;
 }
 
@@ -19,33 +19,35 @@ export default function NQueensVisualizer() {
   const [n] = useState(4);
   const [board, setBoard] = useState<BoardState>([]);
   const [solutions, setSolutions] = useState<string[][]>([]);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to solve 4-Queens');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState("Click Play to solve 4-Queens");
   const [stepIndex, setStepIndex] = useState(-1);
   const [steps, setSteps] = useState<Step[]>([]);
   const [currentRow, setCurrentRow] = useState(-1);
   const [currentCol, setCurrentCol] = useState(-1);
 
   const createEmptyBoard = useCallback((): BoardState => {
-    return Array(n).fill(null).map(() => Array(n).fill('.'));
+    return Array(n)
+      .fill(null)
+      .map(() => Array(n).fill("."));
   }, [n]);
 
   const copyBoard = (b: BoardState): BoardState => {
-    return b.map(row => [...row]);
+    return b.map((row) => [...row]);
   };
 
   const isSafe = (b: BoardState, row: number, col: number): boolean => {
     // Check column above
     for (let i = 0; i < row; i++) {
-      if (b[i][col] === 'Q') return false;
+      if (b[i][col] === "Q") return false;
     }
     // Check upper-left diagonal
     for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-      if (b[i][j] === 'Q') return false;
+      if (b[i][j] === "Q") return false;
     }
     // Check upper-right diagonal
     for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
-      if (b[i][j] === 'Q') return false;
+      if (b[i][j] === "Q") return false;
     }
     return true;
   };
@@ -60,8 +62,8 @@ export default function NQueensVisualizer() {
           board: copyBoard(board),
           row: -1,
           col: -1,
-          action: 'solution',
-          message: 'Found a valid solution!'
+          action: "solution",
+          message: "Found a valid solution!",
         });
         return;
       }
@@ -71,42 +73,42 @@ export default function NQueensVisualizer() {
           board: copyBoard(board),
           row,
           col,
-          action: 'try',
-          message: `Row ${row}: Try column ${col}`
+          action: "try",
+          message: `Row ${row}: Try column ${col}`,
         });
 
         if (!isSafe(board, row, col)) {
           const conflictBoard = copyBoard(board);
-          conflictBoard[row][col] = 'X';
+          conflictBoard[row][col] = "X";
           allSteps.push({
             board: conflictBoard,
             row,
             col,
-            action: 'conflict',
-            message: `Column ${col} conflicts with existing queen`
+            action: "conflict",
+            message: `Column ${col} conflicts with existing queen`,
           });
           continue;
         }
 
-        board[row][col] = 'Q';
+        board[row][col] = "Q";
         allSteps.push({
           board: copyBoard(board),
           row,
           col,
-          action: 'place',
-          message: `Place queen at (${row}, ${col})`
+          action: "place",
+          message: `Place queen at (${row}, ${col})`,
         });
 
         solve(board, row + 1);
 
-        board[row][col] = '.';
+        board[row][col] = ".";
         if (row < n - 1 || col < n - 1) {
           allSteps.push({
             board: copyBoard(board),
             row,
             col,
-            action: 'backtrack',
-            message: `Backtrack: remove queen from (${row}, ${col})`
+            action: "backtrack",
+            message: `Backtrack: remove queen from (${row}, ${col})`,
           });
         }
       }
@@ -119,8 +121,8 @@ export default function NQueensVisualizer() {
   const reset = useCallback(() => {
     setBoard(createEmptyBoard());
     setSolutions([]);
-    setPhase('init');
-    setMessage('Click Play to solve 4-Queens');
+    setPhase("init");
+    setMessage("Click Play to solve 4-Queens");
     setStepIndex(-1);
     setSteps(generateSteps());
     setCurrentRow(-1);
@@ -137,8 +139,8 @@ export default function NQueensVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         setStepIndex(0);
         const step = steps[0];
         setBoard(step.board);
@@ -150,7 +152,7 @@ export default function NQueensVisualizer() {
 
       const nextStepIdx = stepIndex + 1;
       if (nextStepIdx >= steps.length) {
-        setPhase('done');
+        setPhase("done");
         setMessage(`Done! Found ${solutions.length} solutions for ${n}-Queens`);
         setIsPlaying(false);
         return;
@@ -163,8 +165,11 @@ export default function NQueensVisualizer() {
       setCurrentCol(step.col);
       setMessage(step.message);
 
-      if (step.action === 'solution') {
-        setSolutions(prev => [...prev, step.board.map(row => row.join(''))]);
+      if (step.action === "solution") {
+        setSolutions((prev) => [
+          ...prev,
+          step.board.map((row) => row.join("")),
+        ]);
       }
     }, speed);
 
@@ -172,10 +177,10 @@ export default function NQueensVisualizer() {
   }, [isPlaying, phase, stepIndex, steps, n, solutions.length, speed]);
 
   const getCellColor = (row: number, col: number, cell: string) => {
-    if (cell === 'Q') return '#22c55e'; // Green for queen
-    if (cell === 'X') return '#ef4444'; // Red for conflict
-    if (row === currentRow && col === currentCol) return '#eab308'; // Yellow for current
-    return (row + col) % 2 === 0 ? '#4b5563' : '#374151'; // Checkerboard
+    if (cell === "Q") return "#22c55e"; // Green for queen
+    if (cell === "X") return "#ef4444"; // Red for conflict
+    if (row === currentRow && col === currentCol) return "#eab308"; // Yellow for current
+    return (row + col) % 2 === 0 ? "#4b5563" : "#374151"; // Checkerboard
   };
 
   return (
@@ -192,12 +197,12 @@ export default function NQueensVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -232,8 +237,8 @@ export default function NQueensVisualizer() {
                     }}
                     className="w-12 h-12 flex items-center justify-center text-2xl"
                   >
-                    {cell === 'Q' && <span>♛</span>}
-                    {cell === 'X' && <span className="text-red-300">✗</span>}
+                    {cell === "Q" && <span>♛</span>}
+                    {cell === "X" && <span className="text-red-300">✗</span>}
                   </motion.div>
                 ))}
               </div>
@@ -244,7 +249,9 @@ export default function NQueensVisualizer() {
         {/* Legend */}
         <div className="mb-4 flex gap-4 justify-center text-xs">
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded bg-green-500 flex items-center justify-center text-xs">♛</div>
+            <div className="w-4 h-4 rounded bg-green-500 flex items-center justify-center text-xs">
+              ♛
+            </div>
             <span className="text-gray-400">Queen</span>
           </div>
           <div className="flex items-center gap-1">
@@ -252,7 +259,9 @@ export default function NQueensVisualizer() {
             <span className="text-gray-400">Trying</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded bg-red-500 flex items-center justify-center text-xs">✗</div>
+            <div className="w-4 h-4 rounded bg-red-500 flex items-center justify-center text-xs">
+              ✗
+            </div>
             <span className="text-gray-400">Conflict</span>
           </div>
         </div>
@@ -274,11 +283,11 @@ export default function NQueensVisualizer() {
                   <div className="grid grid-cols-4 gap-0.5">
                     {sol.map((row, r) => (
                       <React.Fragment key={r}>
-                        {row.split('').map((cell, c) => (
+                        {row.split("").map((cell, c) => (
                           <div
                             key={c}
                             className={`w-3 h-3 ${
-                              cell === 'Q' ? 'bg-green-500' : 'bg-gray-600'
+                              cell === "Q" ? "bg-green-500" : "bg-gray-600"
                             }`}
                           />
                         ))}
@@ -297,9 +306,9 @@ export default function NQueensVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -308,7 +317,7 @@ export default function NQueensVisualizer() {
         {/* Constraints explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-emerald-400">Constraint Checks:</strong>{' '}
+            <strong className="text-emerald-400">Constraint Checks:</strong>{" "}
             Same column (row-col), main diagonal (row-col constant),
             anti-diagonal (row+col constant).
           </p>
