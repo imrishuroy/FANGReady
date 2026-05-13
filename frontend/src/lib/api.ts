@@ -6,6 +6,13 @@ import type {
   RegisterRequest,
   LoginRequest,
   User,
+  ProblemListResponse,
+  ProblemDetailResponse,
+  Language,
+  Submission,
+  SubmitCodeRequest,
+  RunCodeRequest,
+  RunCodeResponse,
 } from '@/types';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -146,6 +153,56 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify({ questionIds }),
     });
+  }
+
+  // Problem endpoints
+  async getProblems(params?: {
+    page?: number;
+    limit?: number;
+    difficulty?: string;
+    patternId?: string;
+    search?: string;
+  }): Promise<ApiResponse<ProblemListResponse>> {
+    const searchParams = new URLSearchParams();
+    if (params?.page) searchParams.set('page', params.page.toString());
+    if (params?.limit) searchParams.set('limit', params.limit.toString());
+    if (params?.difficulty) searchParams.set('difficulty', params.difficulty);
+    if (params?.patternId) searchParams.set('patternId', params.patternId);
+    if (params?.search) searchParams.set('search', params.search);
+    const query = searchParams.toString();
+    return this.request<ProblemListResponse>(`/api/v1/problems${query ? `?${query}` : ''}`);
+  }
+
+  async getProblemBySlug(slug: string): Promise<ApiResponse<ProblemDetailResponse>> {
+    return this.request<ProblemDetailResponse>(`/api/v1/problems/${slug}`);
+  }
+
+  async getLanguages(): Promise<ApiResponse<Language[]>> {
+    return this.request<Language[]>('/api/v1/languages');
+  }
+
+  // Submission endpoints
+  async submitCode(req: SubmitCodeRequest): Promise<ApiResponse<Submission>> {
+    return this.request<Submission>('/api/v1/submissions', {
+      method: 'POST',
+      body: JSON.stringify(req),
+    });
+  }
+
+  async runCode(req: RunCodeRequest): Promise<ApiResponse<RunCodeResponse>> {
+    return this.request<RunCodeResponse>('/api/v1/submissions/run', {
+      method: 'POST',
+      body: JSON.stringify(req),
+    });
+  }
+
+  async getSubmission(id: string): Promise<ApiResponse<Submission>> {
+    return this.request<Submission>(`/api/v1/submissions/${id}`);
+  }
+
+  async getSubmissions(problemId?: string): Promise<ApiResponse<Submission[]>> {
+    const query = problemId ? `?problemId=${problemId}` : '';
+    return this.request<Submission[]>(`/api/v1/submissions${query}`);
   }
 }
 

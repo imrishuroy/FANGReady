@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Question } from '@/types';
+import { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
+import { Question, Problem } from '@/types';
+import { apiClient } from '@/lib/api';
 
 interface ProblemsTabProps {
   questions: Question[];
@@ -19,11 +21,33 @@ const difficultyOrder = { Easy: 0, Medium: 1, Hard: 2 };
 
 type SortOption = 'difficulty' | 'frequency' | 'name' | 'status';
 
+// Convert problem name to slug format
+function nameToSlug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 export default function ProblemsTab({ questions, completed, onToggleComplete }: ProblemsTabProps) {
   const [search, setSearch] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState<string>('');
   const [showCompleted, setShowCompleted] = useState<'all' | 'completed' | 'todo'>('all');
   const [sortBy, setSortBy] = useState<SortOption>('difficulty');
+  const [availableProblems, setAvailableProblems] = useState<Set<string>>(new Set());
+
+  // Fetch problems available in our database
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const response = await apiClient.getProblems({ limit: 100 });
+        if (response.success && response.data.problems) {
+          const slugs = new Set(response.data.problems.map((p: Problem) => p.slug));
+          setAvailableProblems(slugs);
+        }
+      } catch {
+        // Silently fail - problems just won't show solve button
+      }
+    };
+    fetchProblems();
+  }, []);
 
   const filteredAndSorted = useMemo(() => {
     let result = [...questions];
@@ -194,14 +218,23 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
 
             {/* Problem Info */}
             <div className="flex-1 min-w-0">
-              <a
-                href={q.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-white hover:text-indigo-400 font-medium transition block truncate"
-              >
-                {q.name}
-              </a>
+              {availableProblems.has(nameToSlug(q.name)) ? (
+                <Link
+                  href={`/problems/${nameToSlug(q.name)}`}
+                  className="text-white hover:text-indigo-400 font-medium transition block truncate"
+                >
+                  {q.name}
+                </Link>
+              ) : (
+                <a
+                  href={q.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-indigo-400 font-medium transition block truncate"
+                >
+                  {q.name}
+                </a>
+              )}
               <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
                 <span className="text-gray-500">{q.pattern}</span>
                 {q.companies.length > 0 && (
@@ -224,16 +257,26 @@ export default function ProblemsTab({ questions, completed, onToggleComplete }: 
               <span className="text-sm" title="Frequency">
                 {q.frequency}
               </span>
-              <a
-                href={q.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 text-gray-500 hover:text-indigo-400 transition"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
+              {availableProblems.has(nameToSlug(q.name)) ? (
+                <Link
+                  href={`/problems/${nameToSlug(q.name)}`}
+                  className="px-3 py-1.5 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium rounded-lg transition"
+                >
+                  Solve
+                </Link>
+              ) : (
+                <a
+                  href={q.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-gray-500 hover:text-indigo-400 transition"
+                  title="Open on LeetCode"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              )}
             </div>
           </div>
         ))}

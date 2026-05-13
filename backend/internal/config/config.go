@@ -14,6 +14,18 @@ type Config struct {
 	Database DatabaseConfig
 	Logging  LoggingConfig
 	Auth     AuthConfig
+	Judge0   Judge0Config
+}
+
+type Judge0Config struct {
+	BaseURL       string
+	APIKey        string
+	CPUTimeLimit  float64
+	WallTimeLimit float64
+	MemoryLimit   int
+	StackLimit    int
+	PollInterval  time.Duration
+	MaxPollTime   time.Duration
 }
 
 type AuthConfig struct {
@@ -96,6 +108,16 @@ func Load() (*Config, error) {
 			RefreshTokenDuration: getDurationEnv("REFRESH_TOKEN_DURATION", 7*24*time.Hour),
 			BCryptCost:           getIntEnv("BCRYPT_COST", 12),
 		},
+		Judge0: Judge0Config{
+			BaseURL:       getEnv("JUDGE0_URL", "http://localhost:2358"),
+			APIKey:        getEnv("JUDGE0_API_KEY", ""),
+			CPUTimeLimit:  getFloatEnv("JUDGE0_CPU_TIME_LIMIT", 5.0),
+			WallTimeLimit: getFloatEnv("JUDGE0_WALL_TIME_LIMIT", 10.0),
+			MemoryLimit:   getIntEnv("JUDGE0_MEMORY_LIMIT", 128000),
+			StackLimit:    getIntEnv("JUDGE0_STACK_LIMIT", 64000),
+			PollInterval:  getDurationEnv("JUDGE0_POLL_INTERVAL", 500*time.Millisecond),
+			MaxPollTime:   getDurationEnv("JUDGE0_MAX_POLL_TIME", 30*time.Second),
+		},
 	}
 
 	if cfg.Auth.JWTSecret == "" {
@@ -127,6 +149,15 @@ func getIntEnv(key string, defaultValue int) int {
 	if value := os.Getenv(key); value != "" {
 		if intVal, err := strconv.Atoi(value); err == nil {
 			return intVal
+		}
+	}
+	return defaultValue
+}
+
+func getFloatEnv(key string, defaultValue float64) float64 {
+	if value := os.Getenv(key); value != "" {
+		if floatVal, err := strconv.ParseFloat(value, 64); err == nil {
+			return floatVal
 		}
 	}
 	return defaultValue
