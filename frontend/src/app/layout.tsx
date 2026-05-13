@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import { FilterProvider } from "@/contexts/FilterContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,15 +34,17 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col text-gray-100" suppressHydrationWarning>
-        <AuthProvider>
-          <ProgressProvider>
-            <FilterProvider>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </FilterProvider>
-          </ProgressProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <ProgressProvider>
+              <FilterProvider>
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </FilterProvider>
+            </ProgressProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

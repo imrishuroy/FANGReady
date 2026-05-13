@@ -43,8 +43,14 @@ func main() {
 	authService := services.NewAuthService(userRepo, &cfg.Auth)
 	progressService := services.NewProgressService(userRepo)
 
+	problemRepo := repository.NewProblemRepository(db)
+	submissionRepo := repository.NewSubmissionRepository(db)
+	judgeService := services.NewJudgeService(&cfg.Judge0)
+	problemService := services.NewProblemService(problemRepo, submissionRepo)
+	submissionService := services.NewSubmissionService(submissionRepo, problemRepo, judgeService)
+
 	gin.SetMode(cfg.Server.Mode)
-	router := setupRouter(cfg, db, patternService, authService, progressService)
+	router := setupRouter(cfg, db, patternService, authService, progressService, problemService, submissionService)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port),
@@ -83,7 +89,7 @@ func setupLogger(cfg config.LoggingConfig) {
 	}
 }
 
-func setupRouter(cfg *config.Config, db *repository.Database, patternService *services.PatternService, authService *services.AuthService, progressService *services.ProgressService) *gin.Engine {
+func setupRouter(cfg *config.Config, db *repository.Database, patternService *services.PatternService, authService *services.AuthService, progressService *services.ProgressService, problemService *services.ProblemService, submissionService *services.SubmissionService) *gin.Engine {
 	router := gin.New()
 
 	rateLimiter := middleware.NewRateLimiter(cfg.Server.RateLimitRPS, cfg.Server.RateLimitBurst)
@@ -119,6 +125,12 @@ func setupRouter(cfg *config.Config, db *repository.Database, patternService *se
 
 		progressHandler := handlers.NewProgressHandler(progressService, authMW)
 		progressHandler.RegisterRoutes(v1)
+
+		problemHandler := handlers.NewProblemHandler(problemService, authMW)
+		problemHandler.RegisterRoutes(v1)
+
+		submissionHandler := handlers.NewSubmissionHandler(submissionService, authMW)
+		submissionHandler.RegisterRoutes(v1)
 	}
 
 	router.NoRoute(func(c *gin.Context) {
