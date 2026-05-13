@@ -17,10 +17,10 @@ export default function MergeIntervalsVisualizer() {
   const [result, setResult] = useState<Interval[]>([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [phase, setPhase] = useState<"init" | "sorting" | "merging" | "done">(
-    "init",
+    "init"
   );
   const [message, setMessage] = useState(
-    "Click Play to merge overlapping intervals",
+    "Click Play to merge overlapping intervals"
   );
 
   const initialIntervals = [
@@ -70,13 +70,13 @@ export default function MergeIntervalsVisualizer() {
         setCurrentIdx(1);
         setPhase("merging");
         setMessage(
-          `Sorted! Starting with first interval [${first.start}, ${first.end}]`,
+          `Sorted! Starting with first interval [${first.start}, ${first.end}]`
         );
       } else if (phase === "merging") {
         if (currentIdx >= intervals.length) {
           setPhase("done");
           setMessage(
-            `Done! Merged ${initialIntervals.length} intervals into ${result.length}`,
+            `Done! Merged ${initialIntervals.length} intervals into ${result.length}`
           );
           setIsPlaying(false);
           return;
@@ -87,7 +87,7 @@ export default function MergeIntervalsVisualizer() {
 
         // Mark current as being processed
         const updatedIntervals = intervals.map((int, i) =>
-          i === currentIdx ? { ...int, state: "current" as const } : int,
+          i === currentIdx ? { ...int, state: "current" as const } : int
         );
         setIntervals(updatedIntervals);
 
@@ -102,14 +102,14 @@ export default function MergeIntervalsVisualizer() {
           };
           setResult(newResult);
           setMessage(
-            `[${curr.start}, ${curr.end}] overlaps with [${last.start}, ${last.end}] (${curr.start} <= ${last.end}). Merge to [${last.start}, ${newEnd}]`,
+            `[${curr.start}, ${curr.end}] overlaps with [${last.start}, ${last.end}] (${curr.start} <= ${last.end}). Merge to [${last.start}, ${newEnd}]`
           );
         } else {
           // No overlap - add as new
           const newInterval = { ...curr, state: "added" as const };
           setResult([...result, newInterval]);
           setMessage(
-            `[${curr.start}, ${curr.end}] doesn't overlap (${curr.start} > ${last.end}). Add as new interval.`,
+            `[${curr.start}, ${curr.end}] doesn't overlap (${curr.start} > ${last.end}). Add as new interval.`
           );
         }
 

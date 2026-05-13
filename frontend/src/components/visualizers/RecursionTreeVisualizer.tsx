@@ -27,7 +27,7 @@ export default function RecursionTreeVisualizer({
   const [activeNodes, setActiveNodes] = useState<Set<string>>(new Set());
   const [completedNodes, setCompletedNodes] = useState<Set<string>>(new Set());
   const [nodeResults, setNodeResults] = useState<Map<string, number>>(
-    new Map(),
+    new Map()
   );
   const [isPlaying, setIsPlaying] = useState(false);
   const [step, setStep] = useState(0);
@@ -38,7 +38,7 @@ export default function RecursionTreeVisualizer({
       n: number,
       depth: number = 0,
       pos: number = 0,
-      id: string = "0",
+      id: string = "0"
     ): TreeNode | null => {
       if (n < 0) return null;
 
@@ -61,7 +61,7 @@ export default function RecursionTreeVisualizer({
 
       return node;
     },
-    [],
+    []
   );
 
   const tree = useMemo(() => {
@@ -87,7 +87,7 @@ export default function RecursionTreeVisualizer({
       traverse(node);
       return order;
     },
-    [],
+    []
   );
 
   const executionOrder = useMemo(() => {
@@ -107,7 +107,7 @@ export default function RecursionTreeVisualizer({
 
       return leftResult + rightResult;
     },
-    [nodeResults],
+    [nodeResults]
   );
 
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function RecursionTreeVisualizer({
 
         const findNode = (
           n: TreeNode | null | undefined,
-          id: string,
+          id: string
         ): TreeNode | null => {
           if (!n) return null;
           if (n.id === id) return n;
@@ -176,7 +176,7 @@ export default function RecursionTreeVisualizer({
 
   const renderNode = (
     node: TreeNode | null | undefined,
-    level: number = 0,
+    level: number = 0
   ): React.ReactNode => {
     if (!node) return null;
 

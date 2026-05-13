@@ -297,7 +297,7 @@ export default function TutorialTab({ pattern }: TutorialTabProps) {
                     currentLang={currentLang}
                     onChange={setCurrentLang}
                     languages={Object.keys(section.code).filter(
-                      (k) => section.code?.[k as keyof typeof section.code],
+                      (k) => section.code?.[k as keyof typeof section.code]
                     )}
                     size="sm"
                   />

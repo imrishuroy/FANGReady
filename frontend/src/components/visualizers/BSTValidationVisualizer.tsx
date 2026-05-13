@@ -41,7 +41,7 @@ export default function BSTValidationVisualizer() {
   const [invalidNode, setInvalidNode] = useState<number | null>(null);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to validate BST with bounds checking",
+    "Click Play to validate BST with bounds checking"
   );
 
   const generateSteps = useCallback((): Step[] => {
@@ -50,7 +50,7 @@ export default function BSTValidationVisualizer() {
     const validate = (
       node: TreeNode | null,
       min: number,
-      max: number,
+      max: number
     ): boolean => {
       if (!node) return true;
 
@@ -106,7 +106,7 @@ export default function BSTValidationVisualizer() {
           setMessage(
             isValid
               ? "Valid BST!"
-              : `Invalid BST! Node ${invalidNode} violates BST property.`,
+              : `Invalid BST! Node ${invalidNode} violates BST property.`
           );
           setIsPlaying(false);
           return;
@@ -120,7 +120,7 @@ export default function BSTValidationVisualizer() {
           setInvalidNode(step.node);
           setPhase("done");
           setMessage(
-            `Invalid! Node ${step.node} is NOT in valid range (${step.min === -Infinity ? "-∞" : step.min}, ${step.max === Infinity ? "+∞" : step.max})`,
+            `Invalid! Node ${step.node} is NOT in valid range (${step.min === -Infinity ? "-∞" : step.min}, ${step.max === Infinity ? "+∞" : step.max})`
           );
           setIsPlaying(false);
           return;

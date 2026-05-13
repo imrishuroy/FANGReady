@@ -12,7 +12,7 @@ export default function FindAnagramsVisualizer() {
   const [foundIndices, setFoundIndices] = useState<number[]>([]);
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
   const [message, setMessage] = useState(
-    'Click Play to find all anagrams of "abc" in the string',
+    'Click Play to find all anagrams of "abc" in the string'
   );
 
   const s = "cbaebabacd";
@@ -44,13 +44,13 @@ export default function FindAnagramsVisualizer() {
         setPhase("processing");
         setCurrentIdx(0);
         setMessage(
-          `Pattern "${p}" has ${required} unique characters: {a:1, b:1, c:1}`,
+          `Pattern "${p}" has ${required} unique characters: {a:1, b:1, c:1}`
         );
       } else if (phase === "processing") {
         if (currentIdx >= s.length) {
           setPhase("done");
           setMessage(
-            `Done! Found ${foundIndices.length} anagrams at indices: [${foundIndices.join(", ")}]`,
+            `Done! Found ${foundIndices.length} anagrams at indices: [${foundIndices.join(", ")}]`
           );
           setIsPlaying(false);
           return;
@@ -95,12 +95,12 @@ export default function FindAnagramsVisualizer() {
           const startIdx = currentIdx - p.length + 1;
           setFoundIndices([...foundIndices, startIdx]);
           setMessage(
-            `Anagram found at index ${startIdx}! Window "${s.slice(startIdx, currentIdx + 1)}" matches "${p}"`,
+            `Anagram found at index ${startIdx}! Window "${s.slice(startIdx, currentIdx + 1)}" matches "${p}"`
           );
         } else {
           const windowStart = Math.max(0, currentIdx - p.length + 1);
           setMessage(
-            `Window "${s.slice(windowStart, currentIdx + 1)}" - matches: ${newMatches}/${required}`,
+            `Window "${s.slice(windowStart, currentIdx + 1)}" - matches: ${newMatches}/${required}`
           );
         }
 
@@ -193,7 +193,7 @@ export default function FindAnagramsVisualizer() {
               const inWindow =
                 idx >= winLeft && idx <= winRight && currentIdx >= 0;
               const isFound = foundIndices.some(
-                (start) => idx >= start && idx < start + p.length,
+                (start) => idx >= start && idx < start + p.length
               );
 
               return (

@@ -25,10 +25,10 @@ export default function TopologicalSortVisualizer() {
   const [order, setOrder] = useState<number[]>([]);
   const [currentCourse, setCurrentCourse] = useState<number | null>(null);
   const [message, setMessage] = useState(
-    "Click Play to start topological sort (Kahn's Algorithm)",
+    "Click Play to start topological sort (Kahn's Algorithm)"
   );
   const [phase, setPhase] = useState<"init" | "processing" | "done" | "cycle">(
-    "init",
+    "init"
   );
   const [showCycleExample, setShowCycleExample] = useState(false);
 
@@ -109,7 +109,7 @@ export default function TopologicalSortVisualizer() {
           if (order.length === courses.length) {
             setPhase("done");
             setMessage(
-              `Success! Valid order: ${order.map((i) => courseNames[i]).join(" -> ")}`,
+              `Success! Valid order: ${order.map((i) => courseNames[i]).join(" -> ")}`
             );
           } else {
             setPhase("cycle");
@@ -127,7 +127,7 @@ export default function TopologicalSortVisualizer() {
         newCourses[courseId] = { ...newCourses[courseId], state: "processing" };
         setCourses(newCourses);
         setMessage(
-          `Processing: ${courseNames[courseId]} (indegree was 0, ready to take)`,
+          `Processing: ${courseNames[courseId]} (indegree was 0, ready to take)`
         );
 
         setTimeout(() => {

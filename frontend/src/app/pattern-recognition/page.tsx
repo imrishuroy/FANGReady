@@ -875,7 +875,7 @@ function longestPalindrome(s) {
             key={pattern.id}
             onClick={() =>
               setSelectedPattern(
-                selectedPattern === pattern.id ? null : pattern.id,
+                selectedPattern === pattern.id ? null : pattern.id
               )
             }
             className={`p-4 rounded-xl border text-left transition ${

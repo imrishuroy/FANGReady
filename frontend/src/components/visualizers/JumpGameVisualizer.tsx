@@ -36,7 +36,7 @@ export default function JumpGameVisualizer() {
           setResult(
             maxReach >= activeNums.length - 1
               ? "Can reach the end!"
-              : "Cannot reach the end",
+              : "Cannot reach the end"
           );
         } else {
           setResult(`Minimum jumps: ${jumps}`);
@@ -53,7 +53,7 @@ export default function JumpGameVisualizer() {
 
         const newMaxReach = Math.max(
           maxReach,
-          currentIndex + activeNums[currentIndex],
+          currentIndex + activeNums[currentIndex]
         );
         setMaxReach(newMaxReach);
 
@@ -65,7 +65,7 @@ export default function JumpGameVisualizer() {
       } else {
         const newFarthest = Math.max(
           farthest,
-          currentIndex + activeNums[currentIndex],
+          currentIndex + activeNums[currentIndex]
         );
         setFarthest(newFarthest);
 

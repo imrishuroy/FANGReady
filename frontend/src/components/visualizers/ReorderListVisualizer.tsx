@@ -56,13 +56,13 @@ export default function ReorderListVisualizer() {
           setFirstHalf(originalList.slice(0, mid + 1));
           setSecondHalf(originalList.slice(mid + 1));
           setMessage(
-            `Middle found at index ${mid} (value ${originalList[mid]}). Splitting list.`,
+            `Middle found at index ${mid} (value ${originalList[mid]}). Splitting list.`
           );
         } else {
           setFastIdx(newFast);
           setSlowIdx(newSlow);
           setMessage(
-            `Slow at ${originalList[newSlow]}, Fast at ${originalList[newFast]}`,
+            `Slow at ${originalList[newSlow]}, Fast at ${originalList[newFast]}`
           );
         }
       } else if (phase === "found-middle") {
@@ -72,7 +72,7 @@ export default function ReorderListVisualizer() {
         setSecondHalf([...secondHalf].reverse());
         setPhase("merging");
         setMessage(
-          `Second half reversed: [${[...secondHalf].reverse().join(", ")}]. Now merge alternating.`,
+          `Second half reversed: [${[...secondHalf].reverse().join(", ")}]. Now merge alternating.`
         );
       } else if (phase === "merging") {
         if (result.length === 0) {

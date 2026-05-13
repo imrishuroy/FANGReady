@@ -1,7 +1,6 @@
 import { Question } from "@/types";
 
 export const questions: Question[] = [
-  // Arrays & Strings (30 questions)
   {
     id: "as-1",
     name: "Two Sum",
@@ -328,7 +327,6 @@ export const questions: Question[] = [
     category: "Arrays & Strings",
   },
 
-  // Two Pointers (5 questions)
   {
     id: "tp-1",
     name: "Container With Most Water",
@@ -380,7 +378,6 @@ export const questions: Question[] = [
     category: "Two Pointers",
   },
 
-  // Sliding Window (10 questions)
   {
     id: "sw-1",
     name: "Longest Substring Without Repeating Characters",
@@ -482,7 +479,6 @@ export const questions: Question[] = [
     category: "Sliding Window",
   },
 
-  // Prefix Sum (5 questions)
   {
     id: "ps-1",
     name: "Subarray Sum Equals K",
@@ -534,7 +530,6 @@ export const questions: Question[] = [
     category: "Prefix Sum",
   },
 
-  // Hash Map / Set (5 questions)
   {
     id: "hm-1",
     name: "Longest Consecutive Sequence",
@@ -586,7 +581,6 @@ export const questions: Question[] = [
     category: "Hash Map / Set",
   },
 
-  // Stack / Monotonic Stack (12 questions)
   {
     id: "st-1",
     name: "Valid Parentheses",
@@ -708,7 +702,6 @@ export const questions: Question[] = [
     category: "Stack / Monotonic Stack",
   },
 
-  // Linked List (13 questions)
   {
     id: "ll-1",
     name: "Reverse Linked List",
@@ -848,7 +841,6 @@ export const questions: Question[] = [
     category: "Linked List",
   },
 
-  // Binary Search (10 questions)
   {
     id: "bs-1",
     name: "Binary Search",
@@ -950,7 +942,6 @@ export const questions: Question[] = [
     category: "Binary Search",
   },
 
-  // Trees (25 questions)
   {
     id: "tr-1",
     name: "Maximum Depth of Binary Tree",
@@ -1202,7 +1193,6 @@ export const questions: Question[] = [
     category: "Trees",
   },
 
-  // Graphs (25 questions)
   {
     id: "gr-1",
     name: "Number of Islands",
@@ -1463,7 +1453,6 @@ export const questions: Question[] = [
     category: "Graphs",
   },
 
-  // Heap / Priority Queue (10 questions)
   {
     id: "hp-1",
     name: "Kth Largest Element in an Array",
@@ -1565,7 +1554,6 @@ export const questions: Question[] = [
     category: "Heap / Priority Queue",
   },
 
-  // Dynamic Programming (25 questions)
   {
     id: "dp-1",
     name: "Climbing Stairs",
@@ -1817,7 +1805,6 @@ export const questions: Question[] = [
     category: "Dynamic Programming",
   },
 
-  // Backtracking (13 questions)
   {
     id: "bt-1",
     name: "Subsets",
@@ -1949,7 +1936,6 @@ export const questions: Question[] = [
     category: "Backtracking",
   },
 
-  // Intervals (8 questions)
   {
     id: "iv-1",
     name: "Merge Intervals",
@@ -2029,7 +2015,6 @@ export const questions: Question[] = [
     category: "Intervals",
   },
 
-  // Trie (4 questions)
   {
     id: "ti-1",
     name: "Implement Trie (Prefix Tree)",
@@ -2070,7 +2055,6 @@ export const questions: Question[] = [
     category: "Trie",
   },
 
-  // Design (18 questions)
   {
     id: "de-1",
     name: "LRU Cache",
@@ -2265,7 +2249,6 @@ export const questions: Question[] = [
     category: "Design",
   },
 
-  // Matrix (7 questions)
   {
     id: "mx-1",
     name: "Valid Sudoku",
@@ -2337,7 +2320,6 @@ export const questions: Question[] = [
     category: "Matrix",
   },
 
-  // Greedy (3 questions)
   {
     id: "gy-1",
     name: "Candy",
@@ -2369,7 +2351,6 @@ export const questions: Question[] = [
     category: "Greedy",
   },
 
-  // Math / Bit Manipulation (8 questions)
   {
     id: "mb-1",
     name: "Pow(x, n)",
@@ -2451,7 +2432,6 @@ export const questions: Question[] = [
     category: "Math / Bit Manipulation",
   },
 
-  // Divide and Conquer (2 questions)
   {
     id: "dc-1",
     name: "Majority Element",
@@ -2473,7 +2453,6 @@ export const questions: Question[] = [
     category: "Divide and Conquer",
   },
 
-  // Concurrency (5 questions)
   {
     id: "cc-1",
     name: "Print in Order",
@@ -2525,7 +2504,6 @@ export const questions: Question[] = [
     category: "Concurrency",
   },
 
-  // Union-Find (5 questions)
   {
     id: "uf-1",
     name: "Number of Connected Components",
@@ -2577,7 +2555,6 @@ export const questions: Question[] = [
     category: "Union-Find",
   },
 
-  // Additional Graph Patterns (11 questions)
   {
     id: "agp-1",
     name: "Open the Lock",
@@ -2649,7 +2626,6 @@ export const questions: Question[] = [
     category: "Graphs",
   },
 
-  // Additional Backtracking (5 questions)
   {
     id: "abt-1",
     name: "Combinations",
@@ -2701,7 +2677,6 @@ export const questions: Question[] = [
     category: "Backtracking",
   },
 
-  // Additional Heap (3 questions)
   {
     id: "ahp-1",
     name: "Kth Largest Element in a Stream",
@@ -2723,7 +2698,6 @@ export const questions: Question[] = [
     category: "Heap / Priority Queue",
   },
 
-  // Additional Stack (5 questions)
   {
     id: "ast-1",
     name: "Implement Queue using Stacks",
@@ -2765,7 +2739,6 @@ export const questions: Question[] = [
     category: "Stack / Monotonic Stack",
   },
 
-  // Additional Linked List (3 questions)
   {
     id: "all-1",
     name: "Linked List Cycle II",
@@ -2797,7 +2770,6 @@ export const questions: Question[] = [
     category: "Linked List",
   },
 
-  // Additional Array/String (11 questions)
   {
     id: "aas-1",
     name: "Remove Duplicates from Sorted Array",
@@ -2879,7 +2851,6 @@ export const questions: Question[] = [
     category: "Binary Search",
   },
 
-  // Additional HashMap/Frequency (3 questions)
   {
     id: "ahm-1",
     name: "Top K Frequent Words",
@@ -2901,7 +2872,6 @@ export const questions: Question[] = [
     category: "Binary Search",
   },
 
-  // Additional Advanced Strings (8 questions)
   {
     id: "astr-1",
     name: "Longest Substring with At Most Two Distinct Characters",
@@ -2953,7 +2923,6 @@ export const questions: Question[] = [
     category: "Stack / Monotonic Stack",
   },
 
-  // Additional Trie (3 questions)
   {
     id: "atr-1",
     name: "Replace Words",
@@ -2985,7 +2954,6 @@ export const questions: Question[] = [
     category: "Trie",
   },
 
-  // Additional Segment Tree (4 questions)
   {
     id: "seg-1",
     name: "Range Sum Query - Mutable",
@@ -3027,7 +2995,6 @@ export const questions: Question[] = [
     category: "Stack / Monotonic Stack",
   },
 
-  // Additional Matrix & Simulation (6 questions)
   {
     id: "amx-1",
     name: "Spiral Matrix II",
@@ -3089,7 +3056,6 @@ export const questions: Question[] = [
     category: "Matrix",
   },
 
-  // Additional Design Patterns (8 questions)
   {
     id: "ade-1",
     name: "Basic Calculator",
@@ -3171,7 +3137,6 @@ export const questions: Question[] = [
     category: "Union-Find",
   },
 
-  // Additional Bit Manipulation (4 questions)
   {
     id: "abit-1",
     name: "Single Number II",
@@ -3213,7 +3178,6 @@ export const questions: Question[] = [
     category: "Math / Bit Manipulation",
   },
 
-  // Additional Math (7 questions)
   {
     id: "amt-1",
     name: "Max Points on a Line",
@@ -3265,7 +3229,6 @@ export const questions: Question[] = [
     category: "Math / Bit Manipulation",
   },
 
-  // Additional Greedy (3 questions)
   {
     id: "agy-1",
     name: "Jump Game IV",

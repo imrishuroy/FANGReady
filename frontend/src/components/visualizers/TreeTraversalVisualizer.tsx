@@ -35,7 +35,7 @@ export default function TreeTraversalVisualizer() {
   const [stepIndex, setStepIndex] = useState(0);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Select traversal type and click Play",
+    "Select traversal type and click Play"
   );
 
   const getTraversalSteps = useCallback(
@@ -69,7 +69,7 @@ export default function TreeTraversalVisualizer() {
 
       return steps;
     },
-    [],
+    []
   );
 
   const reset = useCallback(() => {
@@ -100,7 +100,7 @@ export default function TreeTraversalVisualizer() {
           setPhase("done");
           setCurrentNode(null);
           setMessage(
-            `${traversalType.charAt(0).toUpperCase() + traversalType.slice(1)}: [${result.join(", ")}]`,
+            `${traversalType.charAt(0).toUpperCase() + traversalType.slice(1)}: [${result.join(", ")}]`
           );
           setIsPlaying(false);
           return;
@@ -231,7 +231,7 @@ export default function TreeTraversalVisualizer() {
                 >
                   {type.charAt(0).toUpperCase() + type.slice(1)}
                 </button>
-              ),
+              )
             )}
           </div>
           <div className="flex items-center gap-2 ml-auto">

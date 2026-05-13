@@ -19,7 +19,7 @@ export default function TwoSumHashMapVisualizer() {
   const [found, setFound] = useState<[number, number] | null>(null);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find two numbers summing to 9",
+    "Click Play to find two numbers summing to 9"
   );
 
   const reset = useCallback(() => {
@@ -42,7 +42,7 @@ export default function TwoSumHashMapVisualizer() {
         const comp = target - nums[0];
         setComplement(comp);
         setMessage(
-          `i=0: Looking for complement ${target} - ${nums[0]} = ${comp} in map...`,
+          `i=0: Looking for complement ${target} - ${nums[0]} = ${comp} in map...`
         );
         return;
       }
@@ -64,7 +64,7 @@ export default function TwoSumHashMapVisualizer() {
         setFound([foundEntry.index, currentIndex]);
         setPhase("done");
         setMessage(
-          `Found! map[${comp}] = ${foundEntry.index}. Return [${foundEntry.index}, ${currentIndex}]`,
+          `Found! map[${comp}] = ${foundEntry.index}. Return [${foundEntry.index}, ${currentIndex}]`
         );
         setIsPlaying(false);
         return;
@@ -76,7 +76,7 @@ export default function TwoSumHashMapVisualizer() {
         { value: currentNum, index: currentIndex },
       ]);
       setMessage(
-        `${comp} not in map. Store map[${currentNum}] = ${currentIndex}`,
+        `${comp} not in map. Store map[${currentNum}] = ${currentIndex}`
       );
 
       // Move to next
@@ -87,7 +87,7 @@ export default function TwoSumHashMapVisualizer() {
           const nextComp = target - nums[nextIdx];
           setComplement(nextComp);
           setMessage(
-            `i=${nextIdx}: Looking for complement ${target} - ${nums[nextIdx]} = ${nextComp} in map...`,
+            `i=${nextIdx}: Looking for complement ${target} - ${nums[nextIdx]} = ${nextComp} in map...`
           );
         } else {
           setCurrentIndex(nextIdx);

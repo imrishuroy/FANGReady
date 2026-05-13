@@ -88,7 +88,7 @@ export default function Dashboard({ questions }: DashboardProps) {
       result = result.filter(
         (p) =>
           p.category.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query),
+          p.description.toLowerCase().includes(query)
       );
     }
 

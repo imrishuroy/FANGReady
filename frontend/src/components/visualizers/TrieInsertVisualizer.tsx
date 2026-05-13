@@ -27,7 +27,7 @@ export default function TrieInsertVisualizer() {
   const [currentPath, setCurrentPath] = useState<string[]>([]);
   const [phase, setPhase] = useState<"init" | "inserting" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to insert words into the Trie",
+    "Click Play to insert words into the Trie"
   );
 
   const reset = useCallback(() => {
@@ -45,7 +45,7 @@ export default function TrieInsertVisualizer() {
       node: TrieNode,
       depth: number,
       leftBound: number,
-      rightBound: number,
+      rightBound: number
     ): void => {
       const children = Array.from(node.children.values());
       const width = rightBound - leftBound;
@@ -58,11 +58,11 @@ export default function TrieInsertVisualizer() {
           child,
           depth + 1,
           leftBound + childWidth * idx,
-          leftBound + childWidth * (idx + 1),
+          leftBound + childWidth * (idx + 1)
         );
       });
     },
-    [],
+    []
   );
 
   useEffect(() => {
@@ -83,12 +83,10 @@ export default function TrieInsertVisualizer() {
               JSON.stringify(prev, (key, value) =>
                 value instanceof Map
                   ? { dataType: "Map", value: Array.from(value.entries()) }
-                  : value,
+                  : value
               ),
               (key, value) =>
-                value && value.dataType === "Map"
-                  ? new Map(value.value)
-                  : value,
+                value && value.dataType === "Map" ? new Map(value.value) : value
             );
 
             let node = newRoot;
@@ -130,10 +128,10 @@ export default function TrieInsertVisualizer() {
             JSON.stringify(prev, (key, value) =>
               value instanceof Map
                 ? { dataType: "Map", value: Array.from(value.entries()) }
-                : value,
+                : value
             ),
             (key, value) =>
-              value && value.dataType === "Map" ? new Map(value.value) : value,
+              value && value.dataType === "Map" ? new Map(value.value) : value
           );
 
           let node = newRoot;
@@ -234,7 +232,7 @@ export default function TrieInsertVisualizer() {
 
         {/* Render children */}
         {Array.from(node.children.entries()).map(([char, child]) =>
-          renderNode(child, [...path, char]),
+          renderNode(child, [...path, char])
         )}
       </g>
     );

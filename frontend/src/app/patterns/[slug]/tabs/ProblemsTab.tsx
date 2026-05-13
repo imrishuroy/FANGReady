@@ -41,7 +41,7 @@ export default function ProblemsTab({
   >("all");
   const [sortBy, setSortBy] = useState<SortOption>("difficulty");
   const [availableProblems, setAvailableProblems] = useState<Set<string>>(
-    new Set(),
+    new Set()
   );
 
   // Fetch problems available in our database
@@ -51,7 +51,7 @@ export default function ProblemsTab({
         const response = await apiClient.getProblems({ limit: 100 });
         if (response.success && response.data.problems) {
           const slugs = new Set(
-            response.data.problems.map((p: Problem) => p.slug),
+            response.data.problems.map((p: Problem) => p.slug)
           );
           setAvailableProblems(slugs);
         }
@@ -71,7 +71,7 @@ export default function ProblemsTab({
       result = result.filter(
         (q) =>
           q.name.toLowerCase().includes(query) ||
-          q.pattern.toLowerCase().includes(query),
+          q.pattern.toLowerCase().includes(query)
       );
     }
 
@@ -211,7 +211,7 @@ export default function ProblemsTab({
               >
                 {option.charAt(0).toUpperCase() + option.slice(1)}
               </button>
-            ),
+            )
           )}
         </div>
       </div>

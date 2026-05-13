@@ -12,7 +12,7 @@ export default function TrieSearchVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(700);
   const [searchMode, setSearchMode] = useState<"search" | "startsWith">(
-    "search",
+    "search"
   );
   const [query, setQuery] = useState("app");
   const [charIndex, setCharIndex] = useState(-1);
@@ -99,7 +99,7 @@ export default function TrieSearchVisualizer() {
             setMessage(
               found
                 ? `search("${query}"): Found! isEnd = true`
-                : `search("${query}"): Not found! isEnd = ${node?.isEnd ?? "N/A"}`,
+                : `search("${query}"): Not found! isEnd = ${node?.isEnd ?? "N/A"}`
             );
           } else {
             setResult(true);
@@ -121,7 +121,7 @@ export default function TrieSearchVisualizer() {
           // Character not found
           setResult(false);
           setMessage(
-            `'${char}' not found in Trie. ${searchMode}("${query}") = false`,
+            `'${char}' not found in Trie. ${searchMode}("${query}") = false`
           );
           setPhase("done");
           setIsPlaying(false);
@@ -342,27 +342,27 @@ export default function TrieSearchVisualizer() {
             {renderTrieNode(
               trie.children.a.children.p.children.p,
               ["a", "p", "p"],
-              "p",
+              "p"
             )}
             {renderTrieNode(
               trie.children.a.children.p.children.e,
               ["a", "p", "e"],
-              "e",
+              "e"
             )}
             {renderTrieNode(
               trie.children.b.children.a.children.t,
               ["b", "a", "t"],
-              "t",
+              "t"
             )}
             {renderTrieNode(
               trie.children.a.children.p.children.p.children.l,
               ["a", "p", "p", "l"],
-              "l",
+              "l"
             )}
             {renderTrieNode(
               trie.children.a.children.p.children.p.children.l.children.e,
               ["a", "p", "p", "l", "e"],
-              "e",
+              "e"
             )}
           </svg>
         </div>

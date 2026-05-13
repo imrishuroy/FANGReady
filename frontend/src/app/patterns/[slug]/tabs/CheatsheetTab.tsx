@@ -14,7 +14,7 @@ export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
 
   const languageOrder = ["java", "javascript", "python", "cpp", "go"];
   const availableLanguages = languageOrder.filter((lang) =>
-    pattern.codeTemplates[lang as keyof typeof pattern.codeTemplates]?.trim(),
+    pattern.codeTemplates[lang as keyof typeof pattern.codeTemplates]?.trim()
   );
 
   const currentCode =

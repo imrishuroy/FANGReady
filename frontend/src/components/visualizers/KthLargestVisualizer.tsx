@@ -9,7 +9,7 @@ export default function KthLargestVisualizer() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [heap, setHeap] = useState<number[]>([]);
   const [message, setMessage] = useState(
-    "Click Play to find the 3rd largest element",
+    "Click Play to find the 3rd largest element"
   );
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
   const [lastAction, setLastAction] = useState<"add" | "remove" | null>(null);
@@ -46,7 +46,7 @@ export default function KthLargestVisualizer() {
         setHeap(newHeap);
         setLastAction("add");
         setMessage(
-          `Added ${num} to heap. Heap size ${newHeap.length} < k=${k}, so we keep it.`,
+          `Added ${num} to heap. Heap size ${newHeap.length} < k=${k}, so we keep it.`
         );
       } else if (num > newHeap[0]) {
         const removed = newHeap.shift()!;
@@ -55,12 +55,12 @@ export default function KthLargestVisualizer() {
         setHeap(newHeap);
         setLastAction("add");
         setMessage(
-          `${num} > heap min (${removed}). Removed ${removed}, added ${num}. Heap now: [${newHeap.join(", ")}]`,
+          `${num} > heap min (${removed}). Removed ${removed}, added ${num}. Heap now: [${newHeap.join(", ")}]`
         );
       } else {
         setLastAction(null);
         setMessage(
-          `${num} <= heap min (${newHeap[0]}). Skip - not in top ${k}.`,
+          `${num} <= heap min (${newHeap[0]}). Skip - not in top ${k}.`
         );
       }
 

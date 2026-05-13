@@ -22,7 +22,7 @@ export default function MergeKListsVisualizer() {
     "init" | "initializing" | "extracting" | "adding" | "done"
   >("init");
   const [currentExtracted, setCurrentExtracted] = useState<HeapNode | null>(
-    null,
+    null
   );
   const [message, setMessage] = useState("Click Play to merge K sorted lists");
 
@@ -70,7 +70,7 @@ export default function MergeKListsVisualizer() {
         setPointers(initialLists.map(() => 0));
         setPhase("extracting");
         setMessage(
-          `Heap initialized with first elements: [${newHeap.map((n) => n.value).join(", ")}]`,
+          `Heap initialized with first elements: [${newHeap.map((n) => n.value).join(", ")}]`
         );
       } else if (phase === "extracting") {
         if (heap.length === 0) {
@@ -105,14 +105,14 @@ export default function MergeKListsVisualizer() {
             setHeap(sortHeap(newHeap));
             setMessage(
               `Add next from list ${listIndex + 1}: ${nextValue}. Heap: [${sortHeap(
-                newHeap,
+                newHeap
               )
                 .map((n) => n.value)
-                .join(", ")}]`,
+                .join(", ")}]`
             );
           } else {
             setMessage(
-              `List ${listIndex + 1} exhausted. No more elements to add.`,
+              `List ${listIndex + 1} exhausted. No more elements to add.`
             );
           }
         }

@@ -14,7 +14,7 @@ export default function PrefixSumVisualizer() {
   const [queryRange, setQueryRange] = useState<[number, number] | null>(null);
   const [queryResult, setQueryResult] = useState<number | null>(null);
   const [message, setMessage] = useState(
-    "Click Play to build prefix sum array",
+    "Click Play to build prefix sum array"
   );
 
   const arr = [2, 4, 1, 3, 5];
@@ -47,7 +47,7 @@ export default function PrefixSumVisualizer() {
         if (currentIdx >= arr.length) {
           setPhase("built");
           setMessage(
-            `Prefix sum built! Now let's answer range queries in O(1)`,
+            `Prefix sum built! Now let's answer range queries in O(1)`
           );
           return;
         }
@@ -55,13 +55,13 @@ export default function PrefixSumVisualizer() {
         const newSum = prefix[prefix.length - 1] + arr[currentIdx];
         setPrefix([...prefix, newSum]);
         setMessage(
-          `prefix[${currentIdx + 1}] = prefix[${currentIdx}] + arr[${currentIdx}] = ${prefix[prefix.length - 1]} + ${arr[currentIdx]} = ${newSum}`,
+          `prefix[${currentIdx + 1}] = prefix[${currentIdx}] + arr[${currentIdx}] = ${prefix[prefix.length - 1]} + ${arr[currentIdx]} = ${newSum}`
         );
         setCurrentIdx(currentIdx + 1);
       } else if (phase === "built") {
         setPhase("querying");
         setMessage(
-          "Answering queries using formula: sum(i,j) = prefix[j+1] - prefix[i]",
+          "Answering queries using formula: sum(i,j) = prefix[j+1] - prefix[i]"
         );
       } else if (phase === "querying") {
         if (queryIdx >= queries.length) {
@@ -76,7 +76,7 @@ export default function PrefixSumVisualizer() {
         const result = prefix[j + 1] - prefix[i];
         setQueryResult(result);
         setMessage(
-          `Query sum(${i}, ${j}): prefix[${j + 1}] - prefix[${i}] = ${prefix[j + 1]} - ${prefix[i]} = ${result}`,
+          `Query sum(${i}, ${j}): prefix[${j + 1}] - prefix[${i}] = ${prefix[j + 1]} - ${prefix[i]} = ${result}`
         );
         setQueryIdx(queryIdx + 1);
       }

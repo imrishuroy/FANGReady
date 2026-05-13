@@ -25,7 +25,7 @@ export default function LinkedListReversalVisualizer() {
     "init" | "save-next" | "reverse-link" | "move-prev" | "move-curr" | "done"
   >("init");
   const [message, setMessage] = useState(
-    "Click Play to reverse the linked list",
+    "Click Play to reverse the linked list"
   );
 
   const reset = useCallback(() => {
@@ -52,7 +52,7 @@ export default function LinkedListReversalVisualizer() {
             `Done! New head is node ${nodes[nodes.length - 1].val}. Reversed: ${nodes
               .map((n) => n.val)
               .reverse()
-              .join(" -> ")}`,
+              .join(" -> ")}`
           );
           setIsPlaying(false);
           return;
@@ -61,7 +61,7 @@ export default function LinkedListReversalVisualizer() {
         const next = currIdx + 1 < nodes.length ? currIdx + 1 : null;
         setNextIdx(next);
         setMessage(
-          `Step 1: Save next = ${next !== null ? `node ${nodes[next].val}` : "null"}`,
+          `Step 1: Save next = ${next !== null ? `node ${nodes[next].val}` : "null"}`
         );
         setPhase("reverse-link");
       } else if (phase === "reverse-link") {
@@ -70,21 +70,21 @@ export default function LinkedListReversalVisualizer() {
           setReversedLinks(new Set([...reversedLinks, currIdx]));
         }
         setMessage(
-          `Step 2: Reverse link - curr.next = prev (${prevIdx !== null ? `node ${nodes[prevIdx].val}` : "null"})`,
+          `Step 2: Reverse link - curr.next = prev (${prevIdx !== null ? `node ${nodes[prevIdx].val}` : "null"})`
         );
         setPhase("move-prev");
       } else if (phase === "move-prev") {
         // Step 3: Move prev
         setPrevIdx(currIdx);
         setMessage(
-          `Step 3: Move prev to curr (node ${currIdx !== null ? nodes[currIdx].val : "null"})`,
+          `Step 3: Move prev to curr (node ${currIdx !== null ? nodes[currIdx].val : "null"})`
         );
         setPhase("move-curr");
       } else if (phase === "move-curr") {
         // Step 4: Move curr
         setCurrIdx(nextIdx);
         setMessage(
-          `Step 4: Move curr to next (${nextIdx !== null ? `node ${nodes[nextIdx].val}` : "null"})`,
+          `Step 4: Move curr to next (${nextIdx !== null ? `node ${nodes[nextIdx].val}` : "null"})`
         );
         setNextIdx(null);
         setPhase("save-next");

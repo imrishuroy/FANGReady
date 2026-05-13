@@ -187,7 +187,7 @@ export default function RecursionVsIterationVisualizer() {
               value={input}
               onChange={(e) => {
                 setInput(
-                  Math.min(7, Math.max(1, parseInt(e.target.value) || 1)),
+                  Math.min(7, Math.max(1, parseInt(e.target.value) || 1))
                 );
                 reset();
               }}
@@ -288,7 +288,7 @@ export default function RecursionVsIterationVisualizer() {
                     >
                       {key}: {value}
                     </span>
-                  ),
+                  )
                 )}
               </div>
               <p className="text-sm text-gray-300">{currentRecursion.output}</p>
@@ -355,7 +355,7 @@ export default function RecursionVsIterationVisualizer() {
                     >
                       {key}: {value}
                     </span>
-                  ),
+                  )
                 )}
               </div>
               <p className="text-sm text-gray-300">{currentIteration.output}</p>

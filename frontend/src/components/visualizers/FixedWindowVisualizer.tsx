@@ -11,10 +11,10 @@ export default function FixedWindowVisualizer() {
   const [maxSum, setMaxSum] = useState(-Infinity);
   const [maxWindow, setMaxWindow] = useState<[number, number] | null>(null);
   const [phase, setPhase] = useState<"init" | "building" | "sliding" | "done">(
-    "init",
+    "init"
   );
   const [message, setMessage] = useState(
-    "Click Play to find maximum sum of k=3 consecutive elements",
+    "Click Play to find maximum sum of k=3 consecutive elements"
   );
 
   const arr = [2, 1, 5, 1, 3, 2];
@@ -50,14 +50,14 @@ export default function FixedWindowVisualizer() {
         const newSum = windowSum + arr[currentIdx];
         setWindowSum(newSum);
         setMessage(
-          `Adding arr[${currentIdx}] = ${arr[currentIdx]} to window. Sum = ${newSum}`,
+          `Adding arr[${currentIdx}] = ${arr[currentIdx]} to window. Sum = ${newSum}`
         );
         setCurrentIdx(currentIdx + 1);
       } else if (phase === "sliding") {
         if (currentIdx >= arr.length) {
           setPhase("done");
           setMessage(
-            `Done! Maximum sum = ${maxSum} at window [${maxWindow![0]}, ${maxWindow![1]}]`,
+            `Done! Maximum sum = ${maxSum} at window [${maxWindow![0]}, ${maxWindow![1]}]`
           );
           setIsPlaying(false);
           return;
@@ -70,7 +70,7 @@ export default function FixedWindowVisualizer() {
 
         setWindowSum(newSum);
         setMessage(
-          `Remove arr[${currentIdx - k}] = ${leftVal}, Add arr[${currentIdx}] = ${rightVal}. Sum = ${newSum}`,
+          `Remove arr[${currentIdx - k}] = ${leftVal}, Add arr[${currentIdx}] = ${rightVal}. Sum = ${newSum}`
         );
 
         if (newSum > maxSum) {

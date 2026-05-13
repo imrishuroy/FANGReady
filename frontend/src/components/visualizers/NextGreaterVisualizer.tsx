@@ -12,7 +12,7 @@ export default function NextGreaterVisualizer() {
   const [poppingIdx, setPoppingIdx] = useState<number | null>(null);
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find next greater elements",
+    "Click Play to find next greater elements"
   );
 
   const nums = [2, 1, 2, 4, 3];
@@ -40,7 +40,7 @@ export default function NextGreaterVisualizer() {
         if (currentIdx >= nums.length) {
           setPhase("done");
           setMessage(
-            `Done! Result: [${result.join(", ")}]. Elements left on stack have no greater element.`,
+            `Done! Result: [${result.join(", ")}]. Elements left on stack have no greater element.`
           );
           setIsPlaying(false);
           return;
@@ -57,13 +57,13 @@ export default function NextGreaterVisualizer() {
           setResult(newResult);
           setStack(stack.slice(0, -1));
           setMessage(
-            `${currentVal} > ${nums[idxToPop]}: POP index ${idxToPop}, its next greater is ${currentVal}`,
+            `${currentVal} > ${nums[idxToPop]}: POP index ${idxToPop}, its next greater is ${currentVal}`
           );
         } else {
           setPoppingIdx(null);
           setStack([...stack, currentIdx]);
           setMessage(
-            `Push index ${currentIdx} (value ${currentVal}) onto stack`,
+            `Push index ${currentIdx} (value ${currentVal}) onto stack`
           );
           setCurrentIdx(currentIdx + 1);
         }

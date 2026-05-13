@@ -10,7 +10,7 @@ interface Props {
 }
 
 function getSectionComponents(
-  articleSlug: string,
+  articleSlug: string
 ): Record<string, React.ComponentType> {
   switch (articleSlug) {
     case "recursion":

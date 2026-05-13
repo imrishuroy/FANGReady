@@ -12,10 +12,10 @@ export default function PrefixSumArrayVisualizer() {
   const [queryRange, setQueryRange] = useState<[number, number] | null>(null);
   const [queryResult, setQueryResult] = useState<number | null>(null);
   const [phase, setPhase] = useState<"init" | "building" | "querying" | "done">(
-    "init",
+    "init"
   );
   const [message, setMessage] = useState(
-    "Click Play to build prefix sum array",
+    "Click Play to build prefix sum array"
   );
 
   const queries: [number, number][] = [
@@ -53,7 +53,7 @@ export default function PrefixSumArrayVisualizer() {
         if (nextIdx >= nums.length) {
           setPhase("querying");
           setMessage(
-            "Prefix sum built! Now answering range queries in O(1)...",
+            "Prefix sum built! Now answering range queries in O(1)..."
           );
           return;
         }
@@ -65,7 +65,7 @@ export default function PrefixSumArrayVisualizer() {
         });
         const newVal = prefixSum[prefixSum.length - 1] + nums[nextIdx];
         setMessage(
-          `prefix[${nextIdx}] = prefix[${nextIdx - 1}] + nums[${nextIdx}] = ${prefixSum[prefixSum.length - 1]} + ${nums[nextIdx]} = ${newVal}`,
+          `prefix[${nextIdx}] = prefix[${nextIdx - 1}] + nums[${nextIdx}] = ${prefixSum[prefixSum.length - 1]} + ${nums[nextIdx]} = ${newVal}`
         );
         return;
       }
@@ -74,7 +74,7 @@ export default function PrefixSumArrayVisualizer() {
         if (queryIndex >= queries.length) {
           setPhase("done");
           setMessage(
-            "All queries answered in O(1) each! Total: O(n) build + O(1) per query",
+            "All queries answered in O(1) each! Total: O(n) build + O(1) per query"
           );
           setIsPlaying(false);
           return;
@@ -90,7 +90,7 @@ export default function PrefixSumArrayVisualizer() {
           setMessage(`Query [${l}, ${r}]: prefix[${r}] = ${result}`);
         } else {
           setMessage(
-            `Query [${l}, ${r}]: prefix[${r}] - prefix[${l - 1}] = ${prefixSum[r]} - ${prefixSum[l - 1]} = ${result}`,
+            `Query [${l}, ${r}]: prefix[${r}] - prefix[${l - 1}] = ${prefixSum[r]} - ${prefixSum[l - 1]} = ${result}`
           );
         }
 

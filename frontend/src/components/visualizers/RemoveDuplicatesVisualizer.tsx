@@ -12,7 +12,7 @@ export default function RemoveDuplicatesVisualizer() {
   const [fast, setFast] = useState(1);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to remove duplicates in-place",
+    "Click Play to remove duplicates in-place"
   );
   const [history, setHistory] = useState<string[]>([]);
 
@@ -33,14 +33,14 @@ export default function RemoveDuplicatesVisualizer() {
       if (phase === "init") {
         setPhase("running");
         setMessage(
-          `Comparing nums[${fast}]=${nums[fast]} with nums[${slow}]=${nums[slow]}`,
+          `Comparing nums[${fast}]=${nums[fast]} with nums[${slow}]=${nums[slow]}`
         );
       } else if (phase === "running") {
         if (fast >= nums.length) {
           setPhase("done");
           const uniqueLength = slow + 1;
           setMessage(
-            `Done! ${uniqueLength} unique elements: [${nums.slice(0, uniqueLength).join(", ")}]`,
+            `Done! ${uniqueLength} unique elements: [${nums.slice(0, uniqueLength).join(", ")}]`
           );
           setIsPlaying(false);
           return;

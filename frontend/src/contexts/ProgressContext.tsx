@@ -23,7 +23,7 @@ interface ProgressContextType {
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
@@ -128,7 +128,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([...newCompleted]));
       }
     },
-    [completed, isAuthenticated],
+    [completed, isAuthenticated]
   );
 
   const resetProgress = useCallback(async () => {

@@ -81,7 +81,7 @@ export default function ProblemPage({ params }: PageProps) {
   const [error, setError] = useState<string | null>(null);
 
   const [selectedLanguageId, setSelectedLanguageId] = useState<number | null>(
-    null,
+    null
   );
   const [code, setCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -92,7 +92,7 @@ export default function ProblemPage({ params }: PageProps) {
     "description" | "submissions" | "hints" | "solution"
   >("description");
   const [resultTab, setResultTab] = useState<"testcases" | "console">(
-    "testcases",
+    "testcases"
   );
 
   // UI state
@@ -196,14 +196,14 @@ export default function ProblemPage({ params }: PageProps) {
           if (response.data.templates?.length > 0) {
             // Prefer Java as default, fallback to first template
             const javaTemplate = response.data.templates.find(
-              (t) => t.languageSlug === "java",
+              (t) => t.languageSlug === "java"
             );
             const defaultTemplate = javaTemplate || response.data.templates[0];
             setSelectedLanguageId(defaultTemplate.languageId);
 
             // Try to load saved code from localStorage
             const savedCode = localStorage.getItem(
-              getStorageKey(slug, defaultTemplate.languageId),
+              getStorageKey(slug, defaultTemplate.languageId)
             );
             setCode(savedCode || defaultTemplate.templateCode);
           }
@@ -310,7 +310,7 @@ export default function ProblemPage({ params }: PageProps) {
           .filter(Boolean)
           .join("\n");
         setConsoleOutput(
-          stdout + (stderr ? "\n--- Errors ---\n" + stderr : ""),
+          stdout + (stderr ? "\n--- Errors ---\n" + stderr : "")
         );
       } else {
         const errMsg = response.error?.message || "Run failed";
@@ -368,7 +368,7 @@ export default function ProblemPage({ params }: PageProps) {
             .filter(Boolean)
             .join("\n");
           setConsoleOutput(
-            stdout + (stderr ? "\n--- Errors ---\n" + stderr : ""),
+            stdout + (stderr ? "\n--- Errors ---\n" + stderr : "")
           );
         }
       } else {
@@ -405,7 +405,7 @@ export default function ProblemPage({ params }: PageProps) {
         setIsFullScreen(false);
       }
     },
-    [handleRun, handleSubmit, isFullScreen],
+    [handleRun, handleSubmit, isFullScreen]
   );
 
   useEffect(() => {
@@ -437,7 +437,7 @@ export default function ProblemPage({ params }: PageProps) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
     },
-    [panelWidth],
+    [panelWidth]
   );
 
   // Vertical resizer for editor/results split
@@ -465,7 +465,7 @@ export default function ProblemPage({ params }: PageProps) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
     },
-    [editorHeight],
+    [editorHeight]
   );
 
   // Parse hints from problem
@@ -1392,7 +1392,7 @@ export default function ProblemPage({ params }: PageProps) {
                             </div>
                           )}
                         </div>
-                      ),
+                      )
                     )}
 
                     {/* Show run results */}

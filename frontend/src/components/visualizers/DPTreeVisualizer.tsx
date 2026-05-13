@@ -31,7 +31,7 @@ export default function DPTreeVisualizer({
   const [completedNodes, setCompletedNodes] = useState<Set<string>>(new Set());
   const [cacheHits, setCacheHits] = useState<Set<string>>(new Set());
   const [nodeResults, setNodeResults] = useState<Map<string, number>>(
-    new Map(),
+    new Map()
   );
   const [memoCache, setMemoCache] = useState<Map<number, number>>(new Map());
   const [isPlaying, setIsPlaying] = useState(false);
@@ -63,7 +63,7 @@ export default function DPTreeVisualizer({
       n: number,
       depth: number = 0,
       id: string = "0",
-      memo: Set<number> = new Set(),
+      memo: Set<number> = new Set()
     ): TreeNode | null => {
       if (n < 0) return null;
 
@@ -99,7 +99,7 @@ export default function DPTreeVisualizer({
 
       return node;
     },
-    [showMemo],
+    [showMemo]
   );
 
   const buildClimbingTree = useCallback(
@@ -107,7 +107,7 @@ export default function DPTreeVisualizer({
       n: number,
       depth: number = 0,
       id: string = "0",
-      memo: Set<number> = new Set(),
+      memo: Set<number> = new Set()
     ): TreeNode | null => {
       if (n < 0) return null;
 
@@ -149,7 +149,7 @@ export default function DPTreeVisualizer({
 
       return node;
     },
-    [showMemo],
+    [showMemo]
   );
 
   const buildRobberTree = useCallback(
@@ -158,7 +158,7 @@ export default function DPTreeVisualizer({
       i: number = 0,
       depth: number = 0,
       id: string = "0",
-      memo: Set<number> = new Set(),
+      memo: Set<number> = new Set()
     ): TreeNode | null => {
       if (i >= nums.length) {
         return {
@@ -204,7 +204,7 @@ export default function DPTreeVisualizer({
 
       return node;
     },
-    [showMemo],
+    [showMemo]
   );
 
   const tree = useMemo(() => {
@@ -241,7 +241,7 @@ export default function DPTreeVisualizer({
       traverse(node);
       return order;
     },
-    [],
+    []
   );
 
   const executionOrder = useMemo(() => {
@@ -304,7 +304,7 @@ export default function DPTreeVisualizer({
 
   const renderNode = (
     node: TreeNode | null,
-    isRoot: boolean = true,
+    isRoot: boolean = true
   ): React.ReactNode => {
     if (!node) return null;
 

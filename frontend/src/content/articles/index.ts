@@ -38,7 +38,7 @@ export function getArticleSections(articleSlug: string): ArticleSection[] {
 
 export function getSection(
   articleSlug: string,
-  sectionSlug: string,
+  sectionSlug: string
 ): ArticleSection | undefined {
   const sections = getArticleSections(articleSlug);
   return sections.find((section) => section.slug === sectionSlug);

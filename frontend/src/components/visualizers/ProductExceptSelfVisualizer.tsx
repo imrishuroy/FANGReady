@@ -15,7 +15,7 @@ export default function ProductExceptSelfVisualizer() {
     "init" | "left-pass" | "right-pass" | "done"
   >("init");
   const [message, setMessage] = useState(
-    "Click Play to compute product except self",
+    "Click Play to compute product except self"
   );
 
   const arr = [1, 2, 3, 4];
@@ -40,14 +40,14 @@ export default function ProductExceptSelfVisualizer() {
         setLeftProducts([1]);
         setResult([1, 0, 0, 0]);
         setMessage(
-          "Pass 1: Build left products (product of all elements to the left)",
+          "Pass 1: Build left products (product of all elements to the left)"
         );
       } else if (phase === "left-pass") {
         if (leftIdx >= arr.length - 1) {
           setPhase("right-pass");
           setRightIdx(arr.length - 1);
           setMessage(
-            "Pass 2: Multiply by right products (product of all elements to the right)",
+            "Pass 2: Multiply by right products (product of all elements to the right)"
           );
           return;
         }
@@ -60,7 +60,7 @@ export default function ProductExceptSelfVisualizer() {
         setLeftProducts(newLeftProducts);
         setResult(newResult);
         setMessage(
-          `result[${leftIdx + 1}] = result[${leftIdx}] × arr[${leftIdx}] = ${leftProducts[leftIdx]} × ${arr[leftIdx]} = ${newLeftProduct}`,
+          `result[${leftIdx + 1}] = result[${leftIdx}] × arr[${leftIdx}] = ${leftProducts[leftIdx]} × ${arr[leftIdx]} = ${newLeftProduct}`
         );
         setLeftIdx(leftIdx + 1);
       } else if (phase === "right-pass") {
@@ -76,7 +76,7 @@ export default function ProductExceptSelfVisualizer() {
 
         setResult(newResult);
         setMessage(
-          `result[${rightIdx}] = ${result[rightIdx]} × rightProduct(${rightProduct}) = ${newResult[rightIdx]}`,
+          `result[${rightIdx}] = ${result[rightIdx]} × rightProduct(${rightProduct}) = ${newResult[rightIdx]}`
         );
 
         setRightProduct(rightProduct * arr[rightIdx]);

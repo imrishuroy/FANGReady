@@ -15,7 +15,7 @@ export default function LongestSubstringVisualizer() {
     "init" | "expanding" | "shrinking" | "done"
   >("init");
   const [message, setMessage] = useState(
-    "Click Play to find longest substring without repeating characters",
+    "Click Play to find longest substring without repeating characters"
   );
 
   const str = "abcabcbb";
@@ -28,7 +28,7 @@ export default function LongestSubstringVisualizer() {
     setMaxWindow(null);
     setPhase("init");
     setMessage(
-      "Click Play to find longest substring without repeating characters",
+      "Click Play to find longest substring without repeating characters"
     );
     setIsPlaying(false);
   }, []);
@@ -45,7 +45,7 @@ export default function LongestSubstringVisualizer() {
         if (right >= str.length) {
           setPhase("done");
           setMessage(
-            `Done! Longest substring without repeating: "${str.slice(maxWindow![0], maxWindow![1] + 1)}" (length ${maxLen})`,
+            `Done! Longest substring without repeating: "${str.slice(maxWindow![0], maxWindow![1] + 1)}" (length ${maxLen})`
           );
           setIsPlaying(false);
           return;
@@ -70,7 +70,7 @@ export default function LongestSubstringVisualizer() {
           }
 
           setMessage(
-            `Add '${char}'. Window = "${str.slice(left, right + 1)}" (len=${windowLen})`,
+            `Add '${char}'. Window = "${str.slice(left, right + 1)}" (len=${windowLen})`
           );
           setRight(right + 1);
         }
@@ -82,7 +82,7 @@ export default function LongestSubstringVisualizer() {
         newSeen.delete(charToRemove);
         setSeen(newSeen);
         setMessage(
-          `Remove '${charToRemove}' from left. Looking for '${charToAdd}'...`,
+          `Remove '${charToRemove}' from left. Looking for '${charToAdd}'...`
         );
         setLeft(left + 1);
 

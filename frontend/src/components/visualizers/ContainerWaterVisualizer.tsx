@@ -15,7 +15,7 @@ export default function ContainerWaterVisualizer() {
   const [bestRight, setBestRight] = useState(-1);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find maximum water container",
+    "Click Play to find maximum water container"
   );
 
   const reset = useCallback(() => {
@@ -44,13 +44,13 @@ export default function ContainerWaterVisualizer() {
         setBestLeft(left);
         setBestRight(right);
         setMessage(
-          `Area = min(${heights[left]}, ${heights[right]}) × ${width} = ${area}`,
+          `Area = min(${heights[left]}, ${heights[right]}) × ${width} = ${area}`
         );
       } else if (phase === "running") {
         if (left >= right) {
           setPhase("done");
           setMessage(
-            `Done! Maximum area = ${maxArea} at indices [${bestLeft}, ${bestRight}]`,
+            `Done! Maximum area = ${maxArea} at indices [${bestLeft}, ${bestRight}]`
           );
           setIsPlaying(false);
           return;
@@ -72,12 +72,12 @@ export default function ContainerWaterVisualizer() {
         // Move the shorter line
         if (heights[left] < heights[right]) {
           setMessage(
-            `height[${left}]=${heights[left]} < height[${right}]=${heights[right]}, move left pointer`,
+            `height[${left}]=${heights[left]} < height[${right}]=${heights[right]}, move left pointer`
           );
           setLeft(left + 1);
         } else {
           setMessage(
-            `height[${left}]=${heights[left]} >= height[${right}]=${heights[right]}, move right pointer`,
+            `height[${left}]=${heights[left]} >= height[${right}]=${heights[right]}, move right pointer`
           );
           setRight(right - 1);
         }

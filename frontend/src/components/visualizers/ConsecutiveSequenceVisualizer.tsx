@@ -36,7 +36,7 @@ export default function ConsecutiveSequenceVisualizer() {
   const [scanIndex, setScanIndex] = useState(0);
   const [sequenceCount, setSequenceCount] = useState(0);
   const [message, setMessage] = useState(
-    "Click Play to find longest consecutive sequence",
+    "Click Play to find longest consecutive sequence"
   );
 
   const initialNums = [100, 4, 200, 1, 3, 2];
@@ -80,13 +80,13 @@ export default function ConsecutiveSequenceVisualizer() {
         setNumbers(newNumbers);
         setPhase("scanning");
         setMessage(
-          "Step 2: Scan each number, only start counting from sequence beginnings",
+          "Step 2: Scan each number, only start counting from sequence beginnings"
         );
       } else if (phase === "scanning") {
         if (scanIndex >= numbers.length) {
           setPhase("done");
           setMessage(
-            `Done! Longest consecutive sequence: [${longestSequence.join(", ")}] with length ${longestSequence.length}`,
+            `Done! Longest consecutive sequence: [${longestSequence.join(", ")}] with length ${longestSequence.length}`
           );
           setIsPlaying(false);
           return;
@@ -102,7 +102,7 @@ export default function ConsecutiveSequenceVisualizer() {
 
         if (numSet.has(num - 1)) {
           setMessage(
-            `${num}: Has predecessor (${num - 1} exists), skip - not a sequence start`,
+            `${num}: Has predecessor (${num - 1} exists), skip - not a sequence start`
           );
           setTimeout(() => {
             const updated = [...newNumbers];
@@ -112,7 +112,7 @@ export default function ConsecutiveSequenceVisualizer() {
           }, speed / 2);
         } else {
           setMessage(
-            `${num}: No predecessor (${num - 1} not in set) - this is a sequence START!`,
+            `${num}: No predecessor (${num - 1} not in set) - this is a sequence START!`
           );
           setPhase("extending");
           setCurrentSequence([num]);
@@ -134,7 +134,7 @@ export default function ConsecutiveSequenceVisualizer() {
           const newSequence = [...currentSequence, nextNum];
           setCurrentSequence(newSequence);
           setMessage(
-            `Extending: ${lastNum} + 1 = ${nextNum} exists in set! Sequence: [${newSequence.join(", ")}]`,
+            `Extending: ${lastNum} + 1 = ${nextNum} exists in set! Sequence: [${newSequence.join(", ")}]`
           );
 
           const newNumbers = [...numbers];
@@ -149,7 +149,7 @@ export default function ConsecutiveSequenceVisualizer() {
           }
         } else {
           setMessage(
-            `${nextNum} not in set. Sequence complete: [${currentSequence.join(", ")}] length = ${currentSequence.length}`,
+            `${nextNum} not in set. Sequence complete: [${currentSequence.join(", ")}] length = ${currentSequence.length}`
           );
 
           if (currentSequence.length > longestSequence.length) {

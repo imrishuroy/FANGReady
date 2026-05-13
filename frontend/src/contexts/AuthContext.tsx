@@ -17,7 +17,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (req: LoginRequest) => Promise<{ success: boolean; error?: string }>;
   register: (
-    req: RegisterRequest,
+    req: RegisterRequest
   ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;

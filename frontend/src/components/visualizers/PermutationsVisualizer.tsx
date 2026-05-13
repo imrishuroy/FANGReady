@@ -12,7 +12,7 @@ export default function PermutationsVisualizer() {
   const [results, setResults] = useState<number[][]>([]);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to generate all permutations",
+    "Click Play to generate all permutations"
   );
   const [stepIndex, setStepIndex] = useState(-1);
   const [steps, setSteps] = useState<
@@ -110,7 +110,7 @@ export default function PermutationsVisualizer() {
       if (nextStepIdx >= steps.length) {
         setPhase("done");
         setMessage(
-          `Done! Generated all ${results.length} permutations (${nums.length}! = ${results.length})`,
+          `Done! Generated all ${results.length} permutations (${nums.length}! = ${results.length})`
         );
         setIsPlaying(false);
         return;
@@ -124,14 +124,14 @@ export default function PermutationsVisualizer() {
       if (step.action === "add") {
         setResults((prev) => [...prev, step.path]);
         setMessage(
-          `Complete permutation! Add [${step.path.join(", ")}] to results`,
+          `Complete permutation! Add [${step.path.join(", ")}] to results`
         );
       } else if (step.action === "choose") {
         if (step.index === -1) {
           setMessage("Start exploring permutations");
         } else {
           setMessage(
-            `Choose ${nums[step.index]}, mark as used, path = [${step.path.join(", ")}]`,
+            `Choose ${nums[step.index]}, mark as used, path = [${step.path.join(", ")}]`
           );
         }
       } else {

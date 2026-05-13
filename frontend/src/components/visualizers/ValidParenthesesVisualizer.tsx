@@ -40,7 +40,7 @@ export default function ValidParenthesesVisualizer() {
           setMessage(
             valid
               ? "Valid! Stack is empty at the end."
-              : `Invalid! Stack still has: ${stack.join(", ")}`,
+              : `Invalid! Stack still has: ${stack.join(", ")}`
           );
           setIsPlaying(false);
           return;
@@ -69,7 +69,7 @@ export default function ValidParenthesesVisualizer() {
             setPhase("done");
             setIsValid(false);
             setMessage(
-              `'${char}' expected '${expected}' but got '${top}' - Invalid!`,
+              `'${char}' expected '${expected}' but got '${top}' - Invalid!`
             );
             setIsPlaying(false);
             return;

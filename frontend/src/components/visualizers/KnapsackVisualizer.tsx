@@ -136,7 +136,7 @@ export default function KnapsackVisualizer() {
     setDpTable(
       Array(items.length + 1)
         .fill(null)
-        .map(() => Array(capacity + 1).fill(0)),
+        .map(() => Array(capacity + 1).fill(0))
     );
     setCurrentCell(null);
     setDecision("");
@@ -186,11 +186,11 @@ export default function KnapsackVisualizer() {
 
   const totalValue = [...selectedItems].reduce(
     (sum, i) => sum + items[i].value,
-    0,
+    0
   );
   const totalWeight = [...selectedItems].reduce(
     (sum, i) => sum + items[i].weight,
-    0,
+    0
   );
 
   return (

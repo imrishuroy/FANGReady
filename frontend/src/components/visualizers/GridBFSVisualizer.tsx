@@ -40,7 +40,7 @@ export default function GridBFSVisualizer() {
   const [currentIsland, setCurrentIsland] = useState(0);
   const [scanPosition, setScanPosition] = useState<[number, number]>([0, 0]);
   const [phase, setPhase] = useState<"scanning" | "exploring" | "done">(
-    "scanning",
+    "scanning"
   );
   const [message, setMessage] = useState("Click Play to start finding islands");
 
@@ -51,7 +51,7 @@ export default function GridBFSVisualizer() {
         col: c,
         state: val === 1 ? "land" : "water",
         islandId: null,
-      })),
+      }))
     );
     setGrid(newGrid);
     setQueue([]);
@@ -107,7 +107,7 @@ export default function GridBFSVisualizer() {
           setCurrentIsland(newIslandId);
           setIslandCount(newIslandId);
           setMessage(
-            `Found new island #${newIslandId}! Starting ${mode.toUpperCase()} exploration...`,
+            `Found new island #${newIslandId}! Starting ${mode.toUpperCase()} exploration...`
           );
 
           const newGrid = [...grid.map((row) => [...row])];
@@ -176,7 +176,7 @@ export default function GridBFSVisualizer() {
         }
 
         setMessage(
-          `${mode.toUpperCase()}: Exploring island #${currentIsland}, ${newFrontier.length + toAdd.length} cells in ${mode === "bfs" ? "queue" : "stack"}`,
+          `${mode.toUpperCase()}: Exploring island #${currentIsland}, ${newFrontier.length + toAdd.length} cells in ${mode === "bfs" ? "queue" : "stack"}`
         );
       }
     }, speed);

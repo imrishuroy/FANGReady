@@ -13,7 +13,7 @@ export default function CycleDetectionVisualizer() {
     "init" | "detecting" | "found" | "finding-start" | "done"
   >("init");
   const [message, setMessage] = useState(
-    "Click Play to detect cycle using Floyd's algorithm",
+    "Click Play to detect cycle using Floyd's algorithm"
   );
   const [visitedSlow, setVisitedSlow] = useState<Set<number>>(new Set());
   const [visitedFast, setVisitedFast] = useState<Set<number>>(new Set());
@@ -62,22 +62,22 @@ export default function CycleDetectionVisualizer() {
         if (newSlowIdx === newFastIdx) {
           setPhase("found");
           setMessage(
-            `Step ${step + 1}: CYCLE DETECTED! Slow and Fast meet at node ${nodes[newSlowIdx]}`,
+            `Step ${step + 1}: CYCLE DETECTED! Slow and Fast meet at node ${nodes[newSlowIdx]}`
           );
         } else {
           setMessage(
-            `Step ${step + 1}: Slow at ${nodes[newSlowIdx]}, Fast at ${nodes[newFastIdx]}`,
+            `Step ${step + 1}: Slow at ${nodes[newSlowIdx]}, Fast at ${nodes[newFastIdx]}`
           );
         }
       } else if (phase === "found") {
         setSlowIdx(0);
         setPhase("finding-start");
         setMessage(
-          "Now find cycle start: Move slow to head, both move 1 step at a time",
+          "Now find cycle start: Move slow to head, both move 1 step at a time"
         );
       } else if (phase === "finding-start") {
         const newSlowIdx = getNextIdx(
-          slowIdx === 0 && step === 0 ? -1 : slowIdx,
+          slowIdx === 0 && step === 0 ? -1 : slowIdx
         );
         const actualNewSlow = slowIdx === 0 ? slowIdx : getNextIdx(slowIdx);
         const newFastIdx = getNextIdx(fastIdx);
@@ -86,7 +86,7 @@ export default function CycleDetectionVisualizer() {
           // First step after reset
           setSlowIdx(0);
           setMessage(
-            `Slow at head (${nodes[0]}), Fast at ${nodes[fastIdx]}. Both move 1 step.`,
+            `Slow at head (${nodes[0]}), Fast at ${nodes[fastIdx]}. Both move 1 step.`
           );
         }
 
@@ -100,12 +100,12 @@ export default function CycleDetectionVisualizer() {
         if (nextSlow === nextFast) {
           setPhase("done");
           setMessage(
-            `Cycle starts at node ${nodes[nextSlow]}! Both pointers meet at the cycle entry.`,
+            `Cycle starts at node ${nodes[nextSlow]}! Both pointers meet at the cycle entry.`
           );
           setIsPlaying(false);
         } else {
           setMessage(
-            `Moving: Slow to ${nodes[nextSlow]}, Fast to ${nodes[nextFast]}`,
+            `Moving: Slow to ${nodes[nextSlow]}, Fast to ${nodes[nextFast]}`
           );
         }
       }

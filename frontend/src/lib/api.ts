@@ -31,7 +31,7 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {},
+    options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
     const url = `${API_BASE_URL}${endpoint}`;
     const headers: HeadersInit = {
@@ -131,7 +131,7 @@ class ApiClient {
       "/api/v1/auth/logout",
       {
         method: "POST",
-      },
+      }
     );
     this.accessToken = null;
     return response;
@@ -148,7 +148,7 @@ class ApiClient {
 
   async toggleProgress(
     questionId: string,
-    completed: boolean,
+    completed: boolean
   ): Promise<ApiResponse<ProgressResponse>> {
     return this.request<ProgressResponse>("/api/v1/progress/toggle", {
       method: "POST",
@@ -157,7 +157,7 @@ class ApiClient {
   }
 
   async syncProgress(
-    questionIds: string[],
+    questionIds: string[]
   ): Promise<ApiResponse<ProgressResponse>> {
     return this.request<ProgressResponse>("/api/v1/progress/sync", {
       method: "POST",
@@ -181,12 +181,12 @@ class ApiClient {
     if (params?.search) searchParams.set("search", params.search);
     const query = searchParams.toString();
     return this.request<ProblemListResponse>(
-      `/api/v1/problems${query ? `?${query}` : ""}`,
+      `/api/v1/problems${query ? `?${query}` : ""}`
     );
   }
 
   async getProblemBySlug(
-    slug: string,
+    slug: string
   ): Promise<ApiResponse<ProblemDetailResponse>> {
     return this.request<ProblemDetailResponse>(`/api/v1/problems/${slug}`);
   }

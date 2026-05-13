@@ -17,7 +17,7 @@ export default function DPTableVisualizer({
   const [step, setStep] = useState(0);
   const [speed, setSpeed] = useState(400);
   const [highlightedCells, setHighlightedCells] = useState<Set<string>>(
-    new Set(),
+    new Set()
   );
   const [currentCell, setCurrentCell] = useState<string | null>(null);
   const [arrows, setArrows] = useState<{ from: string; to: string }[]>([]);
@@ -337,7 +337,7 @@ export default function DPTableVisualizer({
                 const st = steps[s];
                 setCurrentCell(`${st.i}-${st.j}`);
                 setHighlightedCells(
-                  (prev) => new Set([...prev, `${st.i}-${st.j}`]),
+                  (prev) => new Set([...prev, `${st.i}-${st.j}`])
                 );
                 return s + 1;
               })

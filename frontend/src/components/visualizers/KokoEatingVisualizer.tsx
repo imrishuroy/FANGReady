@@ -24,7 +24,7 @@ export default function KokoEatingVisualizer() {
   const [answer, setAnswer] = useState<number | null>(null);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find minimum eating speed",
+    "Click Play to find minimum eating speed"
   );
   const [stepIndex, setStepIndex] = useState(-1);
   const [steps, setSteps] = useState<Step[]>([]);
@@ -103,7 +103,7 @@ export default function KokoEatingVisualizer() {
           : steps[steps.length - 1].mid + 1;
         setAnswer(left);
         setMessage(
-          `Minimum speed = ${left} bananas/hour to finish in ${hours} hours`,
+          `Minimum speed = ${left} bananas/hour to finish in ${hours} hours`
         );
         setIsPlaying(false);
         return;

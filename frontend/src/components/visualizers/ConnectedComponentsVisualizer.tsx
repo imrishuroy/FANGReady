@@ -66,7 +66,7 @@ export default function ConnectedComponentsVisualizer() {
       ];
       return colors[root % colors.length];
     },
-    [find],
+    [find]
   );
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function ConnectedComponentsVisualizer() {
       if (edgeIndex >= edges.length) {
         setPhase("done");
         setMessage(
-          `Done! Found ${componentCount} connected component${componentCount !== 1 ? "s" : ""}`,
+          `Done! Found ${componentCount} connected component${componentCount !== 1 ? "s" : ""}`
         );
         setIsPlaying(false);
         return;
@@ -95,7 +95,7 @@ export default function ConnectedComponentsVisualizer() {
 
       if (rootFrom === rootTo) {
         setMessage(
-          `Edge (${edge.from}, ${edge.to}): Already connected (same root = ${rootFrom})`,
+          `Edge (${edge.from}, ${edge.to}): Already connected (same root = ${rootFrom})`
         );
       } else {
         // Perform union
@@ -115,7 +115,7 @@ export default function ConnectedComponentsVisualizer() {
         setRank(newRank);
         setComponentCount((prev) => prev - 1);
         setMessage(
-          `Edge (${edge.from}, ${edge.to}): Merging components! Count: ${componentCount} → ${componentCount - 1}`,
+          `Edge (${edge.from}, ${edge.to}): Merging components! Count: ${componentCount} → ${componentCount - 1}`
         );
       }
 

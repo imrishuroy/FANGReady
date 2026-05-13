@@ -22,7 +22,7 @@ export default function Header() {
   }, [companyFilter]);
 
   const completedCount = filteredQuestions.filter((q) =>
-    completed.has(q.id),
+    completed.has(q.id)
   ).length;
   const total = filteredQuestions.length;
   const percent = total ? Math.round((completedCount / total) * 100) : 0;

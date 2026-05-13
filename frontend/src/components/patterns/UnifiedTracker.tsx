@@ -140,7 +140,7 @@ export default function UnifiedTracker({ questions }: UnifiedTrackerProps) {
       {categories.map((category) => {
         const pattern = patternsByCategory.get(category);
         const categoryQuestions = filteredQuestions.filter(
-          (q) => q.category === category,
+          (q) => q.category === category
         );
 
         if (categoryQuestions.length === 0) return null;

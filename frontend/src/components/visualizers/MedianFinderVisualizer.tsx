@@ -51,14 +51,14 @@ export default function MedianFinderVisualizer() {
           newMaxHeap.sort((a, b) => b - a); // max heap: largest first
           setMaxHeap(newMaxHeap);
           setMessage(
-            `Adding ${num}: Since ${maxHeap.length === 0 ? "maxHeap is empty" : `${num} <= maxHeap top (${maxHeap[0]})`}, add to maxHeap (left half)`,
+            `Adding ${num}: Since ${maxHeap.length === 0 ? "maxHeap is empty" : `${num} <= maxHeap top (${maxHeap[0]})`}, add to maxHeap (left half)`
           );
         } else {
           newMinHeap.push(num);
           newMinHeap.sort((a, b) => a - b); // min heap: smallest first
           setMinHeap(newMinHeap);
           setMessage(
-            `Adding ${num}: Since ${num} > maxHeap top (${maxHeap[0]}), add to minHeap (right half)`,
+            `Adding ${num}: Since ${num} > maxHeap top (${maxHeap[0]}), add to minHeap (right half)`
           );
         }
       } else if (phase === "adding") {
@@ -91,12 +91,12 @@ export default function MedianFinderVisualizer() {
         if (maxHeap.length > minHeap.length) {
           newMedian = maxHeap[0];
           setMessage(
-            `Median: maxHeap has more elements, median = maxHeap top = ${newMedian}`,
+            `Median: maxHeap has more elements, median = maxHeap top = ${newMedian}`
           );
         } else {
           newMedian = (maxHeap[0] + minHeap[0]) / 2;
           setMessage(
-            `Median: Equal sizes, median = (${maxHeap[0]} + ${minHeap[0]}) / 2 = ${newMedian}`,
+            `Median: Equal sizes, median = (${maxHeap[0]} + ${minHeap[0]}) / 2 = ${newMedian}`
           );
         }
         setMedian(newMedian);

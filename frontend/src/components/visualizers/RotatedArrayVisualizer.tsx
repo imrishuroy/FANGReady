@@ -25,7 +25,7 @@ export default function RotatedArrayVisualizer() {
   const [found, setFound] = useState<number | null>(null);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    `Click Play to search for ${target} in rotated array`,
+    `Click Play to search for ${target} in rotated array`
   );
   const [stepIndex, setStepIndex] = useState(-1);
   const [steps, setSteps] = useState<Step[]>([]);

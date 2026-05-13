@@ -15,11 +15,11 @@ export default function LargestRectangleVisualizer() {
     area: number;
   } | null>(null);
   const [highlightRange, setHighlightRange] = useState<[number, number] | null>(
-    null,
+    null
   );
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find largest rectangle in histogram",
+    "Click Play to find largest rectangle in histogram"
   );
 
   const heights = [2, 1, 5, 6, 2, 3];
@@ -71,11 +71,11 @@ export default function LargestRectangleVisualizer() {
           if (area > maxArea) {
             setMaxArea(area);
             setMessage(
-              `POP bar ${poppedIdx} (h=${poppedHeight}): width=${width}, area=${area} - NEW MAX!`,
+              `POP bar ${poppedIdx} (h=${poppedHeight}): width=${width}, area=${area} - NEW MAX!`
             );
           } else {
             setMessage(
-              `POP bar ${poppedIdx} (h=${poppedHeight}): width=${width}, area=${area}`,
+              `POP bar ${poppedIdx} (h=${poppedHeight}): width=${width}, area=${area}`
             );
           }
         } else {
@@ -92,11 +92,11 @@ export default function LargestRectangleVisualizer() {
           if (currentIdx < heights.length) {
             setStack([...stack, currentIdx]);
             setMessage(
-              `Push bar ${currentIdx} (height ${heights[currentIdx]}) onto stack`,
+              `Push bar ${currentIdx} (height ${heights[currentIdx]}) onto stack`
             );
           } else {
             setMessage(
-              "Processing sentinel (height 0) to flush remaining bars",
+              "Processing sentinel (height 0) to flush remaining bars"
             );
           }
           setCurrentIdx(currentIdx + 1);

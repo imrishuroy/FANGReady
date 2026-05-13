@@ -14,7 +14,7 @@ export default function SinglePageArticleLayout({
   sectionComponents,
 }: SinglePageArticleLayoutProps) {
   const [activeSection, setActiveSection] = useState<string>(
-    article.sections[0]?.slug || "",
+    article.sections[0]?.slug || ""
   );
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
@@ -66,7 +66,7 @@ export default function SinglePageArticleLayout({
 
     const observer = new IntersectionObserver(
       observerCallback,
-      observerOptions,
+      observerOptions
     );
 
     article.sections.forEach((section) => {
@@ -90,7 +90,7 @@ export default function SinglePageArticleLayout({
   };
 
   const currentSectionIndex = article.sections.findIndex(
-    (s) => s.slug === activeSection,
+    (s) => s.slug === activeSection
   );
   const progress =
     article.sections.length > 0

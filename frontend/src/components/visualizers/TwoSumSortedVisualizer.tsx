@@ -14,7 +14,7 @@ export default function TwoSumSortedVisualizer() {
   const [found, setFound] = useState(false);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find two numbers summing to 26",
+    "Click Play to find two numbers summing to 26"
   );
   const [history, setHistory] = useState<string[]>([]);
 
@@ -66,7 +66,7 @@ export default function TwoSumSortedVisualizer() {
             const newSum = nums[newLeft] + nums[right];
             setCurrentSum(newSum);
             setMessage(
-              `${sum} < ${target}, move left. Now: ${nums[newLeft]} + ${nums[right]} = ${newSum}`,
+              `${sum} < ${target}, move left. Now: ${nums[newLeft]} + ${nums[right]} = ${newSum}`
             );
             setHistory((prev) => [
               ...prev,
@@ -80,7 +80,7 @@ export default function TwoSumSortedVisualizer() {
             const newSum = nums[left] + nums[newRight];
             setCurrentSum(newSum);
             setMessage(
-              `${sum} > ${target}, move right. Now: ${nums[left]} + ${nums[newRight]} = ${newSum}`,
+              `${sum} > ${target}, move right. Now: ${nums[left]} + ${nums[newRight]} = ${newSum}`
             );
             setHistory((prev) => [
               ...prev,

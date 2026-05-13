@@ -190,7 +190,7 @@ function SectionNavigation({
   currentSection: string;
 }) {
   const currentIndex = article.sections.findIndex(
-    (s) => s.slug === currentSection,
+    (s) => s.slug === currentSection
   );
   const prevSection =
     currentIndex > 0 ? article.sections[currentIndex - 1] : null;

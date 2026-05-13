@@ -15,10 +15,10 @@ export default function TwoSumVisualizer() {
   const [hashMap, setHashMap] = useState<Map<number, number>>(new Map());
   const [found, setFound] = useState<[number, number] | null>(null);
   const [currentComplement, setCurrentComplement] = useState<number | null>(
-    null,
+    null
   );
   const [message, setMessage] = useState(
-    "Click Play to find two numbers that sum to target",
+    "Click Play to find two numbers that sum to target"
   );
   const [phase, setPhase] = useState<
     "init" | "checking" | "adding" | "found" | "done"
@@ -55,7 +55,7 @@ export default function TwoSumVisualizer() {
         setPhase("checking");
         setCurrentComplement(complement);
         setMessage(
-          `At index ${currentIndex}: nums[${currentIndex}] = ${currentNum}. Looking for complement ${target} - ${currentNum} = ${complement}`,
+          `At index ${currentIndex}: nums[${currentIndex}] = ${currentNum}. Looking for complement ${target} - ${currentNum} = ${complement}`
         );
       } else if (phase === "checking") {
         if (hashMap.has(complement)) {
@@ -63,7 +63,7 @@ export default function TwoSumVisualizer() {
           setFound([complementIndex, currentIndex]);
           setPhase("found");
           setMessage(
-            `Found! nums[${complementIndex}] + nums[${currentIndex}] = ${complement} + ${currentNum} = ${target}`,
+            `Found! nums[${complementIndex}] + nums[${currentIndex}] = ${complement} + ${currentNum} = ${target}`
           );
           setIsPlaying(false);
         } else {
@@ -72,7 +72,7 @@ export default function TwoSumVisualizer() {
           newMap.set(currentNum, currentIndex);
           setHashMap(newMap);
           setMessage(
-            `${complement} not in map. Adding {${currentNum}: ${currentIndex}} to map.`,
+            `${complement} not in map. Adding {${currentNum}: ${currentIndex}} to map.`
           );
           setCurrentIndex(currentIndex + 1);
           setCurrentComplement(null);

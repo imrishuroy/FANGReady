@@ -77,7 +77,7 @@ export default function SubsetsVisualizer() {
       if (nextStepIdx >= steps.length) {
         setPhase("done");
         setMessage(
-          `Done! Generated all ${results.length} subsets using backtracking`,
+          `Done! Generated all ${results.length} subsets using backtracking`
         );
         setIsPlaying(false);
         return;
@@ -92,11 +92,11 @@ export default function SubsetsVisualizer() {
         setMessage(`Add [${step.path.join(", ")}] to results`);
       } else if (step.action === "choose") {
         setMessage(
-          `Choose ${nums[step.index]}, path = [${step.path.join(", ")}]`,
+          `Choose ${nums[step.index]}, path = [${step.path.join(", ")}]`
         );
       } else {
         setMessage(
-          `Backtrack: remove ${nums[step.index]}, path = [${step.path.join(", ")}]`,
+          `Backtrack: remove ${nums[step.index]}, path = [${step.path.join(", ")}]`
         );
       }
     }, speed);

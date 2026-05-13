@@ -13,7 +13,7 @@ export const sections: Record<string, React.ComponentType> = {
 };
 
 export function getSectionComponent(
-  sectionSlug: string,
+  sectionSlug: string
 ): React.ComponentType | undefined {
   return sections[sectionSlug];
 }

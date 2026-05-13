@@ -39,7 +39,7 @@ export default function MeetingRoomsVisualizer() {
     "init" | "creating-events" | "sweeping" | "done"
   >("init");
   const [message, setMessage] = useState(
-    "Click Play to find minimum meeting rooms",
+    "Click Play to find minimum meeting rooms"
   );
 
   const initialMeetings: Meeting[] = [
@@ -94,7 +94,7 @@ export default function MeetingRoomsVisualizer() {
         if (currentEventIdx >= events.length) {
           setPhase("done");
           setMessage(
-            `Done! Maximum concurrent meetings: ${maxRooms} rooms needed`,
+            `Done! Maximum concurrent meetings: ${maxRooms} rooms needed`
           );
           setIsPlaying(false);
           return;
@@ -106,12 +106,12 @@ export default function MeetingRoomsVisualizer() {
         if (event.type === "start") {
           newRooms = activeRooms + 1;
           setMessage(
-            `Time ${event.time}: Meeting ${event.meetingId + 1} STARTS → rooms: ${activeRooms} + 1 = ${newRooms}`,
+            `Time ${event.time}: Meeting ${event.meetingId + 1} STARTS → rooms: ${activeRooms} + 1 = ${newRooms}`
           );
         } else {
           newRooms = activeRooms - 1;
           setMessage(
-            `Time ${event.time}: Meeting ${event.meetingId + 1} ENDS → rooms: ${activeRooms} - 1 = ${newRooms}`,
+            `Time ${event.time}: Meeting ${event.meetingId + 1} ENDS → rooms: ${activeRooms} - 1 = ${newRooms}`
           );
         }
 

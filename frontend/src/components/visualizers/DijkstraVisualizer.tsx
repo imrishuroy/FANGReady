@@ -29,7 +29,7 @@ export default function DijkstraVisualizer() {
   const [source, setSource] = useState(0);
   const [target, setTarget] = useState(5);
   const [message, setMessage] = useState(
-    "Click Play to find shortest path from A to F",
+    "Click Play to find shortest path from A to F"
   );
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
 
@@ -73,7 +73,7 @@ export default function DijkstraVisualizer() {
     setPriorityQueue([[0, source]]);
     setPhase("init");
     setMessage(
-      `Click Play to find shortest path from ${nodePositions[source].label} to ${nodePositions[target].label}`,
+      `Click Play to find shortest path from ${nodePositions[source].label} to ${nodePositions[target].label}`
     );
     setIsPlaying(false);
   }, [source, target]);
@@ -111,7 +111,7 @@ export default function DijkstraVisualizer() {
             curr = nodes[curr].prev;
           }
           setMessage(
-            `Shortest path: ${path.join(" -> ")} (distance: ${targetNode.dist})`,
+            `Shortest path: ${path.join(" -> ")} (distance: ${targetNode.dist})`
           );
         }
         setIsPlaying(false);
@@ -176,7 +176,7 @@ export default function DijkstraVisualizer() {
             curr = updatedNodes[curr].prev;
           }
           setMessage(
-            `Found shortest path: ${path.join(" -> ")} (distance: ${updatedNodes[target].dist})`,
+            `Found shortest path: ${path.join(" -> ")} (distance: ${updatedNodes[target].dist})`
           );
           setIsPlaying(false);
         }

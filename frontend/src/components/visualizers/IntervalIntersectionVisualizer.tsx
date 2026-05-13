@@ -18,7 +18,7 @@ export default function IntervalIntersectionVisualizer() {
     useState<Interval | null>(null);
   const [phase, setPhase] = useState<"init" | "checking" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find interval intersections",
+    "Click Play to find interval intersections"
   );
 
   const listA: Interval[] = [
@@ -76,12 +76,12 @@ export default function IntervalIntersectionVisualizer() {
           setCurrentIntersection(intersection);
           setResult([...result, intersection]);
           setMessage(
-            `A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}] = [max(${a.start},${b.start}), min(${a.end},${b.end})] = [${start},${end}] ✓`,
+            `A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}] = [max(${a.start},${b.start}), min(${a.end},${b.end})] = [${start},${end}] ✓`
           );
         } else {
           setCurrentIntersection(null);
           setMessage(
-            `A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}]: No intersection (${start} > ${end})`,
+            `A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}]: No intersection (${start} > ${end})`
           );
         }
 
@@ -101,7 +101,7 @@ export default function IntervalIntersectionVisualizer() {
 
   const maxEnd = Math.max(
     ...listA.map((i) => i.end),
-    ...listB.map((i) => i.end),
+    ...listB.map((i) => i.end)
   );
 
   return (

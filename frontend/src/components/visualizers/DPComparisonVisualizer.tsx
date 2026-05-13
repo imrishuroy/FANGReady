@@ -29,7 +29,7 @@ export default function DPComparisonVisualizer() {
 
   const [tabIndex, setTabIndex] = useState(0);
   const [tabArray, setTabArray] = useState<(number | null)[]>(
-    Array(n + 1).fill(null),
+    Array(n + 1).fill(null)
   );
 
   const [optIndex, setOptIndex] = useState(0);

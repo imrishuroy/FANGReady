@@ -29,7 +29,7 @@ export default function UnionFindVisualizer() {
   const [pathNodes, setPathNodes] = useState<number[]>([]);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to see Union-Find operations",
+    "Click Play to see Union-Find operations"
   );
 
   const reset = useCallback(() => {
@@ -54,7 +54,7 @@ export default function UnionFindVisualizer() {
       }
       return [x, path];
     },
-    [],
+    []
   );
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function UnionFindVisualizer() {
       if (opIndex >= operations.length) {
         setPhase("done");
         setMessage(
-          "All operations complete! Notice how path compression flattened the trees.",
+          "All operations complete! Notice how path compression flattened the trees."
         );
         setIsPlaying(false);
         setHighlighted([]);
@@ -94,7 +94,7 @@ export default function UnionFindVisualizer() {
             return { ...prev, parent: newParent };
           });
           setMessage(
-            `find(${x}): Path compression applied! All nodes now point to ${root}`,
+            `find(${x}): Path compression applied! All nodes now point to ${root}`
           );
         }, speed / 2);
       } else {
@@ -107,7 +107,7 @@ export default function UnionFindVisualizer() {
 
         if (rootX === rootY) {
           setMessage(
-            `union(${x}, ${y}): Already in same set (root = ${rootX})`,
+            `union(${x}, ${y}): Already in same set (root = ${rootX})`
           );
         } else {
           setState((prev) => {
@@ -118,18 +118,18 @@ export default function UnionFindVisualizer() {
             if (newRank[rootX] < newRank[rootY]) {
               newParent[rootX] = rootY;
               setMessage(
-                `union(${x}, ${y}): rank[${rootX}] < rank[${rootY}], attach ${rootX} under ${rootY}`,
+                `union(${x}, ${y}): rank[${rootX}] < rank[${rootY}], attach ${rootX} under ${rootY}`
               );
             } else if (newRank[rootX] > newRank[rootY]) {
               newParent[rootY] = rootX;
               setMessage(
-                `union(${x}, ${y}): rank[${rootX}] > rank[${rootY}], attach ${rootY} under ${rootX}`,
+                `union(${x}, ${y}): rank[${rootX}] > rank[${rootY}], attach ${rootY} under ${rootX}`
               );
             } else {
               newParent[rootY] = rootX;
               newRank[rootX]++;
               setMessage(
-                `union(${x}, ${y}): Equal ranks, attach ${rootY} under ${rootX}, increase rank`,
+                `union(${x}, ${y}): Equal ranks, attach ${rootY} under ${rootX}, increase rank`
               );
             }
 
@@ -174,7 +174,7 @@ export default function UnionFindVisualizer() {
             animate={{ opacity: 1 }}
             className="stroke-gray-500 stroke-2"
             markerEnd="url(#arrowhead)"
-          />,
+          />
         );
       }
     });
@@ -222,7 +222,7 @@ export default function UnionFindVisualizer() {
               root
             </text>
           )}
-        </g>,
+        </g>
       );
     });
 

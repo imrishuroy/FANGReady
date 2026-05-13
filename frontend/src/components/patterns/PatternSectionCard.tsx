@@ -38,7 +38,7 @@ function TutorialContent({
                   currentLang={currentLang}
                   onChange={setCurrentLang}
                   languages={Object.keys(section.code).filter(
-                    (k) => section.code?.[k as keyof typeof section.code],
+                    (k) => section.code?.[k as keyof typeof section.code]
                   )}
                   size="sm"
                 />
@@ -68,7 +68,7 @@ export default function PatternSectionCard({
 
   const languageOrder = ["java", "javascript", "python", "cpp", "go"];
   const availableLanguages = languageOrder.filter((lang) =>
-    pattern.codeTemplates[lang as keyof typeof pattern.codeTemplates]?.trim(),
+    pattern.codeTemplates[lang as keyof typeof pattern.codeTemplates]?.trim()
   );
 
   const currentCode =
@@ -343,7 +343,7 @@ function VariationInline({
   const languageOrder = ["java", "javascript", "python", "cpp", "go"];
   const availableLanguages = variation.template
     ? languageOrder.filter((lang) =>
-        variation.template?.[lang as keyof typeof variation.template]?.trim(),
+        variation.template?.[lang as keyof typeof variation.template]?.trim()
       )
     : [];
 

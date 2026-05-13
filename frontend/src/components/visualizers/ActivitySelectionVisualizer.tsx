@@ -16,7 +16,7 @@ export default function ActivitySelectionVisualizer() {
   const [step, setStep] = useState(0);
   const [speed, setSpeed] = useState(800);
   const [selectedActivities, setSelectedActivities] = useState<Set<number>>(
-    new Set(),
+    new Set()
   );
   const [currentActivity, setCurrentActivity] = useState<number | null>(null);
   const [lastEnd, setLastEnd] = useState(0);
@@ -36,12 +36,12 @@ export default function ActivitySelectionVisualizer() {
   ];
 
   const sortedActivities = [...originalActivities].sort(
-    (a, b) => a.end - b.end,
+    (a, b) => a.end - b.end
   );
 
   const [activities, setActivities] = useState(originalActivities);
   const [message, setMessage] = useState(
-    "Activities shown in original order. Click Play to start!",
+    "Activities shown in original order. Click Play to start!"
   );
 
   const timelineMax = 12;
@@ -70,7 +70,7 @@ export default function ActivitySelectionVisualizer() {
         if (currentIdx >= sortedActs.length) {
           setIsPlaying(false);
           setMessage(
-            `Done! Selected ${selectedActivities.size} non-overlapping activities.`,
+            `Done! Selected ${selectedActivities.size} non-overlapping activities.`
           );
           return;
         }
@@ -81,11 +81,11 @@ export default function ActivitySelectionVisualizer() {
           setSelectedActivities((prev) => new Set([...prev, act.id]));
           setLastEnd(act.end);
           setMessage(
-            `Selected ${act.name} (ends at ${act.end}). Last end = ${act.end}`,
+            `Selected ${act.name} (ends at ${act.end}). Last end = ${act.end}`
           );
         } else {
           setMessage(
-            `Skipped ${act.name} (starts at ${act.start} < lastEnd ${lastEnd})`,
+            `Skipped ${act.name} (starts at ${act.start} < lastEnd ${lastEnd})`
           );
         }
 
@@ -190,7 +190,7 @@ export default function ActivitySelectionVisualizer() {
                   ? "bg-green-500/20 border border-green-500 text-green-400"
                   : i <
                       ["unsorted", "sorting", "sorted", "selecting"].indexOf(
-                        phase,
+                        phase
                       )
                     ? "bg-gray-700 text-gray-300"
                     : "bg-gray-800 text-gray-500"

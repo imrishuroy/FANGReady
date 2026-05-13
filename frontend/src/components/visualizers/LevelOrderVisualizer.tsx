@@ -34,7 +34,7 @@ export default function LevelOrderVisualizer() {
   const [levelIndex, setLevelIndex] = useState(0);
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to start BFS level order traversal",
+    "Click Play to start BFS level order traversal"
   );
 
   const nodeMap: Record<number, TreeNode> = {
@@ -75,7 +75,7 @@ export default function LevelOrderVisualizer() {
           setPhase("done");
           setCurrentNode(null);
           setMessage(
-            `Done! Result: [[${result.map((l) => l.join(", ")).join("], [")}${currentLevel.length > 0 ? ", [" + currentLevel.join(", ") + "]" : ""}]]`,
+            `Done! Result: [[${result.map((l) => l.join(", ")).join("], [")}${currentLevel.length > 0 ? ", [" + currentLevel.join(", ") + "]" : ""}]]`
           );
           setIsPlaying(false);
           return;
@@ -120,7 +120,7 @@ export default function LevelOrderVisualizer() {
 
         if (children.length > 0) {
           setMessage(
-            `Process ${nodeVal}, add children [${children.join(", ")}] to queue`,
+            `Process ${nodeVal}, add children [${children.join(", ")}] to queue`
           );
         } else {
           setMessage(`Process ${nodeVal} (leaf node, no children)`);

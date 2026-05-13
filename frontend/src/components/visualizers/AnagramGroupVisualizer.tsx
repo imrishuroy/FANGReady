@@ -20,7 +20,7 @@ export default function AnagramGroupVisualizer() {
   const [currentWord, setCurrentWord] = useState<string | null>(null);
   const [currentKey, setCurrentKey] = useState<string | null>(null);
   const [phase, setPhase] = useState<"init" | "sorting" | "grouping" | "done">(
-    "init",
+    "init"
   );
   const [message, setMessage] = useState("Click Play to group anagrams");
 
@@ -246,7 +246,7 @@ export default function AnagramGroupVisualizer() {
                         </div>
                       </div>
                     </motion.div>
-                  ),
+                  )
                 )}
               </AnimatePresence>
               {groups.size === 0 && (

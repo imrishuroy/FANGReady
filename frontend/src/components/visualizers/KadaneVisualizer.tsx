@@ -21,7 +21,7 @@ export default function KadaneVisualizer() {
   const [steps, setSteps] = useState<Step[]>([]);
   const [phase, setPhase] = useState<"init" | "running" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to find the maximum subarray sum",
+    "Click Play to find the maximum subarray sum"
   );
 
   const generateSteps = useCallback(() => {
@@ -98,7 +98,7 @@ export default function KadaneVisualizer() {
         setCurrentStep(0);
         const step = steps[0];
         setMessage(
-          `i=0: Start with nums[0]=${step.num}. currentSum=${step.currentSum}, maxSum=${step.maxSum}`,
+          `i=0: Start with nums[0]=${step.num}. currentSum=${step.currentSum}, maxSum=${step.maxSum}`
         );
         return;
       }
@@ -108,7 +108,7 @@ export default function KadaneVisualizer() {
         setPhase("done");
         const finalStep = steps[steps.length - 1];
         setMessage(
-          `Done! Maximum subarray sum = ${finalStep.maxSum} (indices ${finalStep.subarrayStart} to ${finalStep.subarrayEnd})`,
+          `Done! Maximum subarray sum = ${finalStep.maxSum} (indices ${finalStep.subarrayStart} to ${finalStep.subarrayEnd})`
         );
         setIsPlaying(false);
         return;
@@ -120,11 +120,11 @@ export default function KadaneVisualizer() {
 
       if (step.decision === "start") {
         setMessage(
-          `i=${step.index}: ${step.num} > ${prevSum} + ${step.num} = ${prevSum + step.num}. Start new subarray! currentSum=${step.currentSum}`,
+          `i=${step.index}: ${step.num} > ${prevSum} + ${step.num} = ${prevSum + step.num}. Start new subarray! currentSum=${step.currentSum}`
         );
       } else {
         setMessage(
-          `i=${step.index}: ${prevSum} + ${step.num} = ${step.currentSum} >= ${step.num}. Extend subarray. currentSum=${step.currentSum}`,
+          `i=${step.index}: ${prevSum} + ${step.num} = ${step.currentSum} >= ${step.num}. Extend subarray. currentSum=${step.currentSum}`
         );
       }
     }, speed);

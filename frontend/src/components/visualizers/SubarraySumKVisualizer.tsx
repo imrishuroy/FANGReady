@@ -10,13 +10,13 @@ export default function SubarraySumKVisualizer() {
   const [sum, setSum] = useState(0);
   const [count, setCount] = useState(0);
   const [prefixMap, setPrefixMap] = useState<Map<number, number>>(
-    new Map([[0, 1]]),
+    new Map([[0, 1]])
   );
   const [foundSubarrays, setFoundSubarrays] = useState<[number, number][]>([]);
   const [lookingFor, setLookingFor] = useState<number | null>(null);
   const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
   const [message, setMessage] = useState(
-    "Click Play to count subarrays with sum = 3",
+    "Click Play to count subarrays with sum = 3"
   );
 
   const arr = [1, 2, 1, 1, 1];
@@ -78,11 +78,11 @@ export default function SubarraySumKVisualizer() {
 
         if (complementCount > 0) {
           setMessage(
-            `arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Found ${complementCount}! count=${newCount}`,
+            `arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Found ${complementCount}! count=${newCount}`
           );
         } else {
           setMessage(
-            `arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Not found. count=${newCount}`,
+            `arr[${currentIdx}]=${num}: sum=${newSum}, looking for ${complement} → Not found. count=${newCount}`
           );
         }
 
