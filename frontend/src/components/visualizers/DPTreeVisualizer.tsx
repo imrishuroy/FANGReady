@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TreeNode {
   id: string;
@@ -14,7 +14,7 @@ interface TreeNode {
   choice?: string;
 }
 
-type Problem = 'fibonacci' | 'climbing-stairs' | 'house-robber';
+type Problem = "fibonacci" | "climbing-stairs" | "house-robber";
 
 interface DPTreeVisualizerProps {
   problem?: Problem;
@@ -22,15 +22,17 @@ interface DPTreeVisualizerProps {
 }
 
 export default function DPTreeVisualizer({
-  problem: initialProblem = 'fibonacci',
-  showMemo: initialShowMemo = false
+  problem: initialProblem = "fibonacci",
+  showMemo: initialShowMemo = false,
 }: DPTreeVisualizerProps) {
   const [problem, setProblem] = useState<Problem>(initialProblem);
   const [showMemo, setShowMemo] = useState(initialShowMemo);
   const [activeNodes, setActiveNodes] = useState<Set<string>>(new Set());
   const [completedNodes, setCompletedNodes] = useState<Set<string>>(new Set());
   const [cacheHits, setCacheHits] = useState<Set<string>>(new Set());
-  const [nodeResults, setNodeResults] = useState<Map<string, number>>(new Map());
+  const [nodeResults, setNodeResults] = useState<Map<string, number>>(
+    new Map()
+  );
   const [memoCache, setMemoCache] = useState<Map<number, number>>(new Map());
   const [isPlaying, setIsPlaying] = useState(false);
   const [step, setStep] = useState(0);
@@ -39,168 +41,208 @@ export default function DPTreeVisualizer({
   const [cacheHitCount, setCacheHitCount] = useState(0);
 
   const problemConfigs = {
-    'fibonacci': { input: 5, title: 'Fibonacci', description: 'fib(n) = fib(n-1) + fib(n-2)' },
-    'climbing-stairs': { input: 4, title: 'Climbing Stairs', description: 'ways(n) = ways(n-1) + ways(n-2)' },
-    'house-robber': { input: [2, 7, 9, 3], title: 'House Robber', description: 'rob(i) = max(nums[i] + rob(i+2), rob(i+1))' }
+    fibonacci: {
+      input: 5,
+      title: "Fibonacci",
+      description: "fib(n) = fib(n-1) + fib(n-2)",
+    },
+    "climbing-stairs": {
+      input: 4,
+      title: "Climbing Stairs",
+      description: "ways(n) = ways(n-1) + ways(n-2)",
+    },
+    "house-robber": {
+      input: [2, 7, 9, 3],
+      title: "House Robber",
+      description: "rob(i) = max(nums[i] + rob(i+2), rob(i+1))",
+    },
   };
 
-  const buildFibTree = useCallback((n: number, depth: number = 0, id: string = '0', memo: Set<number> = new Set()): TreeNode | null => {
-    if (n < 0) return null;
+  const buildFibTree = useCallback(
+    (
+      n: number,
+      depth: number = 0,
+      id: string = "0",
+      memo: Set<number> = new Set()
+    ): TreeNode | null => {
+      if (n < 0) return null;
 
-    const isCacheHit = showMemo && memo.has(n);
+      const isCacheHit = showMemo && memo.has(n);
 
-    const node: TreeNode = {
-      id,
-      label: `fib(${n})`,
-      value: n,
-      depth,
-      children: [],
-      isCacheHit
-    };
+      const node: TreeNode = {
+        id,
+        label: `fib(${n})`,
+        value: n,
+        depth,
+        children: [],
+        isCacheHit,
+      };
 
-    if (n <= 1) {
-      node.result = n;
+      if (n <= 1) {
+        node.result = n;
+        return node;
+      }
+
+      if (isCacheHit) {
+        return node;
+      }
+
+      if (showMemo) {
+        memo.add(n);
+      }
+
+      const left = buildFibTree(n - 1, depth + 1, `${id}L`, memo);
+      const right = buildFibTree(n - 2, depth + 1, `${id}R`, memo);
+
+      if (left) node.children.push(left);
+      if (right) node.children.push(right);
+
       return node;
-    }
+    },
+    [showMemo]
+  );
 
-    if (isCacheHit) {
+  const buildClimbingTree = useCallback(
+    (
+      n: number,
+      depth: number = 0,
+      id: string = "0",
+      memo: Set<number> = new Set()
+    ): TreeNode | null => {
+      if (n < 0) return null;
+
+      const isCacheHit = showMemo && memo.has(n);
+
+      const node: TreeNode = {
+        id,
+        label: `ways(${n})`,
+        value: n,
+        depth,
+        children: [],
+        isCacheHit,
+      };
+
+      if (n <= 1) {
+        node.result = 1;
+        return node;
+      }
+
+      if (isCacheHit) {
+        return node;
+      }
+
+      if (showMemo) {
+        memo.add(n);
+      }
+
+      const left = buildClimbingTree(n - 1, depth + 1, `${id}L`, memo);
+      const right = buildClimbingTree(n - 2, depth + 1, `${id}R`, memo);
+
+      if (left) {
+        left.choice = "+1 step";
+        node.children.push(left);
+      }
+      if (right) {
+        right.choice = "+2 steps";
+        node.children.push(right);
+      }
+
       return node;
-    }
+    },
+    [showMemo]
+  );
 
-    if (showMemo) {
-      memo.add(n);
-    }
+  const buildRobberTree = useCallback(
+    (
+      nums: number[],
+      i: number = 0,
+      depth: number = 0,
+      id: string = "0",
+      memo: Set<number> = new Set()
+    ): TreeNode | null => {
+      if (i >= nums.length) {
+        return {
+          id,
+          label: `rob(${i})`,
+          value: i,
+          result: 0,
+          depth,
+          children: [],
+        };
+      }
 
-    const left = buildFibTree(n - 1, depth + 1, `${id}L`, memo);
-    const right = buildFibTree(n - 2, depth + 1, `${id}R`, memo);
+      const isCacheHit = showMemo && memo.has(i);
 
-    if (left) node.children.push(left);
-    if (right) node.children.push(right);
-
-    return node;
-  }, [showMemo]);
-
-  const buildClimbingTree = useCallback((n: number, depth: number = 0, id: string = '0', memo: Set<number> = new Set()): TreeNode | null => {
-    if (n < 0) return null;
-
-    const isCacheHit = showMemo && memo.has(n);
-
-    const node: TreeNode = {
-      id,
-      label: `ways(${n})`,
-      value: n,
-      depth,
-      children: [],
-      isCacheHit
-    };
-
-    if (n <= 1) {
-      node.result = 1;
-      return node;
-    }
-
-    if (isCacheHit) {
-      return node;
-    }
-
-    if (showMemo) {
-      memo.add(n);
-    }
-
-    const left = buildClimbingTree(n - 1, depth + 1, `${id}L`, memo);
-    const right = buildClimbingTree(n - 2, depth + 1, `${id}R`, memo);
-
-    if (left) {
-      left.choice = '+1 step';
-      node.children.push(left);
-    }
-    if (right) {
-      right.choice = '+2 steps';
-      node.children.push(right);
-    }
-
-    return node;
-  }, [showMemo]);
-
-  const buildRobberTree = useCallback((nums: number[], i: number = 0, depth: number = 0, id: string = '0', memo: Set<number> = new Set()): TreeNode | null => {
-    if (i >= nums.length) {
-      return {
+      const node: TreeNode = {
         id,
         label: `rob(${i})`,
         value: i,
-        result: 0,
         depth,
-        children: []
+        children: [],
+        isCacheHit,
       };
-    }
 
-    const isCacheHit = showMemo && memo.has(i);
+      if (isCacheHit) {
+        return node;
+      }
 
-    const node: TreeNode = {
-      id,
-      label: `rob(${i})`,
-      value: i,
-      depth,
-      children: [],
-      isCacheHit
-    };
+      if (showMemo) {
+        memo.add(i);
+      }
 
-    if (isCacheHit) {
+      const robChild = buildRobberTree(nums, i + 2, depth + 1, `${id}R`, memo);
+      const skipChild = buildRobberTree(nums, i + 1, depth + 1, `${id}S`, memo);
+
+      if (robChild) {
+        robChild.choice = `ROB $${nums[i]}`;
+        node.children.push(robChild);
+      }
+      if (skipChild) {
+        skipChild.choice = "SKIP";
+        node.children.push(skipChild);
+      }
+
       return node;
-    }
-
-    if (showMemo) {
-      memo.add(i);
-    }
-
-    const robChild = buildRobberTree(nums, i + 2, depth + 1, `${id}R`, memo);
-    const skipChild = buildRobberTree(nums, i + 1, depth + 1, `${id}S`, memo);
-
-    if (robChild) {
-      robChild.choice = `ROB $${nums[i]}`;
-      node.children.push(robChild);
-    }
-    if (skipChild) {
-      skipChild.choice = 'SKIP';
-      node.children.push(skipChild);
-    }
-
-    return node;
-  }, [showMemo]);
+    },
+    [showMemo]
+  );
 
   const tree = useMemo(() => {
     const config = problemConfigs[problem];
     switch (problem) {
-      case 'fibonacci':
+      case "fibonacci":
         return buildFibTree(config.input as number);
-      case 'climbing-stairs':
+      case "climbing-stairs":
         return buildClimbingTree(config.input as number);
-      case 'house-robber':
+      case "house-robber":
         return buildRobberTree(config.input as number[], 0);
       default:
         return null;
     }
   }, [problem, buildFibTree, buildClimbingTree, buildRobberTree, showMemo]);
 
-  const generateExecutionOrder = useCallback((node: TreeNode | null): string[] => {
-    if (!node) return [];
-    const order: string[] = [];
+  const generateExecutionOrder = useCallback(
+    (node: TreeNode | null): string[] => {
+      if (!node) return [];
+      const order: string[] = [];
 
-    function traverse(n: TreeNode) {
-      order.push(`enter:${n.id}:${n.isCacheHit ? 'hit' : 'miss'}`);
+      function traverse(n: TreeNode) {
+        order.push(`enter:${n.id}:${n.isCacheHit ? "hit" : "miss"}`);
 
-      if (!n.isCacheHit) {
-        for (const child of n.children) {
-          traverse(child);
+        if (!n.isCacheHit) {
+          for (const child of n.children) {
+            traverse(child);
+          }
         }
+
+        order.push(`exit:${n.id}:${n.isCacheHit ? "hit" : "miss"}`);
       }
 
-      order.push(`exit:${n.id}:${n.isCacheHit ? 'hit' : 'miss'}`);
-    }
-
-    traverse(node);
-    return order;
-  }, []);
+      traverse(node);
+      return order;
+    },
+    []
+  );
 
   const executionOrder = useMemo(() => {
     return tree ? generateExecutionOrder(tree) : [];
@@ -216,26 +258,26 @@ export default function DPTreeVisualizer({
 
     const timer = setTimeout(() => {
       const action = executionOrder[step];
-      const [type, nodeId, hitStatus] = action.split(':');
-      const isHit = hitStatus === 'hit';
+      const [type, nodeId, hitStatus] = action.split(":");
+      const isHit = hitStatus === "hit";
 
-      if (type === 'enter') {
-        setActiveNodes(prev => new Set([...prev, nodeId]));
-        setCallCount(c => c + 1);
+      if (type === "enter") {
+        setActiveNodes((prev) => new Set([...prev, nodeId]));
+        setCallCount((c) => c + 1);
         if (isHit) {
-          setCacheHits(prev => new Set([...prev, nodeId]));
-          setCacheHitCount(c => c + 1);
+          setCacheHits((prev) => new Set([...prev, nodeId]));
+          setCacheHitCount((c) => c + 1);
         }
-      } else if (type === 'exit') {
-        setActiveNodes(prev => {
+      } else if (type === "exit") {
+        setActiveNodes((prev) => {
           const next = new Set(prev);
           next.delete(nodeId);
           return next;
         });
-        setCompletedNodes(prev => new Set([...prev, nodeId]));
+        setCompletedNodes((prev) => new Set([...prev, nodeId]));
       }
 
-      setStep(s => s + 1);
+      setStep((s) => s + 1);
     }, speed);
 
     return () => clearTimeout(timer);
@@ -260,7 +302,10 @@ export default function DPTreeVisualizer({
 
   const totalNodes = tree ? countNodes(tree) : 0;
 
-  const renderNode = (node: TreeNode | null, isRoot: boolean = true): React.ReactNode => {
+  const renderNode = (
+    node: TreeNode | null,
+    isRoot: boolean = true
+  ): React.ReactNode => {
     if (!node) return null;
 
     const isActive = activeNodes.has(node.id);
@@ -280,9 +325,11 @@ export default function DPTreeVisualizer({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={`text-xs mb-1 px-2 py-0.5 rounded-full ${
-              node.choice.includes('ROB') ? 'bg-green-500/20 text-green-400' :
-              node.choice === 'SKIP' ? 'bg-gray-500/20 text-gray-400' :
-              'bg-indigo-500/20 text-indigo-400'
+              node.choice.includes("ROB")
+                ? "bg-green-500/20 text-green-400"
+                : node.choice === "SKIP"
+                  ? "bg-gray-500/20 text-gray-400"
+                  : "bg-indigo-500/20 text-indigo-400"
             }`}
           >
             {node.choice}
@@ -292,16 +339,16 @@ export default function DPTreeVisualizer({
         <motion.div
           animate={{
             scale: isActive ? 1.15 : 1,
-            boxShadow: isActive ? '0 0 20px rgba(234, 179, 8, 0.5)' : 'none'
+            boxShadow: isActive ? "0 0 20px rgba(234, 179, 8, 0.5)" : "none",
           }}
           transition={{ duration: 0.2 }}
           className={`
             relative px-3 py-2 rounded-lg font-mono text-sm font-medium
             border-2 transition-colors duration-300 min-w-[70px] text-center
-            ${isActive ? 'bg-yellow-500 border-yellow-400 text-black' : ''}
-            ${isCacheHit && isCompleted ? 'bg-purple-500/30 border-purple-500 text-purple-300' : ''}
-            ${isCompleted && !isActive && !isCacheHit ? 'bg-green-500/20 border-green-500 text-green-400' : ''}
-            ${!isActive && !isCompleted ? 'bg-gray-800 border-gray-700 text-gray-400' : ''}
+            ${isActive ? "bg-yellow-500 border-yellow-400 text-black" : ""}
+            ${isCacheHit && isCompleted ? "bg-purple-500/30 border-purple-500 text-purple-300" : ""}
+            ${isCompleted && !isActive && !isCacheHit ? "bg-green-500/20 border-green-500 text-green-400" : ""}
+            ${!isActive && !isCompleted ? "bg-gray-800 border-gray-700 text-gray-400" : ""}
           `}
         >
           <span>{node.label}</span>
@@ -331,7 +378,12 @@ export default function DPTreeVisualizer({
               className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full"
               width={node.children.length * 100}
               height="32"
-              style={{ marginLeft: node.children.length === 1 ? 0 : -(node.children.length - 1) * 50 }}
+              style={{
+                marginLeft:
+                  node.children.length === 1
+                    ? 0
+                    : -(node.children.length - 1) * 50,
+              }}
             >
               {node.children.map((child, idx) => {
                 const startX = (node.children.length * 100) / 2;
@@ -349,7 +401,13 @@ export default function DPTreeVisualizer({
                     y1="0"
                     x2={endX}
                     y2="32"
-                    stroke={childCacheHit ? '#a855f7' : childCompleted ? '#22c55e' : '#374151'}
+                    stroke={
+                      childCacheHit
+                        ? "#a855f7"
+                        : childCompleted
+                          ? "#22c55e"
+                          : "#374151"
+                    }
                     strokeWidth="2"
                     strokeLinecap="round"
                   />
@@ -357,7 +415,7 @@ export default function DPTreeVisualizer({
               })}
             </svg>
             <div className="flex gap-6 justify-center">
-              {node.children.map(child => renderNode(child, false))}
+              {node.children.map((child) => renderNode(child, false))}
             </div>
           </div>
         )}
@@ -379,14 +437,17 @@ export default function DPTreeVisualizer({
       <div className="p-4">
         {/* Problem Selector */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {(Object.keys(problemConfigs) as Problem[]).map(p => (
+          {(Object.keys(problemConfigs) as Problem[]).map((p) => (
             <button
               key={p}
-              onClick={() => { setProblem(p); reset(); }}
+              onClick={() => {
+                setProblem(p);
+                reset();
+              }}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
                 problem === p
-                  ? 'bg-indigo-500 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                  ? "bg-indigo-500 text-white"
+                  : "bg-gray-800 text-gray-400 hover:bg-gray-700"
               }`}
             >
               {problemConfigs[p].title}
@@ -400,13 +461,18 @@ export default function DPTreeVisualizer({
             <input
               type="checkbox"
               checked={showMemo}
-              onChange={(e) => { setShowMemo(e.target.checked); reset(); }}
+              onChange={(e) => {
+                setShowMemo(e.target.checked);
+                reset();
+              }}
               className="w-4 h-4 rounded accent-purple-500"
             />
             <span className="text-white font-medium">Enable Memoization</span>
           </label>
           <span className="text-gray-500 text-sm">
-            {showMemo ? 'Cache enabled - watch for purple CACHE hits!' : 'Pure recursion - notice repeated work'}
+            {showMemo
+              ? "Cache enabled - watch for purple CACHE hits!"
+              : "Pure recursion - notice repeated work"}
           </span>
         </div>
 
@@ -416,13 +482,17 @@ export default function DPTreeVisualizer({
             onClick={() => setIsPlaying(!isPlaying)}
             className={`px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 ${
               isPlaying
-                ? 'bg-yellow-500 text-black hover:bg-yellow-400'
-                : 'bg-green-500 text-white hover:bg-green-400'
+                ? "bg-yellow-500 text-black hover:bg-yellow-400"
+                : "bg-green-500 text-white hover:bg-green-400"
             }`}
           >
             {isPlaying ? (
               <>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <rect x="6" y="4" width="4" height="16" />
                   <rect x="14" y="4" width="4" height="16" />
                 </svg>
@@ -430,7 +500,11 @@ export default function DPTreeVisualizer({
               </>
             ) : (
               <>
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M8 5v14l11-7z" />
                 </svg>
                 Play
@@ -468,11 +542,15 @@ export default function DPTreeVisualizer({
             <div className="text-xs text-gray-500">Function Calls</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-xl font-bold text-green-400">{completedNodes.size}</div>
+            <div className="text-xl font-bold text-green-400">
+              {completedNodes.size}
+            </div>
             <div className="text-xs text-gray-500">Completed</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-xl font-bold text-purple-400">{cacheHitCount}</div>
+            <div className="text-xl font-bold text-purple-400">
+              {cacheHitCount}
+            </div>
             <div className="text-xs text-gray-500">Cache Hits</div>
           </div>
         </div>
@@ -515,24 +593,27 @@ export default function DPTreeVisualizer({
 
         {/* Insight Box */}
         <motion.div
-          key={showMemo ? 'memo' : 'no-memo'}
+          key={showMemo ? "memo" : "no-memo"}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`mt-4 p-4 rounded-lg border ${
             showMemo
-              ? 'bg-purple-500/10 border-purple-500/30'
-              : 'bg-yellow-500/10 border-yellow-500/30'
+              ? "bg-purple-500/10 border-purple-500/30"
+              : "bg-yellow-500/10 border-yellow-500/30"
           }`}
         >
           {showMemo ? (
             <p className="text-purple-300 text-sm">
-              <strong>With Memoization:</strong> Notice the purple CACHE hits! Once we compute a value,
-              we never compute it again. This reduces time complexity from O(2<sup>n</sup>) to O(n).
+              <strong>With Memoization:</strong> Notice the purple CACHE hits!
+              Once we compute a value, we never compute it again. This reduces
+              time complexity from O(2<sup>n</sup>) to O(n).
             </p>
           ) : (
             <p className="text-yellow-300 text-sm">
-              <strong>Without Memoization:</strong> Watch how the same subproblems are solved multiple times.
-              This is <strong>overlapping subproblems</strong> — the key indicator that DP will help!
+              <strong>Without Memoization:</strong> Watch how the same
+              subproblems are solved multiple times. This is{" "}
+              <strong>overlapping subproblems</strong> — the key indicator that
+              DP will help!
             </p>
           )}
         </motion.div>

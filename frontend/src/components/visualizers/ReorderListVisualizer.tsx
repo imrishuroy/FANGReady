@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ReorderListVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,9 +11,16 @@ export default function ReorderListVisualizer() {
   const [firstHalf, setFirstHalf] = useState<number[]>([]);
   const [secondHalf, setSecondHalf] = useState<number[]>([]);
   const [result, setResult] = useState<number[]>([]);
-  const [phase, setPhase] = useState<'init' | 'finding-middle' | 'found-middle' | 'reversing' | 'merging' | 'done'>('init');
+  const [phase, setPhase] = useState<
+    | "init"
+    | "finding-middle"
+    | "found-middle"
+    | "reversing"
+    | "merging"
+    | "done"
+  >("init");
   const [step, setStep] = useState(0);
-  const [message, setMessage] = useState('Click Play to reorder the list');
+  const [message, setMessage] = useState("Click Play to reorder the list");
 
   const originalList = [1, 2, 3, 4, 5];
 
@@ -23,9 +30,9 @@ export default function ReorderListVisualizer() {
     setFirstHalf([]);
     setSecondHalf([]);
     setResult([]);
-    setPhase('init');
+    setPhase("init");
     setStep(0);
-    setMessage('Click Play to reorder: L0→Ln→L1→Ln-1→...');
+    setMessage("Click Play to reorder: L0→Ln→L1→Ln-1→...");
     setIsPlaying(false);
   }, []);
 
@@ -33,10 +40,10 @@ export default function ReorderListVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('finding-middle');
-        setMessage('Step 1: Find middle using fast/slow pointers');
-      } else if (phase === 'finding-middle') {
+      if (phase === "init") {
+        setPhase("finding-middle");
+        setMessage("Step 1: Find middle using fast/slow pointers");
+      } else if (phase === "finding-middle") {
         // Fast moves 2, slow moves 1
         const newFast = Math.min(fastIdx + 2, originalList.length);
         const newSlow = slowIdx + 1;
@@ -44,24 +51,30 @@ export default function ReorderListVisualizer() {
         if (newFast >= originalList.length - 1) {
           // Found middle
           setSlowIdx(newSlow - 1);
-          setPhase('found-middle');
+          setPhase("found-middle");
           const mid = newSlow - 1;
           setFirstHalf(originalList.slice(0, mid + 1));
           setSecondHalf(originalList.slice(mid + 1));
-          setMessage(`Middle found at index ${mid} (value ${originalList[mid]}). Splitting list.`);
+          setMessage(
+            `Middle found at index ${mid} (value ${originalList[mid]}). Splitting list.`
+          );
         } else {
           setFastIdx(newFast);
           setSlowIdx(newSlow);
-          setMessage(`Slow at ${originalList[newSlow]}, Fast at ${originalList[newFast]}`);
+          setMessage(
+            `Slow at ${originalList[newSlow]}, Fast at ${originalList[newFast]}`
+          );
         }
-      } else if (phase === 'found-middle') {
-        setPhase('reversing');
-        setMessage('Step 2: Reverse second half');
-      } else if (phase === 'reversing') {
+      } else if (phase === "found-middle") {
+        setPhase("reversing");
+        setMessage("Step 2: Reverse second half");
+      } else if (phase === "reversing") {
         setSecondHalf([...secondHalf].reverse());
-        setPhase('merging');
-        setMessage(`Second half reversed: [${[...secondHalf].reverse().join(', ')}]. Now merge alternating.`);
-      } else if (phase === 'merging') {
+        setPhase("merging");
+        setMessage(
+          `Second half reversed: [${[...secondHalf].reverse().join(", ")}]. Now merge alternating.`
+        );
+      } else if (phase === "merging") {
         if (result.length === 0) {
           // Start merging
           const merged = [...result];
@@ -78,7 +91,7 @@ export default function ReorderListVisualizer() {
           setResult(merged);
           setFirstHalf(first);
           setSecondHalf(second.reverse()); // Reverse back to show original order
-          setMessage(`Merged: [${merged.join(' → ')}]`);
+          setMessage(`Merged: [${merged.join(" → ")}]`);
         } else {
           const first = [...firstHalf];
           const second = [...secondHalf];
@@ -94,10 +107,10 @@ export default function ReorderListVisualizer() {
             setResult(merged);
             setFirstHalf(first);
             setSecondHalf(second);
-            setMessage(`Merged: [${merged.join(' → ')}]`);
+            setMessage(`Merged: [${merged.join(" → ")}]`);
           } else {
-            setPhase('done');
-            setMessage(`Done! Reordered: ${merged.join(' → ')}`);
+            setPhase("done");
+            setMessage(`Done! Reordered: ${merged.join(" → ")}`);
             setIsPlaying(false);
           }
         }
@@ -105,7 +118,16 @@ export default function ReorderListVisualizer() {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, slowIdx, fastIdx, firstHalf, secondHalf, result, speed]);
+  }, [
+    isPlaying,
+    phase,
+    slowIdx,
+    fastIdx,
+    firstHalf,
+    secondHalf,
+    result,
+    speed,
+  ]);
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
@@ -121,12 +143,12 @@ export default function ReorderListVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -150,23 +172,28 @@ export default function ReorderListVisualizer() {
 
         {/* Phase indicator */}
         <div className="mb-4 flex gap-2">
-          {['Finding Middle', 'Reversing', 'Merging'].map((p, i) => {
-            const phaseOrder = ['finding-middle', 'reversing', 'merging'];
+          {["Finding Middle", "Reversing", "Merging"].map((p, i) => {
+            const phaseOrder = ["finding-middle", "reversing", "merging"];
             const currentPhaseIdx = phaseOrder.indexOf(phase);
-            const isActive = currentPhaseIdx >= i || phase === 'done' || phase === 'found-middle' && i === 0;
-            const isCurrent = (phase === 'finding-middle' || phase === 'found-middle') && i === 0 ||
-                             phase === 'reversing' && i === 1 ||
-                             phase === 'merging' && i === 2;
+            const isActive =
+              currentPhaseIdx >= i ||
+              phase === "done" ||
+              (phase === "found-middle" && i === 0);
+            const isCurrent =
+              ((phase === "finding-middle" || phase === "found-middle") &&
+                i === 0) ||
+              (phase === "reversing" && i === 1) ||
+              (phase === "merging" && i === 2);
 
             return (
               <div
                 key={p}
                 className={`flex-1 p-2 rounded-lg text-center text-sm font-medium transition-colors ${
                   isCurrent
-                    ? 'bg-purple-500 text-white'
+                    ? "bg-purple-500 text-white"
                     : isActive
-                    ? 'bg-purple-500/30 text-purple-300'
-                    : 'bg-gray-800 text-gray-500'
+                      ? "bg-purple-500/30 text-purple-300"
+                      : "bg-gray-800 text-gray-500"
                 }`}
               >
                 {i + 1}. {p}
@@ -176,9 +203,11 @@ export default function ReorderListVisualizer() {
         </div>
 
         {/* Original list with pointers */}
-        {(phase === 'init' || phase === 'finding-middle') && (
+        {(phase === "init" || phase === "finding-middle") && (
           <div className="mb-6">
-            <div className="text-sm text-gray-400 mb-2">Original List (finding middle):</div>
+            <div className="text-sm text-gray-400 mb-2">
+              Original List (finding middle):
+            </div>
             <div className="flex items-center gap-2">
               {originalList.map((val, idx) => (
                 <React.Fragment key={idx}>
@@ -192,20 +221,26 @@ export default function ReorderListVisualizer() {
                     <div
                       className={`w-12 h-12 rounded-lg flex items-center justify-center font-mono text-lg font-bold ${
                         idx === slowIdx && idx === fastIdx
-                          ? 'bg-yellow-500 text-black'
+                          ? "bg-yellow-500 text-black"
                           : idx === slowIdx
-                          ? 'bg-blue-500 text-white'
-                          : idx === fastIdx
-                          ? 'bg-green-500 text-white'
-                          : 'bg-gray-700 text-gray-300'
+                            ? "bg-blue-500 text-white"
+                            : idx === fastIdx
+                              ? "bg-green-500 text-white"
+                              : "bg-gray-700 text-gray-300"
                       }`}
                     >
                       {val}
                     </div>
                     <div className="text-xs mt-1 h-4">
-                      {idx === slowIdx && idx === fastIdx && <span className="text-yellow-400">S+F</span>}
-                      {idx === slowIdx && idx !== fastIdx && <span className="text-blue-400">Slow</span>}
-                      {idx === fastIdx && idx !== slowIdx && <span className="text-green-400">Fast</span>}
+                      {idx === slowIdx && idx === fastIdx && (
+                        <span className="text-yellow-400">S+F</span>
+                      )}
+                      {idx === slowIdx && idx !== fastIdx && (
+                        <span className="text-blue-400">Slow</span>
+                      )}
+                      {idx === fastIdx && idx !== slowIdx && (
+                        <span className="text-green-400">Fast</span>
+                      )}
                     </div>
                   </motion.div>
                   {idx < originalList.length - 1 && (
@@ -218,7 +253,10 @@ export default function ReorderListVisualizer() {
         )}
 
         {/* Split lists */}
-        {(phase === 'found-middle' || phase === 'reversing' || phase === 'merging' || phase === 'done') && (
+        {(phase === "found-middle" ||
+          phase === "reversing" ||
+          phase === "merging" ||
+          phase === "done") && (
           <div className="mb-6 grid grid-cols-2 gap-4">
             <div>
               <div className="text-sm text-gray-400 mb-2">First Half:</div>
@@ -235,12 +273,20 @@ export default function ReorderListVisualizer() {
                     </motion.div>
                   ))}
                 </AnimatePresence>
-                {firstHalf.length === 0 && <span className="text-gray-500 text-sm">Empty</span>}
+                {firstHalf.length === 0 && (
+                  <span className="text-gray-500 text-sm">Empty</span>
+                )}
               </div>
             </div>
             <div>
               <div className="text-sm text-gray-400 mb-2">
-                Second Half {phase === 'reversing' || phase === 'merging' || phase === 'done' ? '(reversed)' : ''}:
+                Second Half{" "}
+                {phase === "reversing" ||
+                phase === "merging" ||
+                phase === "done"
+                  ? "(reversed)"
+                  : ""}
+                :
               </div>
               <div className="flex gap-1 p-3 bg-green-500/10 rounded-lg min-h-[60px]">
                 <AnimatePresence>
@@ -256,14 +302,16 @@ export default function ReorderListVisualizer() {
                     </motion.div>
                   ))}
                 </AnimatePresence>
-                {secondHalf.length === 0 && <span className="text-gray-500 text-sm">Empty</span>}
+                {secondHalf.length === 0 && (
+                  <span className="text-gray-500 text-sm">Empty</span>
+                )}
               </div>
             </div>
           </div>
         )}
 
         {/* Result */}
-        {(phase === 'merging' || phase === 'done') && (
+        {(phase === "merging" || phase === "done") && (
           <div className="mb-4">
             <div className="text-sm text-gray-400 mb-2">Reordered Result:</div>
             <div className="flex gap-1 p-3 bg-purple-500/10 rounded-lg min-h-[60px]">
@@ -283,7 +331,9 @@ export default function ReorderListVisualizer() {
                   </React.Fragment>
                 ))}
               </AnimatePresence>
-              {result.length === 0 && <span className="text-gray-500 text-sm">Building...</span>}
+              {result.length === 0 && (
+                <span className="text-gray-500 text-sm">Building...</span>
+              )}
             </div>
           </div>
         )}
@@ -294,9 +344,9 @@ export default function ReorderListVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -305,9 +355,10 @@ export default function ReorderListVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-purple-400">Key Insight:</strong>{' '}
-            Combine three techniques: Fast/slow finds middle, then reverse second half,
-            then interleave both halves. Same pattern works for Palindrome check.
+            <strong className="text-purple-400">Key Insight:</strong> Combine
+            three techniques: Fast/slow finds middle, then reverse second half,
+            then interleave both halves. Same pattern works for Palindrome
+            check.
           </p>
         </div>
       </div>

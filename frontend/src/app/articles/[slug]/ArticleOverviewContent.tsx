@@ -1,19 +1,21 @@
-'use client';
+"use client";
 
-import { ArticleMeta } from '@/content/articles';
-import SinglePageArticleLayout from '@/components/articles/SinglePageArticleLayout';
-import { sections as recursionSections } from '@/content/articles/recursion/sections';
-import { sections as algorithmParadigmsSections } from '@/content/articles/algorithm-paradigms/sections';
+import { ArticleMeta } from "@/content/articles";
+import SinglePageArticleLayout from "@/components/articles/SinglePageArticleLayout";
+import { sections as recursionSections } from "@/content/articles/recursion/sections";
+import { sections as algorithmParadigmsSections } from "@/content/articles/algorithm-paradigms/sections";
 
 interface Props {
   article: ArticleMeta;
 }
 
-function getSectionComponents(articleSlug: string): Record<string, React.ComponentType> {
+function getSectionComponents(
+  articleSlug: string
+): Record<string, React.ComponentType> {
   switch (articleSlug) {
-    case 'recursion':
+    case "recursion":
       return recursionSections;
-    case 'algorithm-paradigms':
+    case "algorithm-paradigms":
       return algorithmParadigmsSections;
     default:
       return {};

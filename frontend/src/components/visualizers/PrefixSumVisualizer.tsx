@@ -1,30 +1,38 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 export default function PrefixSumVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(800);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [prefix, setPrefix] = useState<number[]>([0]);
-  const [phase, setPhase] = useState<'init' | 'building' | 'built' | 'querying' | 'done'>('init');
+  const [phase, setPhase] = useState<
+    "init" | "building" | "built" | "querying" | "done"
+  >("init");
   const [queryRange, setQueryRange] = useState<[number, number] | null>(null);
   const [queryResult, setQueryResult] = useState<number | null>(null);
-  const [message, setMessage] = useState('Click Play to build prefix sum array');
+  const [message, setMessage] = useState(
+    "Click Play to build prefix sum array"
+  );
 
   const arr = [2, 4, 1, 3, 5];
-  const queries: [number, number][] = [[1, 3], [0, 4], [2, 2]];
+  const queries: [number, number][] = [
+    [1, 3],
+    [0, 4],
+    [2, 2],
+  ];
   const [queryIdx, setQueryIdx] = useState(0);
 
   const reset = useCallback(() => {
     setCurrentIdx(0);
     setPrefix([0]);
-    setPhase('init');
+    setPhase("init");
     setQueryRange(null);
     setQueryResult(null);
     setQueryIdx(0);
-    setMessage('Click Play to build prefix sum array');
+    setMessage("Click Play to build prefix sum array");
     setIsPlaying(false);
   }, []);
 
@@ -32,27 +40,33 @@ export default function PrefixSumVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('building');
-        setMessage('Building prefix sum: prefix[i] = prefix[i-1] + arr[i-1]');
-      } else if (phase === 'building') {
+      if (phase === "init") {
+        setPhase("building");
+        setMessage("Building prefix sum: prefix[i] = prefix[i-1] + arr[i-1]");
+      } else if (phase === "building") {
         if (currentIdx >= arr.length) {
-          setPhase('built');
-          setMessage(`Prefix sum built! Now let's answer range queries in O(1)`);
+          setPhase("built");
+          setMessage(
+            `Prefix sum built! Now let's answer range queries in O(1)`
+          );
           return;
         }
 
         const newSum = prefix[prefix.length - 1] + arr[currentIdx];
         setPrefix([...prefix, newSum]);
-        setMessage(`prefix[${currentIdx + 1}] = prefix[${currentIdx}] + arr[${currentIdx}] = ${prefix[prefix.length - 1]} + ${arr[currentIdx]} = ${newSum}`);
+        setMessage(
+          `prefix[${currentIdx + 1}] = prefix[${currentIdx}] + arr[${currentIdx}] = ${prefix[prefix.length - 1]} + ${arr[currentIdx]} = ${newSum}`
+        );
         setCurrentIdx(currentIdx + 1);
-      } else if (phase === 'built') {
-        setPhase('querying');
-        setMessage('Answering queries using formula: sum(i,j) = prefix[j+1] - prefix[i]');
-      } else if (phase === 'querying') {
+      } else if (phase === "built") {
+        setPhase("querying");
+        setMessage(
+          "Answering queries using formula: sum(i,j) = prefix[j+1] - prefix[i]"
+        );
+      } else if (phase === "querying") {
         if (queryIdx >= queries.length) {
-          setPhase('done');
-          setMessage('Done! Each query answered in O(1) time');
+          setPhase("done");
+          setMessage("Done! Each query answered in O(1) time");
           setIsPlaying(false);
           return;
         }
@@ -61,7 +75,9 @@ export default function PrefixSumVisualizer() {
         setQueryRange([i, j]);
         const result = prefix[j + 1] - prefix[i];
         setQueryResult(result);
-        setMessage(`Query sum(${i}, ${j}): prefix[${j + 1}] - prefix[${i}] = ${prefix[j + 1]} - ${prefix[i]} = ${result}`);
+        setMessage(
+          `Query sum(${i}, ${j}): prefix[${j + 1}] - prefix[${i}] = ${prefix[j + 1]} - ${prefix[i]} = ${result}`
+        );
         setQueryIdx(queryIdx + 1);
       }
     }, speed);
@@ -83,12 +99,12 @@ export default function PrefixSumVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -118,12 +134,13 @@ export default function PrefixSumVisualizer() {
               <motion.div
                 key={idx}
                 animate={{
-                  scale: idx === currentIdx && phase === 'building' ? 1.1 : 1,
-                  backgroundColor: queryRange && idx >= queryRange[0] && idx <= queryRange[1]
-                    ? '#f59e0b'
-                    : idx < currentIdx && phase === 'building'
-                    ? '#22c55e'
-                    : '#374151',
+                  scale: idx === currentIdx && phase === "building" ? 1.1 : 1,
+                  backgroundColor:
+                    queryRange && idx >= queryRange[0] && idx <= queryRange[1]
+                      ? "#f59e0b"
+                      : idx < currentIdx && phase === "building"
+                        ? "#22c55e"
+                        : "#374151",
                 }}
                 className="w-12 h-12 rounded-lg flex flex-col items-center justify-center font-mono"
               >
@@ -144,9 +161,10 @@ export default function PrefixSumVisualizer() {
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className={`w-12 h-12 rounded-lg flex flex-col items-center justify-center font-mono ${
-                  queryRange && (idx === queryRange[1] + 1 || idx === queryRange[0])
-                    ? 'bg-orange-500 ring-2 ring-orange-300'
-                    : 'bg-blue-500'
+                  queryRange &&
+                  (idx === queryRange[1] + 1 || idx === queryRange[0])
+                    ? "bg-orange-500 ring-2 ring-orange-300"
+                    : "bg-blue-500"
                 }`}
               >
                 <span className="text-lg font-bold text-white">{val}</span>
@@ -174,11 +192,14 @@ export default function PrefixSumVisualizer() {
                   Query: sum(arr[{queryRange[0]}..{queryRange[1]}])
                 </div>
                 <div className="text-sm text-gray-500 mt-1">
-                  Elements: [{arr.slice(queryRange[0], queryRange[1] + 1).join(', ')}]
+                  Elements: [
+                  {arr.slice(queryRange[0], queryRange[1] + 1).join(", ")}]
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-orange-400">{queryResult}</div>
+                <div className="text-3xl font-bold text-orange-400">
+                  {queryResult}
+                </div>
                 <div className="text-xs text-gray-500">
                   prefix[{queryRange[1] + 1}] - prefix[{queryRange[0]}]
                 </div>
@@ -190,11 +211,15 @@ export default function PrefixSumVisualizer() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-blue-400">{prefix.length - 1}/{arr.length}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {prefix.length - 1}/{arr.length}
+            </div>
             <div className="text-xs text-gray-500">Built</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-orange-400">{queryIdx}/{queries.length}</div>
+            <div className="text-2xl font-bold text-orange-400">
+              {queryIdx}/{queries.length}
+            </div>
             <div className="text-xs text-gray-500">Queries</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
@@ -209,9 +234,9 @@ export default function PrefixSumVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -220,7 +245,7 @@ export default function PrefixSumVisualizer() {
         {/* Formula */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-orange-400">Key Formula:</strong>{' '}
+            <strong className="text-orange-400">Key Formula:</strong>{" "}
             sum(arr[i..j]) = prefix[j+1] - prefix[i]
           </p>
         </div>

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export default function ProblemsLayout({
   children,
@@ -8,13 +8,13 @@ export default function ProblemsLayout({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    const footer = document.querySelector('footer');
+    const footer = document.querySelector("footer");
     if (footer) {
-      footer.style.display = 'none';
+      footer.style.display = "none";
     }
     return () => {
       if (footer) {
-        footer.style.display = '';
+        footer.style.display = "";
       }
     };
   }, []);

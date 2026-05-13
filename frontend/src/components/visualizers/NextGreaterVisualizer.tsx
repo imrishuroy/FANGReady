@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function NextGreaterVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -10,8 +10,10 @@ export default function NextGreaterVisualizer() {
   const [stack, setStack] = useState<number[]>([]);
   const [result, setResult] = useState<number[]>([]);
   const [poppingIdx, setPoppingIdx] = useState<number | null>(null);
-  const [phase, setPhase] = useState<'init' | 'processing' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find next greater elements');
+  const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to find next greater elements"
+  );
 
   const nums = [2, 1, 2, 4, 3];
 
@@ -20,8 +22,8 @@ export default function NextGreaterVisualizer() {
     setStack([]);
     setResult(new Array(nums.length).fill(-1));
     setPoppingIdx(null);
-    setPhase('init');
-    setMessage('Click Play to find next greater elements');
+    setPhase("init");
+    setMessage("Click Play to find next greater elements");
     setIsPlaying(false);
   }, [nums.length]);
 
@@ -29,15 +31,17 @@ export default function NextGreaterVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('processing');
+      if (phase === "init") {
+        setPhase("processing");
         setCurrentIdx(0);
         setResult(new Array(nums.length).fill(-1));
-        setMessage('Monotonic decreasing stack: pop when current > top');
-      } else if (phase === 'processing') {
+        setMessage("Monotonic decreasing stack: pop when current > top");
+      } else if (phase === "processing") {
         if (currentIdx >= nums.length) {
-          setPhase('done');
-          setMessage(`Done! Result: [${result.join(', ')}]. Elements left on stack have no greater element.`);
+          setPhase("done");
+          setMessage(
+            `Done! Result: [${result.join(", ")}]. Elements left on stack have no greater element.`
+          );
           setIsPlaying(false);
           return;
         }
@@ -52,11 +56,15 @@ export default function NextGreaterVisualizer() {
           newResult[idxToPop] = currentVal;
           setResult(newResult);
           setStack(stack.slice(0, -1));
-          setMessage(`${currentVal} > ${nums[idxToPop]}: POP index ${idxToPop}, its next greater is ${currentVal}`);
+          setMessage(
+            `${currentVal} > ${nums[idxToPop]}: POP index ${idxToPop}, its next greater is ${currentVal}`
+          );
         } else {
           setPoppingIdx(null);
           setStack([...stack, currentIdx]);
-          setMessage(`Push index ${currentIdx} (value ${currentVal}) onto stack`);
+          setMessage(
+            `Push index ${currentIdx} (value ${currentVal}) onto stack`
+          );
           setCurrentIdx(currentIdx + 1);
         }
       }
@@ -68,7 +76,9 @@ export default function NextGreaterVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-orange-500/10 to-amber-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Next Greater Element</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Next Greater Element
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Monotonic decreasing stack - pop when current greater than top
         </p>
@@ -79,12 +89,12 @@ export default function NextGreaterVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -119,14 +129,14 @@ export default function NextGreaterVisualizer() {
                 }}
                 className={`w-14 h-14 rounded-lg flex flex-col items-center justify-center font-mono ${
                   idx === currentIdx
-                    ? 'bg-yellow-500 text-black ring-2 ring-yellow-300'
+                    ? "bg-yellow-500 text-black ring-2 ring-yellow-300"
                     : poppingIdx === idx
-                    ? 'bg-green-500 text-white ring-2 ring-green-300'
-                    : stack.includes(idx)
-                    ? 'bg-orange-500 text-white'
-                    : idx < currentIdx
-                    ? 'bg-gray-600 text-gray-400'
-                    : 'bg-gray-700 text-gray-300'
+                      ? "bg-green-500 text-white ring-2 ring-green-300"
+                      : stack.includes(idx)
+                        ? "bg-orange-500 text-white"
+                        : idx < currentIdx
+                          ? "bg-gray-600 text-gray-400"
+                          : "bg-gray-700 text-gray-300"
                 }`}
               >
                 <span className="text-lg font-bold">{val}</span>
@@ -138,7 +148,9 @@ export default function NextGreaterVisualizer() {
 
         {/* Stack visualization */}
         <div className="mb-4">
-          <div className="text-sm text-gray-400 mb-2">Monotonic Decreasing Stack (indices):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Monotonic Decreasing Stack (indices):
+          </div>
           <div className="bg-gray-800/50 rounded-lg p-3 min-h-[60px] flex items-center gap-2">
             <AnimatePresence>
               {stack.map((idx) => (
@@ -149,8 +161,8 @@ export default function NextGreaterVisualizer() {
                   exit={{ opacity: 0, y: -20 }}
                   className={`px-3 py-2 rounded-lg font-mono ${
                     poppingIdx === idx
-                      ? 'bg-green-500 text-white'
-                      : 'bg-orange-500/80 text-white'
+                      ? "bg-green-500 text-white"
+                      : "bg-orange-500/80 text-white"
                   }`}
                 >
                   [{idx}]={nums[idx]}
@@ -165,13 +177,15 @@ export default function NextGreaterVisualizer() {
 
         {/* Result array */}
         <div className="mb-4">
-          <div className="text-sm text-gray-400 mb-2">Result (Next Greater):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Result (Next Greater):
+          </div>
           <div className="flex gap-2">
             {result.map((val, idx) => (
               <motion.div
                 key={idx}
                 animate={{
-                  backgroundColor: poppingIdx === idx ? '#22c55e' : '#6b7280',
+                  backgroundColor: poppingIdx === idx ? "#22c55e" : "#6b7280",
                 }}
                 className="w-14 h-14 rounded-lg flex flex-col items-center justify-center font-mono text-white"
               >
@@ -188,9 +202,9 @@ export default function NextGreaterVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -199,9 +213,9 @@ export default function NextGreaterVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-orange-400">Key Insight:</strong>{' '}
-            Elements wait on stack until a larger element "answers" them.
-            Each element pushed once, popped at most once = O(n).
+            <strong className="text-orange-400">Key Insight:</strong> Elements
+            wait on stack until a larger element "answers" them. Each element
+            pushed once, popped at most once = O(n).
           </p>
         </div>
       </div>

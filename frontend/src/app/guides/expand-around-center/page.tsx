@@ -1,20 +1,23 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import CodeBlock from '@/components/ui/CodeBlock';
-import LanguageToggle from '@/components/ui/LanguageToggle';
+import { useState } from "react";
+import Link from "next/link";
+import CodeBlock from "@/components/ui/CodeBlock";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 
-type Language = 'java' | 'javascript';
+type Language = "java" | "javascript";
 
 export default function ExpandAroundCenterGuide() {
-  const [lang, setLang] = useState<Language>('java');
+  const [lang, setLang] = useState<Language>("java");
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <div className="mb-6">
-        <Link href="/" className="text-indigo-400 hover:text-indigo-300 text-sm">
+        <Link
+          href="/"
+          className="text-indigo-400 hover:text-indigo-300 text-sm"
+        >
           ← Back to Problems
         </Link>
       </div>
@@ -43,14 +46,70 @@ export default function ExpandAroundCenterGuide() {
           In This Guide
         </h2>
         <ul className="space-y-2 text-sm">
-          <li><a href="#core-idea" className="text-indigo-400 hover:text-indigo-300">Core Idea</a></li>
-          <li><a href="#key-insight" className="text-indigo-400 hover:text-indigo-300">Key Insight: Types of Centers</a></li>
-          <li><a href="#algorithm" className="text-indigo-400 hover:text-indigo-300">Algorithm</a></li>
-          <li><a href="#complexity" className="text-indigo-400 hover:text-indigo-300">Complexity Analysis</a></li>
-          <li><a href="#template" className="text-indigo-400 hover:text-indigo-300">Code Template</a></li>
-          <li><a href="#problems" className="text-indigo-400 hover:text-indigo-300">Problems to Practice</a></li>
-          <li><a href="#when-to-use" className="text-indigo-400 hover:text-indigo-300">When to Use / Not Use</a></li>
-          <li><a href="#common-mistakes" className="text-indigo-400 hover:text-indigo-300">Common Mistakes</a></li>
+          <li>
+            <a
+              href="#core-idea"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Core Idea
+            </a>
+          </li>
+          <li>
+            <a
+              href="#key-insight"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Key Insight: Types of Centers
+            </a>
+          </li>
+          <li>
+            <a
+              href="#algorithm"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Algorithm
+            </a>
+          </li>
+          <li>
+            <a
+              href="#complexity"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Complexity Analysis
+            </a>
+          </li>
+          <li>
+            <a
+              href="#template"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Code Template
+            </a>
+          </li>
+          <li>
+            <a
+              href="#problems"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Problems to Practice
+            </a>
+          </li>
+          <li>
+            <a
+              href="#when-to-use"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              When to Use / Not Use
+            </a>
+          </li>
+          <li>
+            <a
+              href="#common-mistakes"
+              className="text-indigo-400 hover:text-indigo-300"
+            >
+              Common Mistakes
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -58,21 +117,22 @@ export default function ExpandAroundCenterGuide() {
       <article className="space-y-12">
         {/* Core Idea */}
         <section id="core-idea">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Core Idea
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Core Idea</h2>
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 text-lg leading-relaxed">
-              A palindrome reads the same forwards and backwards because it <strong className="text-white">mirrors around its center</strong>.
+              A palindrome reads the same forwards and backwards because it{" "}
+              <strong className="text-white">mirrors around its center</strong>.
             </p>
             <p className="text-gray-300 leading-relaxed mt-4">
-              Instead of checking all O(n²) possible substrings (brute force), we can be smarter:
-              for each position that could be a center, expand outward as long as characters match.
+              Instead of checking all O(n²) possible substrings (brute force),
+              we can be smarter: for each position that could be a center,
+              expand outward as long as characters match.
             </p>
             <div className="mt-6 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
               <p className="text-indigo-300 font-medium">
-                Think of it like dropping a pebble in water — the palindrome &quot;ripples&quot; outward from the center,
-                and we stop when the ripples no longer match.
+                Think of it like dropping a pebble in water — the palindrome
+                &quot;ripples&quot; outward from the center, and we stop when
+                the ripples no longer match.
               </p>
             </div>
           </div>
@@ -84,17 +144,27 @@ export default function ExpandAroundCenterGuide() {
             Key Insight: Types of Centers
           </h2>
           <p className="text-gray-300 mb-6">
-            For a string of length <code className="text-indigo-400">n</code>, there are <strong className="text-white">2n - 1</strong> possible centers:
+            For a string of length <code className="text-indigo-400">n</code>,
+            there are <strong className="text-white">2n - 1</strong> possible
+            centers:
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {/* Odd Length */}
             <div className="p-5 bg-gray-900 rounded-xl border border-gray-800">
-              <h3 className="text-lg font-semibold text-green-400 mb-3">Odd Length Palindromes</h3>
-              <p className="text-gray-400 text-sm mb-4">Center IS a character (n centers)</p>
+              <h3 className="text-lg font-semibold text-green-400 mb-3">
+                Odd Length Palindromes
+              </h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Center IS a character (n centers)
+              </p>
               <div className="font-mono text-center mb-4">
-                <div className="text-2xl text-white tracking-widest">a b <span className="text-green-400 underline">a</span> b a</div>
-                <div className="text-sm text-gray-500 mt-2">↑ center at index 2</div>
+                <div className="text-2xl text-white tracking-widest">
+                  a b <span className="text-green-400 underline">a</span> b a
+                </div>
+                <div className="text-sm text-gray-500 mt-2">
+                  ↑ center at index 2
+                </div>
               </div>
               <div className="text-sm text-gray-300">
                 Call: <code className="text-green-400">expand(i, i)</code>
@@ -103,11 +173,19 @@ export default function ExpandAroundCenterGuide() {
 
             {/* Even Length */}
             <div className="p-5 bg-gray-900 rounded-xl border border-gray-800">
-              <h3 className="text-lg font-semibold text-purple-400 mb-3">Even Length Palindromes</h3>
-              <p className="text-gray-400 text-sm mb-4">Center is BETWEEN characters (n-1 centers)</p>
+              <h3 className="text-lg font-semibold text-purple-400 mb-3">
+                Even Length Palindromes
+              </h3>
+              <p className="text-gray-400 text-sm mb-4">
+                Center is BETWEEN characters (n-1 centers)
+              </p>
               <div className="font-mono text-center mb-4">
-                <div className="text-2xl text-white tracking-widest">a b<span className="text-purple-400">|</span>b a</div>
-                <div className="text-sm text-gray-500 mt-2">↑ center between index 1 and 2</div>
+                <div className="text-2xl text-white tracking-widest">
+                  a b<span className="text-purple-400">|</span>b a
+                </div>
+                <div className="text-sm text-gray-500 mt-2">
+                  ↑ center between index 1 and 2
+                </div>
               </div>
               <div className="text-sm text-gray-300">
                 Call: <code className="text-purple-400">expand(i, i + 1)</code>
@@ -117,7 +195,9 @@ export default function ExpandAroundCenterGuide() {
 
           {/* Visual Example */}
           <div className="p-5 bg-gray-900 rounded-xl border border-gray-800">
-            <h4 className="text-sm font-semibold text-gray-400 mb-3">Example: String &quot;abba&quot; has 7 possible centers</h4>
+            <h4 className="text-sm font-semibold text-gray-400 mb-3">
+              Example: String &quot;abba&quot; has 7 possible centers
+            </h4>
             <div className="font-mono text-center overflow-x-auto">
               <div className="inline-block">
                 <div className="flex items-center justify-center gap-4 text-xl mb-2">
@@ -147,43 +227,64 @@ export default function ExpandAroundCenterGuide() {
               </div>
             </div>
             <p className="text-gray-500 text-sm text-center mt-3">
-              4 odd centers (at each character) + 3 even centers (between characters) = 7 total
+              4 odd centers (at each character) + 3 even centers (between
+              characters) = 7 total
             </p>
           </div>
         </section>
 
         {/* Algorithm */}
         <section id="algorithm">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Algorithm
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Algorithm</h2>
           <div className="space-y-4">
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
+                1
+              </div>
               <div>
-                <h4 className="text-white font-medium">For each index i from 0 to n-1:</h4>
-                <p className="text-gray-400 mt-1">This position could be the center of a palindrome</p>
+                <h4 className="text-white font-medium">
+                  For each index i from 0 to n-1:
+                </h4>
+                <p className="text-gray-400 mt-1">
+                  This position could be the center of a palindrome
+                </p>
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
+                2
+              </div>
               <div>
-                <h4 className="text-white font-medium">Call expand(i, i) for odd-length palindromes</h4>
+                <h4 className="text-white font-medium">
+                  Call expand(i, i) for odd-length palindromes
+                </h4>
                 <p className="text-gray-400 mt-1">Center is at character i</p>
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
+                3
+              </div>
               <div>
-                <h4 className="text-white font-medium">Call expand(i, i+1) for even-length palindromes</h4>
-                <p className="text-gray-400 mt-1">Center is between characters i and i+1</p>
+                <h4 className="text-white font-medium">
+                  Call expand(i, i+1) for even-length palindromes
+                </h4>
+                <p className="text-gray-400 mt-1">
+                  Center is between characters i and i+1
+                </p>
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">4</div>
+              <div className="flex-shrink-0 w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
+                4
+              </div>
               <div>
-                <h4 className="text-white font-medium">In expand(): while characters match, expand outward</h4>
-                <p className="text-gray-400 mt-1">Decrement left, increment right until mismatch or boundary</p>
+                <h4 className="text-white font-medium">
+                  In expand(): while characters match, expand outward
+                </h4>
+                <p className="text-gray-400 mt-1">
+                  Decrement left, increment right until mismatch or boundary
+                </p>
               </div>
             </div>
           </div>
@@ -204,16 +305,22 @@ export default function ExpandAroundCenterGuide() {
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-5 bg-gray-900 rounded-xl border border-gray-800">
-              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Time: O(n²)</h3>
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">
+                Time: O(n²)
+              </h3>
               <ul className="text-gray-400 text-sm space-y-2">
                 <li>• Outer loop: O(n) centers</li>
                 <li>• Inner expansion: O(n) worst case per center</li>
                 <li>• Usually faster in practice due to early termination</li>
-                <li>• Worst case: &quot;aaaa...a&quot; (all same characters)</li>
+                <li>
+                  • Worst case: &quot;aaaa...a&quot; (all same characters)
+                </li>
               </ul>
             </div>
             <div className="p-5 bg-gray-900 rounded-xl border border-gray-800">
-              <h3 className="text-lg font-semibold text-green-400 mb-2">Space: O(1)</h3>
+              <h3 className="text-lg font-semibold text-green-400 mb-2">
+                Space: O(1)
+              </h3>
               <ul className="text-gray-400 text-sm space-y-2">
                 <li>• Just a few pointer variables</li>
                 <li>• No DP table needed!</li>
@@ -226,19 +333,17 @@ export default function ExpandAroundCenterGuide() {
 
         {/* Code Template */}
         <section id="template">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Code Template
-          </h2>
+          <h2 className="text-2xl font-bold text-white mb-4">Code Template</h2>
           <div className="flex justify-end mb-3">
             <LanguageToggle
               currentLang={lang}
               onChange={(l) => setLang(l as Language)}
-              languages={['java', 'javascript']}
+              languages={["java", "javascript"]}
               size="sm"
             />
           </div>
           <CodeBlock
-            code={lang === 'java' ? javaCode : jsCode}
+            code={lang === "java" ? javaCode : jsCode}
             language={lang}
           />
         </section>
@@ -263,11 +368,15 @@ export default function ExpandAroundCenterGuide() {
                   </span>
                   <p className="text-gray-500 text-sm mt-1">{problem.hint}</p>
                 </div>
-                <span className={`px-2 py-1 rounded text-xs font-medium ${
-                  problem.difficulty === 'Easy' ? 'bg-green-500/20 text-green-400' :
-                  problem.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                  'bg-red-500/20 text-red-400'
-                }`}>
+                <span
+                  className={`px-2 py-1 rounded text-xs font-medium ${
+                    problem.difficulty === "Easy"
+                      ? "bg-green-500/20 text-green-400"
+                      : problem.difficulty === "Medium"
+                        ? "bg-yellow-500/20 text-yellow-400"
+                        : "bg-red-500/20 text-red-400"
+                  }`}
+                >
                   {problem.difficulty}
                 </span>
               </a>
@@ -282,9 +391,13 @@ export default function ExpandAroundCenterGuide() {
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-5 bg-green-500/10 rounded-xl border border-green-500/30">
-              <h3 className="text-lg font-semibold text-green-400 mb-3">Use This Pattern</h3>
+              <h3 className="text-lg font-semibold text-green-400 mb-3">
+                Use This Pattern
+              </h3>
               <ul className="text-gray-300 text-sm space-y-2">
-                <li>✓ Palindrome <strong>substring</strong> problems (contiguous)</li>
+                <li>
+                  ✓ Palindrome <strong>substring</strong> problems (contiguous)
+                </li>
                 <li>✓ Count palindromic substrings</li>
                 <li>✓ Find longest palindromic substring</li>
                 <li>✓ Valid palindrome with modifications</li>
@@ -292,9 +405,14 @@ export default function ExpandAroundCenterGuide() {
               </ul>
             </div>
             <div className="p-5 bg-red-500/10 rounded-xl border border-red-500/30">
-              <h3 className="text-lg font-semibold text-red-400 mb-3">Don&apos;t Use (Use DP Instead)</h3>
+              <h3 className="text-lg font-semibold text-red-400 mb-3">
+                Don&apos;t Use (Use DP Instead)
+              </h3>
               <ul className="text-gray-300 text-sm space-y-2">
-                <li>✗ Palindrome <strong>subsequence</strong> problems (not contiguous)</li>
+                <li>
+                  ✗ Palindrome <strong>subsequence</strong> problems (not
+                  contiguous)
+                </li>
                 <li>✗ Longest Palindromic Subsequence</li>
                 <li>✗ Count Palindromic Subsequences</li>
                 <li>✗ Problems requiring character skipping</li>
@@ -303,8 +421,9 @@ export default function ExpandAroundCenterGuide() {
           </div>
           <div className="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
             <p className="text-indigo-300 text-sm">
-              <strong>Key distinction:</strong> Substring = contiguous characters. Subsequence = can skip characters.
-              This pattern only works for substrings!
+              <strong>Key distinction:</strong> Substring = contiguous
+              characters. Subsequence = can skip characters. This pattern only
+              works for substrings!
             </p>
           </div>
         </section>
@@ -316,12 +435,27 @@ export default function ExpandAroundCenterGuide() {
           </h2>
           <div className="space-y-3">
             {[
-              { mistake: 'Forgetting the even-length case', fix: 'Always call both expand(i, i) AND expand(i, i+1)' },
-              { mistake: 'Wrong boundary checks in expand()', fix: 'Check left >= 0 AND right < n before accessing characters' },
-              { mistake: 'Confusing substring vs subsequence', fix: 'This pattern only works for contiguous substrings' },
-              { mistake: 'Off-by-one in calculating start/end indices', fix: 'After expand, length = right - left - 1 (pointers are outside palindrome)' },
+              {
+                mistake: "Forgetting the even-length case",
+                fix: "Always call both expand(i, i) AND expand(i, i+1)",
+              },
+              {
+                mistake: "Wrong boundary checks in expand()",
+                fix: "Check left >= 0 AND right < n before accessing characters",
+              },
+              {
+                mistake: "Confusing substring vs subsequence",
+                fix: "This pattern only works for contiguous substrings",
+              },
+              {
+                mistake: "Off-by-one in calculating start/end indices",
+                fix: "After expand, length = right - left - 1 (pointers are outside palindrome)",
+              },
             ].map((item, i) => (
-              <div key={i} className="p-4 bg-gray-900 rounded-lg border border-gray-800">
+              <div
+                key={i}
+                className="p-4 bg-gray-900 rounded-lg border border-gray-800"
+              >
                 <p className="text-red-400 font-medium">{item.mistake}</p>
                 <p className="text-gray-400 text-sm mt-1">Fix: {item.fix}</p>
               </div>
@@ -335,9 +469,11 @@ export default function ExpandAroundCenterGuide() {
             Advanced: Manacher&apos;s Algorithm
           </h3>
           <p className="text-gray-400 text-sm">
-            For O(n) time complexity, look into Manacher&apos;s Algorithm. It reuses previously computed palindrome
-            information to avoid redundant expansions. However, it&apos;s rarely needed in interviews —
-            the O(n²) expand around center approach is almost always sufficient and easier to implement correctly.
+            For O(n) time complexity, look into Manacher&apos;s Algorithm. It
+            reuses previously computed palindrome information to avoid redundant
+            expansions. However, it&apos;s rarely needed in interviews — the
+            O(n²) expand around center approach is almost always sufficient and
+            easier to implement correctly.
           </p>
         </section>
       </article>
@@ -482,33 +618,33 @@ function isPalin(s, l, r) {
 
 const problems = [
   {
-    name: 'Palindromic Substrings',
-    url: 'https://leetcode.com/problems/palindromic-substrings/',
-    difficulty: 'Medium',
-    hint: 'Count palindromes using expand from each center',
+    name: "Palindromic Substrings",
+    url: "https://leetcode.com/problems/palindromic-substrings/",
+    difficulty: "Medium",
+    hint: "Count palindromes using expand from each center",
   },
   {
-    name: 'Longest Palindromic Substring',
-    url: 'https://leetcode.com/problems/longest-palindromic-substring/',
-    difficulty: 'Medium',
-    hint: 'Track the longest palindrome found during expansion',
+    name: "Longest Palindromic Substring",
+    url: "https://leetcode.com/problems/longest-palindromic-substring/",
+    difficulty: "Medium",
+    hint: "Track the longest palindrome found during expansion",
   },
   {
-    name: 'Valid Palindrome',
-    url: 'https://leetcode.com/problems/valid-palindrome/',
-    difficulty: 'Easy',
-    hint: 'Two pointers from both ends, skip non-alphanumeric',
+    name: "Valid Palindrome",
+    url: "https://leetcode.com/problems/valid-palindrome/",
+    difficulty: "Easy",
+    hint: "Two pointers from both ends, skip non-alphanumeric",
   },
   {
-    name: 'Valid Palindrome II',
-    url: 'https://leetcode.com/problems/valid-palindrome-ii/',
-    difficulty: 'Easy',
-    hint: 'On mismatch, try skipping left OR right character',
+    name: "Valid Palindrome II",
+    url: "https://leetcode.com/problems/valid-palindrome-ii/",
+    difficulty: "Easy",
+    hint: "On mismatch, try skipping left OR right character",
   },
   {
-    name: 'Palindrome Partitioning',
-    url: 'https://leetcode.com/problems/palindrome-partitioning/',
-    difficulty: 'Medium',
-    hint: 'Backtracking + use expand for isPalindrome check',
+    name: "Palindrome Partitioning",
+    url: "https://leetcode.com/problems/palindrome-partitioning/",
+    difficulty: "Medium",
+    hint: "Backtracking + use expand for isPalindrome check",
   },
 ];

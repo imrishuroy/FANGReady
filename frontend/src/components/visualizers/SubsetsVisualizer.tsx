@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TreeNode {
   id: string;
@@ -17,21 +17,27 @@ export default function SubsetsVisualizer() {
   const [nums] = useState([1, 2, 3]);
   const [currentPath, setCurrentPath] = useState<number[]>([]);
   const [results, setResults] = useState<number[][]>([]);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to generate all subsets');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState("Click Play to generate all subsets");
   const [stepIndex, setStepIndex] = useState(-1);
-  const [steps, setSteps] = useState<{ path: number[]; action: 'add' | 'choose' | 'backtrack'; index: number }[]>([]);
+  const [steps, setSteps] = useState<
+    { path: number[]; action: "add" | "choose" | "backtrack"; index: number }[]
+  >([]);
 
   const generateSteps = useCallback(() => {
-    const allSteps: { path: number[]; action: 'add' | 'choose' | 'backtrack'; index: number }[] = [];
+    const allSteps: {
+      path: number[];
+      action: "add" | "choose" | "backtrack";
+      index: number;
+    }[] = [];
 
     function backtrack(start: number, path: number[]) {
-      allSteps.push({ path: [...path], action: 'add', index: start });
+      allSteps.push({ path: [...path], action: "add", index: start });
 
       for (let i = start; i < nums.length; i++) {
-        allSteps.push({ path: [...path, nums[i]], action: 'choose', index: i });
+        allSteps.push({ path: [...path, nums[i]], action: "choose", index: i });
         backtrack(i + 1, [...path, nums[i]]);
-        allSteps.push({ path: [...path], action: 'backtrack', index: i });
+        allSteps.push({ path: [...path], action: "backtrack", index: i });
       }
     }
 
@@ -42,8 +48,8 @@ export default function SubsetsVisualizer() {
   const reset = useCallback(() => {
     setCurrentPath([]);
     setResults([]);
-    setPhase('init');
-    setMessage('Click Play to generate all subsets');
+    setPhase("init");
+    setMessage("Click Play to generate all subsets");
     setStepIndex(-1);
     setSteps(generateSteps());
     setIsPlaying(false);
@@ -57,8 +63,8 @@ export default function SubsetsVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         setStepIndex(0);
         const step = steps[0];
         setCurrentPath(step.path);
@@ -69,8 +75,10 @@ export default function SubsetsVisualizer() {
 
       const nextStepIdx = stepIndex + 1;
       if (nextStepIdx >= steps.length) {
-        setPhase('done');
-        setMessage(`Done! Generated all ${results.length} subsets using backtracking`);
+        setPhase("done");
+        setMessage(
+          `Done! Generated all ${results.length} subsets using backtracking`
+        );
         setIsPlaying(false);
         return;
       }
@@ -79,13 +87,17 @@ export default function SubsetsVisualizer() {
       setStepIndex(nextStepIdx);
       setCurrentPath(step.path);
 
-      if (step.action === 'add') {
-        setResults(prev => [...prev, step.path]);
-        setMessage(`Add [${step.path.join(', ')}] to results`);
-      } else if (step.action === 'choose') {
-        setMessage(`Choose ${nums[step.index]}, path = [${step.path.join(', ')}]`);
+      if (step.action === "add") {
+        setResults((prev) => [...prev, step.path]);
+        setMessage(`Add [${step.path.join(", ")}] to results`);
+      } else if (step.action === "choose") {
+        setMessage(
+          `Choose ${nums[step.index]}, path = [${step.path.join(", ")}]`
+        );
       } else {
-        setMessage(`Backtrack: remove ${nums[step.index]}, path = [${step.path.join(', ')}]`);
+        setMessage(
+          `Backtrack: remove ${nums[step.index]}, path = [${step.path.join(", ")}]`
+        );
       }
     }, speed);
 
@@ -106,12 +118,12 @@ export default function SubsetsVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -141,12 +153,16 @@ export default function SubsetsVisualizer() {
               <motion.div
                 key={idx}
                 animate={{
-                  backgroundColor: currentPath.includes(num) ? '#a855f7' : '#374151',
+                  backgroundColor: currentPath.includes(num)
+                    ? "#a855f7"
+                    : "#374151",
                   scale: currentPath.includes(num) ? 1.1 : 1,
                 }}
                 className="w-12 h-12 rounded-lg flex flex-col items-center justify-center"
               >
-                <span className={`font-bold ${currentPath.includes(num) ? 'text-white' : 'text-white'}`}>
+                <span
+                  className={`font-bold ${currentPath.includes(num) ? "text-white" : "text-white"}`}
+                >
                   {num}
                 </span>
                 <span className="text-xs text-gray-400">{idx}</span>
@@ -159,7 +175,7 @@ export default function SubsetsVisualizer() {
         <div className="mb-4 p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
           <div className="text-sm text-gray-400 mb-1">Current Path:</div>
           <div className="text-purple-400 font-mono text-lg">
-            [{currentPath.join(', ')}]
+            [{currentPath.join(", ")}]
           </div>
         </div>
 
@@ -167,7 +183,7 @@ export default function SubsetsVisualizer() {
         <div className="mb-4 p-3 bg-gray-800/50 rounded-lg">
           <div className="text-sm text-gray-400 mb-2">Decision Tree:</div>
           <pre className="text-xs text-gray-300 font-mono overflow-x-auto">
-{`                    []
+            {`                    []
            /        |        \\
          [1]       [2]       [3]
         /   \\       |
@@ -191,7 +207,7 @@ export default function SubsetsVisualizer() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400 font-mono text-sm"
                 >
-                  [{subset.join(', ')}]
+                  [{subset.join(", ")}]
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -204,9 +220,9 @@ export default function SubsetsVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -215,9 +231,9 @@ export default function SubsetsVisualizer() {
         {/* Key insight */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-purple-400">Key Insight:</strong>{' '}
-            At each index, we have two choices: include the element or skip it.
-            Total subsets = 2^n (each element can be in or out).
+            <strong className="text-purple-400">Key Insight:</strong> At each
+            index, we have two choices: include the element or skip it. Total
+            subsets = 2^n (each element can be in or out).
           </p>
         </div>
       </div>

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import CodeBlock from '@/components/ui/CodeBlock';
+import { useState, useEffect, useCallback } from "react";
+import CodeBlock from "@/components/ui/CodeBlock";
 
 interface StackFrame {
   id: number;
@@ -12,13 +12,13 @@ interface StackFrame {
 }
 
 interface CallStackVisualizerProps {
-  example?: 'factorial' | 'fibonacci' | 'sum';
+  example?: "factorial" | "fibonacci" | "sum";
   inputValue?: number;
 }
 
 export default function CallStackVisualizer({
-  example = 'factorial',
-  inputValue = 5
+  example = "factorial",
+  inputValue = 5,
 }: CallStackVisualizerProps) {
   const [stack, setStack] = useState<StackFrame[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -34,7 +34,7 @@ export default function CallStackVisualizer({
     for (let i = n; i >= 0; i--) {
       buildStack.push({
         id: frameId++,
-        functionName: 'factorial',
+        functionName: "factorial",
         args: `n = ${i}`,
       });
       steps.push([...buildStack]);
@@ -42,11 +42,15 @@ export default function CallStackVisualizer({
 
     let returnVal = 1;
     for (let i = buildStack.length - 1; i >= 0; i--) {
-      buildStack[i] = { ...buildStack[i], returnValue: `${returnVal}`, isReturning: true };
+      buildStack[i] = {
+        ...buildStack[i],
+        returnValue: `${returnVal}`,
+        isReturning: true,
+      };
       steps.push([...buildStack]);
       buildStack.pop();
       steps.push([...buildStack]);
-      if (i > 0) returnVal *= (n - i + 1);
+      if (i > 0) returnVal *= n - i + 1;
     }
 
     return steps;
@@ -60,14 +64,18 @@ export default function CallStackVisualizer({
     function simulate(num: number, depth: number): number {
       const frame: StackFrame = {
         id: frameId++,
-        functionName: 'fib',
+        functionName: "fib",
         args: `n = ${num}`,
       };
       currentStack.push(frame);
       steps.push([...currentStack]);
 
       if (num <= 1) {
-        currentStack[currentStack.length - 1] = { ...frame, returnValue: `${num}`, isReturning: true };
+        currentStack[currentStack.length - 1] = {
+          ...frame,
+          returnValue: `${num}`,
+          isReturning: true,
+        };
         steps.push([...currentStack]);
         currentStack.pop();
         steps.push([...currentStack]);
@@ -79,9 +87,13 @@ export default function CallStackVisualizer({
       const result = left + right;
 
       if (currentStack.length > 0) {
-        const idx = currentStack.findIndex(f => f.id === frame.id);
+        const idx = currentStack.findIndex((f) => f.id === frame.id);
         if (idx !== -1) {
-          currentStack[idx] = { ...frame, returnValue: `${result}`, isReturning: true };
+          currentStack[idx] = {
+            ...frame,
+            returnValue: `${result}`,
+            isReturning: true,
+          };
           steps.push([...currentStack]);
           currentStack.splice(idx, 1);
           steps.push([...currentStack]);
@@ -103,7 +115,7 @@ export default function CallStackVisualizer({
     for (let i = n; i >= 1; i--) {
       buildStack.push({
         id: frameId++,
-        functionName: 'sum',
+        functionName: "sum",
         args: `n = ${i}`,
       });
       steps.push([...buildStack]);
@@ -111,7 +123,7 @@ export default function CallStackVisualizer({
 
     buildStack.push({
       id: frameId++,
-      functionName: 'sum',
+      functionName: "sum",
       args: `n = 0`,
     });
     steps.push([...buildStack]);
@@ -119,7 +131,11 @@ export default function CallStackVisualizer({
     let returnVal = 0;
     for (let i = buildStack.length - 1; i >= 0; i--) {
       const currentN = i === buildStack.length - 1 ? 0 : n - i;
-      buildStack[i] = { ...buildStack[i], returnValue: `${returnVal}`, isReturning: true };
+      buildStack[i] = {
+        ...buildStack[i],
+        returnValue: `${returnVal}`,
+        isReturning: true,
+      };
       steps.push([...buildStack]);
       buildStack.pop();
       steps.push([...buildStack]);
@@ -134,10 +150,10 @@ export default function CallStackVisualizer({
   useEffect(() => {
     let steps: StackFrame[][];
     switch (example) {
-      case 'fibonacci':
+      case "fibonacci":
         steps = generateFibonacciSteps(Math.min(inputValue, 5));
         break;
-      case 'sum':
+      case "sum":
         steps = generateSumSteps(inputValue);
         break;
       default:
@@ -147,20 +163,27 @@ export default function CallStackVisualizer({
     setStep(0);
     setStack([]);
     setResult(null);
-  }, [example, inputValue, generateFactorialSteps, generateFibonacciSteps, generateSumSteps]);
+  }, [
+    example,
+    inputValue,
+    generateFactorialSteps,
+    generateFibonacciSteps,
+    generateSumSteps,
+  ]);
 
   useEffect(() => {
     if (!isPlaying || step >= allSteps.length) {
       if (step >= allSteps.length && allSteps.length > 0) {
         setIsPlaying(false);
-        if (example === 'factorial') {
+        if (example === "factorial") {
           let r = 1;
           for (let i = 2; i <= inputValue; i++) r *= i;
           setResult(r);
-        } else if (example === 'sum') {
+        } else if (example === "sum") {
           setResult((inputValue * (inputValue + 1)) / 2);
         } else {
-          const fib = (n: number): number => n <= 1 ? n : fib(n - 1) + fib(n - 2);
+          const fib = (n: number): number =>
+            n <= 1 ? n : fib(n - 1) + fib(n - 2);
           setResult(fib(inputValue));
         }
       }
@@ -169,7 +192,7 @@ export default function CallStackVisualizer({
 
     const timer = setTimeout(() => {
       setStack(allSteps[step]);
-      setStep(s => s + 1);
+      setStep((s) => s + 1);
     }, speed);
 
     return () => clearTimeout(timer);
@@ -185,7 +208,7 @@ export default function CallStackVisualizer({
   const stepForward = () => {
     if (step < allSteps.length) {
       setStack(allSteps[step]);
-      setStep(s => s + 1);
+      setStep((s) => s + 1);
     }
   };
 
@@ -210,13 +233,19 @@ export default function CallStackVisualizer({
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           Call Stack Visualizer
         </h3>
-        <p className="text-gray-400 text-sm mt-1">Watch how recursive calls build up on the stack</p>
+        <p className="text-gray-400 text-sm mt-1">
+          Watch how recursive calls build up on the stack
+        </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4 p-4">
         <div>
           <div className="mb-4">
-            <CodeBlock code={exampleCode[example]} language="java" showCopy={false} />
+            <CodeBlock
+              code={exampleCode[example]}
+              language="java"
+              showCopy={false}
+            />
           </div>
 
           <div className="flex items-center gap-2 mb-4 flex-wrap">
@@ -224,11 +253,11 @@ export default function CallStackVisualizer({
               onClick={() => setIsPlaying(!isPlaying)}
               className={`px-4 py-2 rounded-lg font-medium transition ${
                 isPlaying
-                  ? 'bg-yellow-500 text-black hover:bg-yellow-400'
-                  : 'bg-green-500 text-white hover:bg-green-400'
+                  ? "bg-yellow-500 text-black hover:bg-yellow-400"
+                  : "bg-green-500 text-white hover:bg-green-400"
               }`}
             >
-              {isPlaying ? '⏸ Pause' : '▶ Play'}
+              {isPlaying ? "⏸ Pause" : "▶ Play"}
             </button>
             <button
               onClick={stepForward}
@@ -261,14 +290,18 @@ export default function CallStackVisualizer({
 
           {result !== null && (
             <div className="mt-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
-              <span className="text-green-400 font-medium">Result: {result}</span>
+              <span className="text-green-400 font-medium">
+                Result: {result}
+              </span>
             </div>
           )}
         </div>
 
         <div className="bg-gray-800/50 rounded-lg p-4 min-h-[300px]">
           <div className="text-sm text-gray-400 mb-3 flex justify-between">
-            <span>Call Stack (Step {step}/{allSteps.length})</span>
+            <span>
+              Call Stack (Step {step}/{allSteps.length})
+            </span>
             <span className="text-indigo-400">{stack.length} frames</span>
           </div>
 
@@ -283,18 +316,26 @@ export default function CallStackVisualizer({
                   key={frame.id}
                   className={`p-3 rounded-lg border transition-all duration-300 ${
                     frame.isReturning
-                      ? 'bg-green-500/20 border-green-500/50 animate-pulse'
+                      ? "bg-green-500/20 border-green-500/50 animate-pulse"
                       : idx === 0
-                      ? 'bg-indigo-500/20 border-indigo-500/50'
-                      : 'bg-gray-700/50 border-gray-700'
+                        ? "bg-indigo-500/20 border-indigo-500/50"
+                        : "bg-gray-700/50 border-gray-700"
                   }`}
                   style={{
-                    animation: !frame.isReturning ? 'slideIn 0.3s ease-out' : undefined,
+                    animation: !frame.isReturning
+                      ? "slideIn 0.3s ease-out"
+                      : undefined,
                   }}
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-mono text-sm">
-                      <span className={frame.isReturning ? 'text-green-400' : 'text-indigo-400'}>
+                      <span
+                        className={
+                          frame.isReturning
+                            ? "text-green-400"
+                            : "text-indigo-400"
+                        }
+                      >
                         {frame.functionName}
                       </span>
                       <span className="text-gray-400">({frame.args})</span>

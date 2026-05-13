@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ValidParenthesesVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -9,18 +9,18 @@ export default function ValidParenthesesVisualizer() {
   const [currentIdx, setCurrentIdx] = useState(-1);
   const [stack, setStack] = useState<string[]>([]);
   const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [phase, setPhase] = useState<'init' | 'processing' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to validate parentheses');
+  const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
+  const [message, setMessage] = useState("Click Play to validate parentheses");
 
-  const input = '([{}])';
-  const pairs: Record<string, string> = { ')': '(', ']': '[', '}': '{' };
+  const input = "([{}])";
+  const pairs: Record<string, string> = { ")": "(", "]": "[", "}": "{" };
 
   const reset = useCallback(() => {
     setCurrentIdx(-1);
     setStack([]);
     setIsValid(null);
-    setPhase('init');
-    setMessage('Click Play to validate parentheses');
+    setPhase("init");
+    setMessage("Click Play to validate parentheses");
     setIsPlaying(false);
   }, []);
 
@@ -28,22 +28,26 @@ export default function ValidParenthesesVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('processing');
+      if (phase === "init") {
+        setPhase("processing");
         setCurrentIdx(0);
-        setMessage('Starting: Process each character');
-      } else if (phase === 'processing') {
+        setMessage("Starting: Process each character");
+      } else if (phase === "processing") {
         if (currentIdx >= input.length) {
-          setPhase('done');
+          setPhase("done");
           const valid = stack.length === 0;
           setIsValid(valid);
-          setMessage(valid ? 'Valid! Stack is empty at the end.' : `Invalid! Stack still has: ${stack.join(', ')}`);
+          setMessage(
+            valid
+              ? "Valid! Stack is empty at the end."
+              : `Invalid! Stack still has: ${stack.join(", ")}`
+          );
           setIsPlaying(false);
           return;
         }
 
         const char = input[currentIdx];
-        const isOpening = '([{'.includes(char);
+        const isOpening = "([{".includes(char);
 
         if (isOpening) {
           setStack([...stack, char]);
@@ -51,7 +55,7 @@ export default function ValidParenthesesVisualizer() {
         } else {
           const expected = pairs[char];
           if (stack.length === 0) {
-            setPhase('done');
+            setPhase("done");
             setIsValid(false);
             setMessage(`'${char}' has no matching opening bracket - Invalid!`);
             setIsPlaying(false);
@@ -62,9 +66,11 @@ export default function ValidParenthesesVisualizer() {
             setStack(stack.slice(0, -1));
             setMessage(`'${char}' matches '${top}' - POP from stack`);
           } else {
-            setPhase('done');
+            setPhase("done");
             setIsValid(false);
-            setMessage(`'${char}' expected '${expected}' but got '${top}' - Invalid!`);
+            setMessage(
+              `'${char}' expected '${expected}' but got '${top}' - Invalid!`
+            );
             setIsPlaying(false);
             return;
           }
@@ -78,9 +84,10 @@ export default function ValidParenthesesVisualizer() {
   }, [isPlaying, phase, currentIdx, stack, input, pairs, speed]);
 
   const getCharColor = (idx: number) => {
-    if (idx < currentIdx) return 'bg-gray-600 text-gray-400';
-    if (idx === currentIdx) return 'bg-yellow-500 text-black ring-2 ring-yellow-300';
-    return 'bg-gray-700 text-gray-300';
+    if (idx < currentIdx) return "bg-gray-600 text-gray-400";
+    if (idx === currentIdx)
+      return "bg-yellow-500 text-black ring-2 ring-yellow-300";
+    return "bg-gray-700 text-gray-300";
   };
 
   return (
@@ -97,12 +104,12 @@ export default function ValidParenthesesVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -128,7 +135,7 @@ export default function ValidParenthesesVisualizer() {
         <div className="mb-6">
           <div className="text-sm text-gray-400 mb-2">Input String:</div>
           <div className="flex gap-1 justify-center">
-            {input.split('').map((char, idx) => (
+            {input.split("").map((char, idx) => (
               <motion.div
                 key={idx}
                 animate={{
@@ -145,7 +152,9 @@ export default function ValidParenthesesVisualizer() {
 
         {/* Stack visualization */}
         <div className="mb-6">
-          <div className="text-sm text-gray-400 mb-2">Stack (top on right):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Stack (top on right):
+          </div>
           <div className="bg-gray-800/50 rounded-lg p-4 min-h-[80px] flex items-end gap-2">
             <AnimatePresence>
               {stack.map((char, idx) => (
@@ -164,7 +173,9 @@ export default function ValidParenthesesVisualizer() {
               <span className="text-gray-500 italic">Empty</span>
             )}
             {stack.length > 0 && (
-              <div className="ml-2 text-xs text-gray-500 self-center">← top</div>
+              <div className="ml-2 text-xs text-gray-500 self-center">
+                ← top
+              </div>
             )}
           </div>
         </div>
@@ -175,7 +186,7 @@ export default function ValidParenthesesVisualizer() {
           <div className="flex gap-4">
             <span className="font-mono text-green-400">( ↔ )</span>
             <span className="font-mono text-blue-400">[ ↔ ]</span>
-            <span className="font-mono text-purple-400">{'{ ↔ }'}</span>
+            <span className="font-mono text-purple-400">{"{ ↔ }"}</span>
           </div>
         </div>
 
@@ -186,11 +197,11 @@ export default function ValidParenthesesVisualizer() {
             animate={{ opacity: 1, scale: 1 }}
             className={`mb-4 p-4 rounded-lg text-center text-lg font-bold ${
               isValid
-                ? 'bg-green-500/20 border border-green-500/50 text-green-400'
-                : 'bg-red-500/20 border border-red-500/50 text-red-400'
+                ? "bg-green-500/20 border border-green-500/50 text-green-400"
+                : "bg-red-500/20 border border-red-500/50 text-red-400"
             }`}
           >
-            {isValid ? 'VALID' : 'INVALID'}
+            {isValid ? "VALID" : "INVALID"}
           </motion.div>
         )}
 
@@ -200,11 +211,11 @@ export default function ValidParenthesesVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
+            phase === "done"
               ? isValid
-                ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-                : 'bg-red-500/10 border border-red-500/30 text-red-400'
-              : 'bg-gray-800 text-gray-300'
+                ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                : "bg-red-500/10 border border-red-500/30 text-red-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -213,9 +224,9 @@ export default function ValidParenthesesVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-green-400">Key Insight:</strong>{' '}
-            Opening brackets push, closing brackets pop and check match.
-            Stack must be empty at end for valid string.
+            <strong className="text-green-400">Key Insight:</strong> Opening
+            brackets push, closing brackets pop and check match. Stack must be
+            empty at end for valid string.
           </p>
         </div>
       </div>

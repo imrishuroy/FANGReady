@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 interface Node {
   val: number;
@@ -21,16 +21,20 @@ export default function LinkedListReversalVisualizer() {
   const [currIdx, setCurrIdx] = useState<number | null>(0);
   const [nextIdx, setNextIdx] = useState<number | null>(null);
   const [reversedLinks, setReversedLinks] = useState<Set<number>>(new Set());
-  const [phase, setPhase] = useState<'init' | 'save-next' | 'reverse-link' | 'move-prev' | 'move-curr' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to reverse the linked list');
+  const [phase, setPhase] = useState<
+    "init" | "save-next" | "reverse-link" | "move-prev" | "move-curr" | "done"
+  >("init");
+  const [message, setMessage] = useState(
+    "Click Play to reverse the linked list"
+  );
 
   const reset = useCallback(() => {
     setPrevIdx(null);
     setCurrIdx(0);
     setNextIdx(null);
     setReversedLinks(new Set());
-    setPhase('init');
-    setMessage('Click Play to reverse the linked list');
+    setPhase("init");
+    setMessage("Click Play to reverse the linked list");
     setIsPlaying(false);
   }, []);
 
@@ -38,57 +42,81 @@ export default function LinkedListReversalVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setMessage('Initialize: prev = null, curr = head (node 1)');
-        setPhase('save-next');
-      } else if (phase === 'save-next') {
+      if (phase === "init") {
+        setMessage("Initialize: prev = null, curr = head (node 1)");
+        setPhase("save-next");
+      } else if (phase === "save-next") {
         if (currIdx === null || currIdx >= nodes.length) {
-          setPhase('done');
-          setMessage(`Done! New head is node ${nodes[nodes.length - 1].val}. Reversed: ${nodes.map(n => n.val).reverse().join(' -> ')}`);
+          setPhase("done");
+          setMessage(
+            `Done! New head is node ${nodes[nodes.length - 1].val}. Reversed: ${nodes
+              .map((n) => n.val)
+              .reverse()
+              .join(" -> ")}`
+          );
           setIsPlaying(false);
           return;
         }
         // Step 1: Save next
         const next = currIdx + 1 < nodes.length ? currIdx + 1 : null;
         setNextIdx(next);
-        setMessage(`Step 1: Save next = ${next !== null ? `node ${nodes[next].val}` : 'null'}`);
-        setPhase('reverse-link');
-      } else if (phase === 'reverse-link') {
+        setMessage(
+          `Step 1: Save next = ${next !== null ? `node ${nodes[next].val}` : "null"}`
+        );
+        setPhase("reverse-link");
+      } else if (phase === "reverse-link") {
         // Step 2: Reverse link
         if (currIdx !== null) {
           setReversedLinks(new Set([...reversedLinks, currIdx]));
         }
-        setMessage(`Step 2: Reverse link - curr.next = prev (${prevIdx !== null ? `node ${nodes[prevIdx].val}` : 'null'})`);
-        setPhase('move-prev');
-      } else if (phase === 'move-prev') {
+        setMessage(
+          `Step 2: Reverse link - curr.next = prev (${prevIdx !== null ? `node ${nodes[prevIdx].val}` : "null"})`
+        );
+        setPhase("move-prev");
+      } else if (phase === "move-prev") {
         // Step 3: Move prev
         setPrevIdx(currIdx);
-        setMessage(`Step 3: Move prev to curr (node ${currIdx !== null ? nodes[currIdx].val : 'null'})`);
-        setPhase('move-curr');
-      } else if (phase === 'move-curr') {
+        setMessage(
+          `Step 3: Move prev to curr (node ${currIdx !== null ? nodes[currIdx].val : "null"})`
+        );
+        setPhase("move-curr");
+      } else if (phase === "move-curr") {
         // Step 4: Move curr
         setCurrIdx(nextIdx);
-        setMessage(`Step 4: Move curr to next (${nextIdx !== null ? `node ${nodes[nextIdx].val}` : 'null'})`);
+        setMessage(
+          `Step 4: Move curr to next (${nextIdx !== null ? `node ${nodes[nextIdx].val}` : "null"})`
+        );
         setNextIdx(null);
-        setPhase('save-next');
+        setPhase("save-next");
       }
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, currIdx, prevIdx, nextIdx, nodes, reversedLinks, speed]);
+  }, [
+    isPlaying,
+    phase,
+    currIdx,
+    prevIdx,
+    nextIdx,
+    nodes,
+    reversedLinks,
+    speed,
+  ]);
 
   const getPointerLabel = (idx: number) => {
     const labels = [];
-    if (idx === prevIdx) labels.push('prev');
-    if (idx === currIdx) labels.push('curr');
-    if (idx === nextIdx) labels.push('next');
-    return labels.join(', ');
+    if (idx === prevIdx) labels.push("prev");
+    if (idx === currIdx) labels.push("curr");
+    if (idx === nextIdx) labels.push("next");
+    return labels.join(", ");
   };
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Reverse Linked List</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Reverse Linked List
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Three-pointer technique: prev, curr, next
         </p>
@@ -99,12 +127,12 @@ export default function LinkedListReversalVisualizer() {
         <div className="flex items-center gap-2 mb-6">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -132,12 +160,16 @@ export default function LinkedListReversalVisualizer() {
           <div className="flex items-center gap-2 overflow-x-auto pb-4">
             {/* Null before first node (for reversed links) */}
             <div className="flex flex-col items-center">
-              <div className={`w-16 h-12 rounded-lg flex items-center justify-center font-mono text-sm ${
-                prevIdx === null && phase !== 'init' ? 'bg-purple-500/30 border-2 border-purple-500' : 'bg-gray-700/50'
-              } text-gray-400`}>
+              <div
+                className={`w-16 h-12 rounded-lg flex items-center justify-center font-mono text-sm ${
+                  prevIdx === null && phase !== "init"
+                    ? "bg-purple-500/30 border-2 border-purple-500"
+                    : "bg-gray-700/50"
+                } text-gray-400`}
+              >
                 null
               </div>
-              {prevIdx === null && phase !== 'init' && (
+              {prevIdx === null && phase !== "init" && (
                 <span className="text-xs text-purple-400 mt-1">prev</span>
               )}
             </div>
@@ -166,24 +198,30 @@ export default function LinkedListReversalVisualizer() {
                   <div
                     className={`w-16 h-12 rounded-lg flex items-center justify-center font-mono text-lg font-bold transition-colors ${
                       idx === currIdx
-                        ? 'bg-yellow-500 text-black ring-2 ring-yellow-300'
+                        ? "bg-yellow-500 text-black ring-2 ring-yellow-300"
                         : idx === prevIdx
-                        ? 'bg-purple-500 text-white'
-                        : idx === nextIdx
-                        ? 'bg-cyan-500 text-white'
-                        : reversedLinks.has(idx)
-                        ? 'bg-green-500/50 text-white'
-                        : 'bg-gray-700 text-gray-300'
+                          ? "bg-purple-500 text-white"
+                          : idx === nextIdx
+                            ? "bg-cyan-500 text-white"
+                            : reversedLinks.has(idx)
+                              ? "bg-green-500/50 text-white"
+                              : "bg-gray-700 text-gray-300"
                     }`}
                   >
                     {node.val}
                   </div>
                   {getPointerLabel(idx) && (
-                    <span className={`text-xs mt-1 ${
-                      idx === currIdx ? 'text-yellow-400' :
-                      idx === prevIdx ? 'text-purple-400' :
-                      idx === nextIdx ? 'text-cyan-400' : ''
-                    }`}>
+                    <span
+                      className={`text-xs mt-1 ${
+                        idx === currIdx
+                          ? "text-yellow-400"
+                          : idx === prevIdx
+                            ? "text-purple-400"
+                            : idx === nextIdx
+                              ? "text-cyan-400"
+                              : ""
+                      }`}
+                    >
                       {getPointerLabel(idx)}
                     </span>
                   )}
@@ -226,37 +264,55 @@ export default function LinkedListReversalVisualizer() {
           <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">prev</div>
             <div className="text-lg font-bold text-purple-400">
-              {prevIdx !== null ? nodes[prevIdx].val : 'null'}
+              {prevIdx !== null ? nodes[prevIdx].val : "null"}
             </div>
           </div>
           <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">curr</div>
             <div className="text-lg font-bold text-yellow-400">
-              {currIdx !== null ? nodes[currIdx].val : 'null'}
+              {currIdx !== null ? nodes[currIdx].val : "null"}
             </div>
           </div>
           <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">next</div>
             <div className="text-lg font-bold text-cyan-400">
-              {nextIdx !== null ? nodes[nextIdx].val : 'null'}
+              {nextIdx !== null ? nodes[nextIdx].val : "null"}
             </div>
           </div>
         </div>
 
         {/* Steps Legend */}
         <div className="mb-4 p-3 bg-gray-800/50 rounded-lg">
-          <div className="text-xs text-gray-500 mb-2">The Four Steps (repeated):</div>
+          <div className="text-xs text-gray-500 mb-2">
+            The Four Steps (repeated):
+          </div>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <div className={phase === 'save-next' ? 'text-cyan-400' : 'text-gray-500'}>
+            <div
+              className={
+                phase === "save-next" ? "text-cyan-400" : "text-gray-500"
+              }
+            >
               1. next = curr.next
             </div>
-            <div className={phase === 'reverse-link' ? 'text-green-400' : 'text-gray-500'}>
+            <div
+              className={
+                phase === "reverse-link" ? "text-green-400" : "text-gray-500"
+              }
+            >
               2. curr.next = prev
             </div>
-            <div className={phase === 'move-prev' ? 'text-purple-400' : 'text-gray-500'}>
+            <div
+              className={
+                phase === "move-prev" ? "text-purple-400" : "text-gray-500"
+              }
+            >
               3. prev = curr
             </div>
-            <div className={phase === 'move-curr' ? 'text-yellow-400' : 'text-gray-500'}>
+            <div
+              className={
+                phase === "move-curr" ? "text-yellow-400" : "text-gray-500"
+              }
+            >
               4. curr = next
             </div>
           </div>
@@ -268,9 +324,9 @@ export default function LinkedListReversalVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -279,9 +335,9 @@ export default function LinkedListReversalVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-blue-400">Key Insight:</strong>{' '}
-            Use three pointers: prev (already reversed), curr (processing), next (saved reference).
-            Repeat: save next, reverse link, move prev, move curr.
+            <strong className="text-blue-400">Key Insight:</strong> Use three
+            pointers: prev (already reversed), curr (processing), next (saved
+            reference). Repeat: save next, reverse link, move prev, move curr.
           </p>
         </div>
       </div>

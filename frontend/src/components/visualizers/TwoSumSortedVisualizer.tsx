@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 export default function TwoSumSortedVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -12,8 +12,10 @@ export default function TwoSumSortedVisualizer() {
   const [right, setRight] = useState(5);
   const [currentSum, setCurrentSum] = useState<number | null>(null);
   const [found, setFound] = useState(false);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find two numbers summing to 26');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to find two numbers summing to 26"
+  );
   const [history, setHistory] = useState<string[]>([]);
 
   const reset = useCallback(() => {
@@ -21,7 +23,7 @@ export default function TwoSumSortedVisualizer() {
     setRight(nums.length - 1);
     setCurrentSum(null);
     setFound(false);
-    setPhase('init');
+    setPhase("init");
     setMessage(`Click Play to find two numbers summing to ${target}`);
     setHistory([]);
     setIsPlaying(false);
@@ -31,16 +33,18 @@ export default function TwoSumSortedVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         const sum = nums[left] + nums[right];
         setCurrentSum(sum);
         setMessage(`Checking: ${nums[left]} + ${nums[right]} = ${sum}`);
-        setHistory([`left=0, right=${nums.length - 1}: ${nums[left]} + ${nums[right]} = ${sum}`]);
-      } else if (phase === 'running') {
+        setHistory([
+          `left=0, right=${nums.length - 1}: ${nums[left]} + ${nums[right]} = ${sum}`,
+        ]);
+      } else if (phase === "running") {
         if (left >= right) {
-          setPhase('done');
-          setMessage('No pair found!');
+          setPhase("done");
+          setMessage("No pair found!");
           setIsPlaying(false);
           return;
         }
@@ -49,7 +53,7 @@ export default function TwoSumSortedVisualizer() {
 
         if (sum === target) {
           setFound(true);
-          setPhase('done');
+          setPhase("done");
           setMessage(`Found! ${nums[left]} + ${nums[right]} = ${target}`);
           setIsPlaying(false);
           return;
@@ -61,8 +65,13 @@ export default function TwoSumSortedVisualizer() {
           if (newLeft < right) {
             const newSum = nums[newLeft] + nums[right];
             setCurrentSum(newSum);
-            setMessage(`${sum} < ${target}, move left. Now: ${nums[newLeft]} + ${nums[right]} = ${newSum}`);
-            setHistory(prev => [...prev, `left=${newLeft}, right=${right}: ${nums[newLeft]} + ${nums[right]} = ${newSum}`]);
+            setMessage(
+              `${sum} < ${target}, move left. Now: ${nums[newLeft]} + ${nums[right]} = ${newSum}`
+            );
+            setHistory((prev) => [
+              ...prev,
+              `left=${newLeft}, right=${right}: ${nums[newLeft]} + ${nums[right]} = ${newSum}`,
+            ]);
           }
         } else {
           const newRight = right - 1;
@@ -70,8 +79,13 @@ export default function TwoSumSortedVisualizer() {
           if (left < newRight) {
             const newSum = nums[left] + nums[newRight];
             setCurrentSum(newSum);
-            setMessage(`${sum} > ${target}, move right. Now: ${nums[left]} + ${nums[newRight]} = ${newSum}`);
-            setHistory(prev => [...prev, `left=${left}, right=${newRight}: ${nums[left]} + ${nums[newRight]} = ${newSum}`]);
+            setMessage(
+              `${sum} > ${target}, move right. Now: ${nums[left]} + ${nums[newRight]} = ${newSum}`
+            );
+            setHistory((prev) => [
+              ...prev,
+              `left=${left}, right=${newRight}: ${nums[left]} + ${nums[newRight]} = ${newSum}`,
+            ]);
           }
         }
       }
@@ -83,7 +97,9 @@ export default function TwoSumSortedVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Two Sum II (Sorted Array)</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Two Sum II (Sorted Array)
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Find two numbers summing to {target} using opposite direction pointers
         </p>
@@ -94,12 +110,12 @@ export default function TwoSumSortedVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -128,14 +144,19 @@ export default function TwoSumSortedVisualizer() {
           {currentSum !== null && (
             <span className="ml-4">
               <span className="text-gray-400">Current Sum: </span>
-              <span className={`font-bold text-xl ${
-                currentSum === target ? 'text-green-400' :
-                currentSum < target ? 'text-yellow-400' : 'text-orange-400'
-              }`}>
+              <span
+                className={`font-bold text-xl ${
+                  currentSum === target
+                    ? "text-green-400"
+                    : currentSum < target
+                      ? "text-yellow-400"
+                      : "text-orange-400"
+                }`}
+              >
                 {currentSum}
                 {currentSum !== target && (
                   <span className="text-sm ml-1">
-                    ({currentSum < target ? '↑ need more' : '↓ need less'})
+                    ({currentSum < target ? "↑ need more" : "↓ need less"})
                   </span>
                 )}
               </span>
@@ -149,13 +170,14 @@ export default function TwoSumSortedVisualizer() {
             <div key={idx} className="flex flex-col items-center">
               <motion.div
                 animate={{
-                  backgroundColor: found && (idx === left || idx === right)
-                    ? '#22c55e'
-                    : idx === left
-                    ? '#3b82f6'
-                    : idx === right
-                    ? '#f59e0b'
-                    : '#374151',
+                  backgroundColor:
+                    found && (idx === left || idx === right)
+                      ? "#22c55e"
+                      : idx === left
+                        ? "#3b82f6"
+                        : idx === right
+                          ? "#f59e0b"
+                          : "#374151",
                   scale: idx === left || idx === right ? 1.1 : 1,
                 }}
                 className="w-12 h-12 rounded-lg flex items-center justify-center font-bold text-white"
@@ -188,7 +210,7 @@ export default function TwoSumSortedVisualizer() {
         </div>
 
         {/* Current calculation */}
-        {phase !== 'init' && (
+        {phase !== "init" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -198,7 +220,9 @@ export default function TwoSumSortedVisualizer() {
             <span className="text-gray-400 mx-2">+</span>
             <span className="text-yellow-400 font-mono">{nums[right]}</span>
             <span className="text-gray-400 mx-2">=</span>
-            <span className={`font-mono ${currentSum === target ? 'text-green-400' : 'text-white'}`}>
+            <span
+              className={`font-mono ${currentSum === target ? "text-green-400" : "text-white"}`}
+            >
               {currentSum}
             </span>
           </motion.div>
@@ -212,7 +236,8 @@ export default function TwoSumSortedVisualizer() {
             className="mb-4 p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-center"
           >
             <span className="text-green-400 font-bold text-lg">
-              Found! indices [{left}, {right}] → {nums[left]} + {nums[right]} = {target}
+              Found! indices [{left}, {right}] → {nums[left]} + {nums[right]} ={" "}
+              {target}
             </span>
           </motion.div>
         )}
@@ -235,11 +260,11 @@ export default function TwoSumSortedVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
+            phase === "done"
               ? found
-                ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-                : 'bg-red-500/10 border border-red-500/30 text-red-400'
-              : 'bg-gray-800 text-gray-300'
+                ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                : "bg-red-500/10 border border-red-500/30 text-red-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}

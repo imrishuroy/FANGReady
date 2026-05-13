@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useState, useEffect } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface ExecutionState {
   step: number;
@@ -15,16 +15,16 @@ const customStyle = {
   ...oneDark,
   'pre[class*="language-"]': {
     ...oneDark['pre[class*="language-"]'],
-    background: 'transparent',
+    background: "transparent",
     margin: 0,
     padding: 0,
-    fontSize: '0.875rem',
-    lineHeight: '1.6',
+    fontSize: "0.875rem",
+    lineHeight: "1.6",
   },
   'code[class*="language-"]': {
     ...oneDark['code[class*="language-"]'],
-    background: 'transparent',
-    fontSize: '0.875rem',
+    background: "transparent",
+    fontSize: "0.875rem",
   },
 };
 
@@ -54,9 +54,10 @@ export default function RecursionVsIterationVisualizer() {
     for (let i = n; i >= 0; i--) {
       steps.push({
         step: steps.length,
-        variables: { n: i, 'stack depth': n - i + 1 },
+        variables: { n: i, "stack depth": n - i + 1 },
         highlight: i === 0 ? 2 : 3,
-        output: i === 0 ? 'Base case! Return 1' : `Waiting for factRec(${i - 1})...`,
+        output:
+          i === 0 ? "Base case! Return 1" : `Waiting for factRec(${i - 1})...`,
       });
     }
 
@@ -64,11 +65,12 @@ export default function RecursionVsIterationVisualizer() {
     for (let i = 0; i <= n; i++) {
       steps.push({
         step: steps.length,
-        variables: { n: i, result, 'stack depth': n - i + 1 },
+        variables: { n: i, result, "stack depth": n - i + 1 },
         highlight: 3,
-        output: i === 0 ? 'Return 1' : `Return ${i} * ${result / i} = ${result}`,
+        output:
+          i === 0 ? "Return 1" : `Return ${i} * ${result / i} = ${result}`,
       });
-      result *= (i + 1);
+      result *= i + 1;
     }
 
     return steps;
@@ -81,7 +83,7 @@ export default function RecursionVsIterationVisualizer() {
       step: 0,
       variables: { result: 1, i: n, n },
       highlight: 2,
-      output: 'Initialize result = 1',
+      output: "Initialize result = 1",
     });
 
     let result = 1;
@@ -131,15 +133,22 @@ export default function RecursionVsIterationVisualizer() {
 
     const timer = setTimeout(() => {
       if (recursionStep < recursionSteps.length - 1) {
-        setRecursionStep(s => s + 1);
+        setRecursionStep((s) => s + 1);
       }
       if (iterationStep < iterationSteps.length - 1) {
-        setIterationStep(s => s + 1);
+        setIterationStep((s) => s + 1);
       }
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, recursionStep, iterationStep, speed, recursionSteps.length, iterationSteps.length]);
+  }, [
+    isPlaying,
+    recursionStep,
+    iterationStep,
+    speed,
+    recursionSteps.length,
+    iterationSteps.length,
+  ]);
 
   const reset = () => {
     setRecursionStep(0);
@@ -147,8 +156,8 @@ export default function RecursionVsIterationVisualizer() {
     setIsPlaying(false);
   };
 
-  const recursiveLines = recursiveCode.split('\n');
-  const iterativeLines = iterativeCode.split('\n');
+  const recursiveLines = recursiveCode.split("\n");
+  const iterativeLines = iterativeCode.split("\n");
 
   const factorial = (n: number): number => {
     let result = 1;
@@ -162,7 +171,9 @@ export default function RecursionVsIterationVisualizer() {
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           Recursion vs Iteration
         </h3>
-        <p className="text-gray-400 text-sm mt-1">Compare how both approaches solve the same problem</p>
+        <p className="text-gray-400 text-sm mt-1">
+          Compare how both approaches solve the same problem
+        </p>
       </div>
 
       <div className="p-4">
@@ -175,7 +186,9 @@ export default function RecursionVsIterationVisualizer() {
               max="7"
               value={input}
               onChange={(e) => {
-                setInput(Math.min(7, Math.max(1, parseInt(e.target.value) || 1)));
+                setInput(
+                  Math.min(7, Math.max(1, parseInt(e.target.value) || 1))
+                );
                 reset();
               }}
               className="w-16 px-2 py-1 bg-gray-800 border border-gray-700 rounded text-white text-center"
@@ -186,11 +199,11 @@ export default function RecursionVsIterationVisualizer() {
             onClick={() => setIsPlaying(!isPlaying)}
             className={`px-4 py-2 rounded-lg font-medium transition ${
               isPlaying
-                ? 'bg-yellow-500 text-black hover:bg-yellow-400'
-                : 'bg-green-500 text-white hover:bg-green-400'
+                ? "bg-yellow-500 text-black hover:bg-yellow-400"
+                : "bg-green-500 text-white hover:bg-green-400"
             }`}
           >
-            {isPlaying ? '⏸ Pause' : '▶ Play Both'}
+            {isPlaying ? "⏸ Pause" : "▶ Play Both"}
           </button>
 
           <button
@@ -218,7 +231,9 @@ export default function RecursionVsIterationVisualizer() {
           <div className="border border-purple-500/30 rounded-lg overflow-hidden">
             <div className="px-4 py-2 bg-purple-500/20 border-b border-purple-500/30 flex justify-between items-center">
               <span className="font-medium text-purple-300">Recursive</span>
-              <span className="text-xs text-purple-400">Step {recursionStep + 1}/{recursionSteps.length}</span>
+              <span className="text-xs text-purple-400">
+                Step {recursionStep + 1}/{recursionSteps.length}
+              </span>
             </div>
 
             <div className="bg-[#011627] p-4">
@@ -229,22 +244,33 @@ export default function RecursionVsIterationVisualizer() {
                   <div
                     key={idx}
                     className={`flex transition-all duration-200 ${
-                      isActive ? 'bg-purple-500/20 -mx-4 px-4 rounded' : ''
+                      isActive ? "bg-purple-500/20 -mx-4 px-4 rounded" : ""
                     }`}
                   >
-                    <span className={`w-6 text-right mr-3 select-none font-mono text-sm ${
-                      isActive ? 'text-purple-400' : 'text-gray-600'
-                    }`}>
+                    <span
+                      className={`w-6 text-right mr-3 select-none font-mono text-sm ${
+                        isActive ? "text-purple-400" : "text-gray-600"
+                      }`}
+                    >
                       {lineNum}
                     </span>
                     <div className="flex-1 overflow-hidden">
                       <SyntaxHighlighter
                         language="java"
                         style={customStyle}
-                        customStyle={{ margin: 0, padding: 0, background: 'transparent' }}
-                        codeTagProps={{ style: { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' } }}
+                        customStyle={{
+                          margin: 0,
+                          padding: 0,
+                          background: "transparent",
+                        }}
+                        codeTagProps={{
+                          style: {
+                            fontFamily:
+                              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                          },
+                        }}
                       >
-                        {line || ' '}
+                        {line || " "}
                       </SyntaxHighlighter>
                     </div>
                   </div>
@@ -254,14 +280,16 @@ export default function RecursionVsIterationVisualizer() {
 
             <div className="p-3 bg-gray-800/50 border-t border-gray-700">
               <div className="flex flex-wrap gap-2 mb-2">
-                {Object.entries(currentRecursion.variables).map(([key, value]) => (
-                  <span
-                    key={key}
-                    className="px-2 py-1 bg-purple-500/20 rounded text-xs font-mono text-purple-300"
-                  >
-                    {key}: {value}
-                  </span>
-                ))}
+                {Object.entries(currentRecursion.variables).map(
+                  ([key, value]) => (
+                    <span
+                      key={key}
+                      className="px-2 py-1 bg-purple-500/20 rounded text-xs font-mono text-purple-300"
+                    >
+                      {key}: {value}
+                    </span>
+                  )
+                )}
               </div>
               <p className="text-sm text-gray-300">{currentRecursion.output}</p>
             </div>
@@ -270,7 +298,9 @@ export default function RecursionVsIterationVisualizer() {
           <div className="border border-blue-500/30 rounded-lg overflow-hidden">
             <div className="px-4 py-2 bg-blue-500/20 border-b border-blue-500/30 flex justify-between items-center">
               <span className="font-medium text-blue-300">Iterative</span>
-              <span className="text-xs text-blue-400">Step {iterationStep + 1}/{iterationSteps.length}</span>
+              <span className="text-xs text-blue-400">
+                Step {iterationStep + 1}/{iterationSteps.length}
+              </span>
             </div>
 
             <div className="bg-[#011627] p-4">
@@ -281,22 +311,33 @@ export default function RecursionVsIterationVisualizer() {
                   <div
                     key={idx}
                     className={`flex transition-all duration-200 ${
-                      isActive ? 'bg-blue-500/20 -mx-4 px-4 rounded' : ''
+                      isActive ? "bg-blue-500/20 -mx-4 px-4 rounded" : ""
                     }`}
                   >
-                    <span className={`w-6 text-right mr-3 select-none font-mono text-sm ${
-                      isActive ? 'text-blue-400' : 'text-gray-600'
-                    }`}>
+                    <span
+                      className={`w-6 text-right mr-3 select-none font-mono text-sm ${
+                        isActive ? "text-blue-400" : "text-gray-600"
+                      }`}
+                    >
                       {lineNum}
                     </span>
                     <div className="flex-1 overflow-hidden">
                       <SyntaxHighlighter
                         language="java"
                         style={customStyle}
-                        customStyle={{ margin: 0, padding: 0, background: 'transparent' }}
-                        codeTagProps={{ style: { fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' } }}
+                        customStyle={{
+                          margin: 0,
+                          padding: 0,
+                          background: "transparent",
+                        }}
+                        codeTagProps={{
+                          style: {
+                            fontFamily:
+                              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                          },
+                        }}
                       >
-                        {line || ' '}
+                        {line || " "}
                       </SyntaxHighlighter>
                     </div>
                   </div>
@@ -306,14 +347,16 @@ export default function RecursionVsIterationVisualizer() {
 
             <div className="p-3 bg-gray-800/50 border-t border-gray-700">
               <div className="flex flex-wrap gap-2 mb-2">
-                {Object.entries(currentIteration.variables).map(([key, value]) => (
-                  <span
-                    key={key}
-                    className="px-2 py-1 bg-blue-500/20 rounded text-xs font-mono text-blue-300"
-                  >
-                    {key}: {value}
-                  </span>
-                ))}
+                {Object.entries(currentIteration.variables).map(
+                  ([key, value]) => (
+                    <span
+                      key={key}
+                      className="px-2 py-1 bg-blue-500/20 rounded text-xs font-mono text-blue-300"
+                    >
+                      {key}: {value}
+                    </span>
+                  )
+                )}
               </div>
               <p className="text-sm text-gray-300">{currentIteration.output}</p>
             </div>
@@ -322,7 +365,9 @@ export default function RecursionVsIterationVisualizer() {
 
         <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-lg font-bold text-white">{factorial(input)}</div>
+            <div className="text-lg font-bold text-white">
+              {factorial(input)}
+            </div>
             <div className="text-xs text-gray-500">Result ({input}!)</div>
           </div>
           <div className="bg-purple-500/10 rounded-lg p-3 text-center">
@@ -341,8 +386,9 @@ export default function RecursionVsIterationVisualizer() {
 
         <div className="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
           <p className="text-indigo-300 text-sm">
-            <strong>Key Insight:</strong> Recursion uses the call stack implicitly (O(n) space), while iteration uses
-            explicit variables (O(1) space). Both achieve O(n) time complexity for this problem.
+            <strong>Key Insight:</strong> Recursion uses the call stack
+            implicitly (O(n) space), while iteration uses explicit variables
+            (O(1) space). Both achieve O(n) time complexity for this problem.
           </p>
         </div>
       </div>

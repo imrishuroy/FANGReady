@@ -1,34 +1,34 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import Link from 'next/link';
-import { Pattern, Question } from '@/types';
-import { questions, categoryToPatternId } from '@/lib/questions';
-import { useProgress } from '@/contexts/ProgressContext';
-import TutorialTab from './tabs/TutorialTab';
-import ProblemsTab from './tabs/ProblemsTab';
-import CheatsheetTab from './tabs/CheatsheetTab';
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { Pattern, Question } from "@/types";
+import { questions, categoryToPatternId } from "@/lib/questions";
+import { useProgress } from "@/contexts/ProgressContext";
+import TutorialTab from "./tabs/TutorialTab";
+import ProblemsTab from "./tabs/ProblemsTab";
+import CheatsheetTab from "./tabs/CheatsheetTab";
 
-type Tab = 'tutorial' | 'problems' | 'cheatsheet';
+type Tab = "tutorial" | "problems" | "cheatsheet";
 
 interface PatternPageClientProps {
   pattern: Pattern;
 }
 
 const difficultyColors: Record<string, string> = {
-  'Easy': 'bg-green-500/20 text-green-400',
-  'Medium': 'bg-yellow-500/20 text-yellow-400',
-  'Hard': 'bg-red-500/20 text-red-400',
-  'Easy-Medium': 'bg-emerald-500/20 text-emerald-400',
-  'Medium-Hard': 'bg-orange-500/20 text-orange-400',
+  Easy: "bg-green-500/20 text-green-400",
+  Medium: "bg-yellow-500/20 text-yellow-400",
+  Hard: "bg-red-500/20 text-red-400",
+  "Easy-Medium": "bg-emerald-500/20 text-emerald-400",
+  "Medium-Hard": "bg-orange-500/20 text-orange-400",
 };
 
 export default function PatternPageClient({ pattern }: PatternPageClientProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('tutorial');
+  const [activeTab, setActiveTab] = useState<Tab>("tutorial");
   const { completed, toggleComplete } = useProgress();
 
   const patternQuestions = useMemo(() => {
-    return questions.filter(q => {
+    return questions.filter((q) => {
       const patternId = categoryToPatternId[q.category];
       return patternId === pattern.id;
     });
@@ -36,14 +36,18 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
 
   const stats = useMemo(() => {
     const total = patternQuestions.length;
-    const done = patternQuestions.filter(q => completed.has(q.id)).length;
-    return { total, done, percent: total > 0 ? Math.round((done / total) * 100) : 0 };
+    const done = patternQuestions.filter((q) => completed.has(q.id)).length;
+    return {
+      total,
+      done,
+      percent: total > 0 ? Math.round((done / total) * 100) : 0,
+    };
   }, [patternQuestions, completed]);
 
   const tabs = [
-    { id: 'tutorial' as Tab, label: 'Tutorial' },
-    { id: 'problems' as Tab, label: 'Problems', count: stats.total },
-    { id: 'cheatsheet' as Tab, label: 'Cheatsheet' },
+    { id: "tutorial" as Tab, label: "Tutorial" },
+    { id: "problems" as Tab, label: "Problems", count: stats.total },
+    { id: "cheatsheet" as Tab, label: "Cheatsheet" },
   ];
 
   return (
@@ -56,8 +60,18 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
               href="/"
               className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
               <span>Back</span>
             </Link>
@@ -66,27 +80,56 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-2xl md:text-3xl font-bold text-white">{pattern.category}</h1>
-                <span className={`px-3 py-1 text-sm rounded-full ${difficultyColors[pattern.difficulty]}`}>
+                <h1 className="text-2xl md:text-3xl font-bold text-white">
+                  {pattern.category}
+                </h1>
+                <span
+                  className={`px-3 py-1 text-sm rounded-full ${difficultyColors[pattern.difficulty]}`}
+                >
                   {pattern.difficulty}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-400">
-                <span>Time: <span className="text-indigo-400 font-mono">{pattern.timeComplexity}</span></span>
-                <span>Space: <span className="text-purple-400 font-mono">{pattern.spaceComplexity}</span></span>
+                <span>
+                  Time:{" "}
+                  <span className="text-indigo-400 font-mono">
+                    {pattern.timeComplexity}
+                  </span>
+                </span>
+                <span>
+                  Space:{" "}
+                  <span className="text-purple-400 font-mono">
+                    {pattern.spaceComplexity}
+                  </span>
+                </span>
               </div>
             </div>
 
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <div className="text-2xl font-bold text-white">{stats.done}/{stats.total}</div>
+                <div className="text-2xl font-bold text-white">
+                  {stats.done}/{stats.total}
+                </div>
                 <div className="text-sm text-gray-500">problems solved</div>
               </div>
               <div className="w-16 h-16 relative">
-                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 64 64">
-                  <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="none" className="text-gray-800" />
+                <svg
+                  className="w-full h-full transform -rotate-90"
+                  viewBox="0 0 64 64"
+                >
                   <circle
-                    cx="32" cy="32" r="28"
+                    cx="32"
+                    cy="32"
+                    r="28"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                    className="text-gray-800"
+                  />
+                  <circle
+                    cx="32"
+                    cy="32"
+                    r="28"
                     stroke="url(#miniGradient)"
                     strokeWidth="4"
                     fill="none"
@@ -94,7 +137,13 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
                     strokeDasharray={`${stats.percent * 1.76} 176`}
                   />
                   <defs>
-                    <linearGradient id="miniGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <linearGradient
+                      id="miniGradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
                       <stop offset="0%" stopColor="#6366f1" />
                       <stop offset="100%" stopColor="#a855f7" />
                     </linearGradient>
@@ -109,19 +158,21 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
 
           {/* Tabs */}
           <div className="flex gap-1 mt-6 -mb-px">
-            {tabs.map(tab => (
+            {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-3 text-sm font-medium rounded-t-lg transition-colors ${
                   activeTab === tab.id
-                    ? 'bg-gray-950 text-white border-t border-l border-r border-gray-800'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                    ? "bg-gray-950 text-white border-t border-l border-r border-gray-800"
+                    : "text-gray-400 hover:text-white hover:bg-gray-800/50"
                 }`}
               >
                 <span>{tab.label}</span>
                 {tab.count !== undefined && (
-                  <span className="px-2 py-0.5 text-xs bg-gray-800 rounded-full">{tab.count}</span>
+                  <span className="px-2 py-0.5 text-xs bg-gray-800 rounded-full">
+                    {tab.count}
+                  </span>
                 )}
               </button>
             ))}
@@ -131,15 +182,15 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
 
       {/* Tab Content */}
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {activeTab === 'tutorial' && <TutorialTab pattern={pattern} />}
-        {activeTab === 'problems' && (
+        {activeTab === "tutorial" && <TutorialTab pattern={pattern} />}
+        {activeTab === "problems" && (
           <ProblemsTab
             questions={patternQuestions}
             completed={completed}
             onToggleComplete={toggleComplete}
           />
         )}
-        {activeTab === 'cheatsheet' && <CheatsheetTab pattern={pattern} />}
+        {activeTab === "cheatsheet" && <CheatsheetTab pattern={pattern} />}
       </div>
     </div>
   );

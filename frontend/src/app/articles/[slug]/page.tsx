@@ -1,6 +1,6 @@
-import { notFound } from 'next/navigation';
-import { articles, getArticleBySlug } from '@/content/articles';
-import ArticleOverviewContent from './ArticleOverviewContent';
+import { notFound } from "next/navigation";
+import { articles, getArticleBySlug } from "@/content/articles";
+import ArticleOverviewContent from "./ArticleOverviewContent";
 
 export function generateStaticParams() {
   return articles.map((article) => ({

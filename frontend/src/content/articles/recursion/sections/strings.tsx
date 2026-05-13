@@ -1,21 +1,25 @@
-'use client';
+"use client";
 
-import CodeBlock from '@/components/ui/CodeBlock';
-import StepByStepExecutor from '@/components/visualizers/StepByStepExecutor';
+import CodeBlock from "@/components/ui/CodeBlock";
+import StepByStepExecutor from "@/components/visualizers/StepByStepExecutor";
 
 export default function StringsSection() {
   return (
     <div className="prose prose-invert max-w-none">
-      <h1 className="text-3xl font-bold text-white mb-6">Recursion with Strings</h1>
+      <h1 className="text-3xl font-bold text-white mb-6">
+        Recursion with Strings
+      </h1>
 
       <p className="text-lg text-gray-300 leading-relaxed mb-8">
-        Strings are naturally recursive structures - a string is either empty or a character followed by
-        another string. This makes them perfect for recursive solutions.
+        Strings are naturally recursive structures - a string is either empty or
+        a character followed by another string. This makes them perfect for
+        recursive solutions.
       </p>
 
       <h2 className="text-2xl font-bold text-white mb-4">Reverse a String</h2>
       <p className="text-gray-300 mb-4">
-        One of the most classic recursive string problems. Watch the step-by-step execution:
+        One of the most classic recursive string problems. Watch the
+        step-by-step execution:
       </p>
 
       <div className="mb-6">
@@ -38,7 +42,9 @@ export default function StringsSection() {
         language="java"
       />
 
-      <h2 className="text-2xl font-bold text-white mb-4 mt-10">Check Palindrome</h2>
+      <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+        Check Palindrome
+      </h2>
       <CodeBlock
         code={`public boolean isPalindrome(String str) {
     if (str.length() <= 1) return true;
@@ -69,7 +75,9 @@ export default function StringsSection() {
         language="java"
       />
 
-      <h2 className="text-2xl font-bold text-white mb-4 mt-10">Remove Duplicates</h2>
+      <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+        Remove Duplicates
+      </h2>
       <CodeBlock
         code={`public String removeDuplicates(String str) {
     if (str.length() <= 1) return str;
@@ -84,7 +92,9 @@ export default function StringsSection() {
         language="java"
       />
 
-      <h2 className="text-2xl font-bold text-white mb-4 mt-10">String Permutations</h2>
+      <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+        String Permutations
+      </h2>
       <p className="text-gray-300 mb-4">
         Generate all permutations of a string - a common interview problem:
       </p>
@@ -108,7 +118,9 @@ export default function StringsSection() {
         language="java"
       />
 
-      <h2 className="text-2xl font-bold text-white mb-4 mt-10">Check if Subsequence</h2>
+      <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+        Check if Subsequence
+      </h2>
       <CodeBlock
         code={`public boolean isSubsequence(String s, String t) {
     if (s.isEmpty()) return true;
@@ -126,7 +138,9 @@ export default function StringsSection() {
       />
 
       <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-6 mt-8">
-        <h4 className="text-lg font-semibold text-indigo-300 mb-3">Practice Problems</h4>
+        <h4 className="text-lg font-semibold text-indigo-300 mb-3">
+          Practice Problems
+        </h4>
         <ul className="text-gray-300 space-y-2">
           <li>1. Count occurrences of a character in a string</li>
           <li>2. Replace all occurrences of a character</li>

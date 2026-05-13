@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TreeNode {
   val: number;
@@ -32,8 +32,10 @@ export default function LevelOrderVisualizer() {
   const [result, setResult] = useState<number[][]>([]);
   const [currentLevel, setCurrentLevel] = useState<number[]>([]);
   const [levelIndex, setLevelIndex] = useState(0);
-  const [phase, setPhase] = useState<'init' | 'processing' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to start BFS level order traversal');
+  const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to start BFS level order traversal"
+  );
 
   const nodeMap: Record<number, TreeNode> = {
     3: sampleTree,
@@ -50,8 +52,8 @@ export default function LevelOrderVisualizer() {
     setResult([]);
     setCurrentLevel([]);
     setLevelIndex(0);
-    setPhase('init');
-    setMessage('Click Play to start BFS level order traversal');
+    setPhase("init");
+    setMessage("Click Play to start BFS level order traversal");
     setIsPlaying(false);
   }, []);
 
@@ -59,20 +61,22 @@ export default function LevelOrderVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
+      if (phase === "init") {
         setQueue([3]);
-        setPhase('processing');
-        setMessage('Initialize: Add root to queue');
-      } else if (phase === 'processing') {
+        setPhase("processing");
+        setMessage("Initialize: Add root to queue");
+      } else if (phase === "processing") {
         if (queue.length === 0) {
           // Finish current level if any
           if (currentLevel.length > 0) {
             setResult((prev) => [...prev, currentLevel]);
             setCurrentLevel([]);
           }
-          setPhase('done');
+          setPhase("done");
           setCurrentNode(null);
-          setMessage(`Done! Result: [[${result.map((l) => l.join(', ')).join('], [')}${currentLevel.length > 0 ? ', [' + currentLevel.join(', ') + ']' : ''}]]`);
+          setMessage(
+            `Done! Result: [[${result.map((l) => l.join(", ")).join("], [")}${currentLevel.length > 0 ? ", [" + currentLevel.join(", ") + "]" : ""}]]`
+          );
           setIsPlaying(false);
           return;
         }
@@ -102,8 +106,9 @@ export default function LevelOrderVisualizer() {
         setQueue(newQueue);
 
         // Check if level is complete (queue now has next level's nodes)
-        const isLevelComplete = newQueue.length > 0 &&
-          !newQueue.some(v => currentLevel.includes(v) || v === nodeVal);
+        const isLevelComplete =
+          newQueue.length > 0 &&
+          !newQueue.some((v) => currentLevel.includes(v) || v === nodeVal);
 
         if (newQueue.length === 0 || isLevelComplete) {
           if (newLevel.length > 0) {
@@ -114,7 +119,9 @@ export default function LevelOrderVisualizer() {
         }
 
         if (children.length > 0) {
-          setMessage(`Process ${nodeVal}, add children [${children.join(', ')}] to queue`);
+          setMessage(
+            `Process ${nodeVal}, add children [${children.join(", ")}] to queue`
+          );
         } else {
           setMessage(`Process ${nodeVal} (leaf node, no children)`);
         }
@@ -122,7 +129,16 @@ export default function LevelOrderVisualizer() {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, queue, currentLevel, result, levelIndex, nodeMap, speed]);
+  }, [
+    isPlaying,
+    phase,
+    queue,
+    currentLevel,
+    result,
+    levelIndex,
+    nodeMap,
+    speed,
+  ]);
 
   const getNodePosition = (val: number): { x: number; y: number } => {
     const positions: Record<number, { x: number; y: number }> = {
@@ -148,7 +164,13 @@ export default function LevelOrderVisualizer() {
           cy={pos.y}
           r={22}
           animate={{
-            fill: isCurrent ? '#eab308' : isVisited ? '#22c55e' : isInQueue ? '#3b82f6' : '#374151',
+            fill: isCurrent
+              ? "#eab308"
+              : isVisited
+                ? "#22c55e"
+                : isInQueue
+                  ? "#3b82f6"
+                  : "#374151",
             scale: isCurrent ? 1.2 : 1,
           }}
           className="stroke-gray-600 stroke-2"
@@ -157,7 +179,7 @@ export default function LevelOrderVisualizer() {
           x={pos.x}
           y={pos.y + 5}
           textAnchor="middle"
-          className={`text-sm font-bold ${isCurrent ? 'fill-black' : 'fill-white'}`}
+          className={`text-sm font-bold ${isCurrent ? "fill-black" : "fill-white"}`}
         >
           {val}
         </text>
@@ -183,7 +205,9 @@ export default function LevelOrderVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">BFS Level Order Traversal</h3>
+        <h3 className="text-lg font-semibold text-white">
+          BFS Level Order Traversal
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Process tree level by level using a queue
         </p>
@@ -194,12 +218,12 @@ export default function LevelOrderVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -251,14 +275,20 @@ export default function LevelOrderVisualizer() {
                 </motion.div>
               ))}
             </AnimatePresence>
-            {queue.length === 0 && <span className="text-gray-500 italic">Empty</span>}
-            {queue.length > 0 && <span className="text-xs text-gray-500 ml-2">← front</span>}
+            {queue.length === 0 && (
+              <span className="text-gray-500 italic">Empty</span>
+            )}
+            {queue.length > 0 && (
+              <span className="text-xs text-gray-500 ml-2">← front</span>
+            )}
           </div>
         </div>
 
         {/* Result */}
         <div className="mb-4">
-          <div className="text-sm text-gray-400 mb-2">Result (level by level):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Result (level by level):
+          </div>
           <div className="flex gap-2 flex-wrap min-h-[50px] items-center">
             {result.map((level, levelIdx) => (
               <div key={levelIdx} className="flex items-center gap-1">
@@ -318,9 +348,9 @@ export default function LevelOrderVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -329,8 +359,9 @@ export default function LevelOrderVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-blue-400">Key Insight:</strong>{' '}
-            Save queue size at start of each level to know how many nodes belong to current level.
+            <strong className="text-blue-400">Key Insight:</strong> Save queue
+            size at start of each level to know how many nodes belong to current
+            level.
           </p>
         </div>
       </div>

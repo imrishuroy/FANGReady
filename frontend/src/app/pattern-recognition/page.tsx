@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import CodeBlock from '@/components/ui/CodeBlock';
-import LanguageToggle from '@/components/ui/LanguageToggle';
+import { useState } from "react";
+import CodeBlock from "@/components/ui/CodeBlock";
+import LanguageToggle from "@/components/ui/LanguageToggle";
 
-type Language = 'java' | 'python' | 'javascript';
-type Tab = 'cheatsheet' | 'constraints' | 'patterns' | 'keywords';
+type Language = "java" | "python" | "javascript";
+type Tab = "cheatsheet" | "constraints" | "patterns" | "keywords";
 
 export default function PatternRecognitionPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('cheatsheet');
+  const [activeTab, setActiveTab] = useState<Tab>("cheatsheet");
   const [selectedPattern, setSelectedPattern] = useState<string | null>(null);
-  const [currentLang, setCurrentLang] = useState<Language>('java');
+  const [currentLang, setCurrentLang] = useState<Language>("java");
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -27,18 +27,18 @@ export default function PatternRecognitionPage() {
       {/* Simple Tab Navigation */}
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
         {[
-          { id: 'cheatsheet', label: 'Quick Cheatsheet' },
-          { id: 'constraints', label: 'By Constraints' },
-          { id: 'patterns', label: 'By Pattern' },
-          { id: 'keywords', label: 'By Keywords' },
+          { id: "cheatsheet", label: "Quick Cheatsheet" },
+          { id: "constraints", label: "By Constraints" },
+          { id: "patterns", label: "By Pattern" },
+          { id: "keywords", label: "By Keywords" },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as Tab)}
             className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition ${
               activeTab === tab.id
-                ? 'bg-indigo-500 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white'
+                ? "bg-indigo-500 text-white"
+                : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-white"
             }`}
           >
             {tab.label}
@@ -47,9 +47,14 @@ export default function PatternRecognitionPage() {
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'cheatsheet' && <CheatsheetTab />}
-      {activeTab === 'constraints' && <ConstraintsTab currentLang={currentLang} setCurrentLang={setCurrentLang} />}
-      {activeTab === 'patterns' && (
+      {activeTab === "cheatsheet" && <CheatsheetTab />}
+      {activeTab === "constraints" && (
+        <ConstraintsTab
+          currentLang={currentLang}
+          setCurrentLang={setCurrentLang}
+        />
+      )}
+      {activeTab === "patterns" && (
         <PatternsTab
           selectedPattern={selectedPattern}
           setSelectedPattern={setSelectedPattern}
@@ -57,7 +62,7 @@ export default function PatternRecognitionPage() {
           setCurrentLang={setCurrentLang}
         />
       )}
-      {activeTab === 'keywords' && <KeywordsTab />}
+      {activeTab === "keywords" && <KeywordsTab />}
     </div>
   );
 }
@@ -67,9 +72,12 @@ function CheatsheetTab() {
     <div className="space-y-6">
       {/* The Golden Rule */}
       <div className="p-6 bg-gradient-to-r from-amber-900/30 to-yellow-900/30 rounded-xl border border-amber-500/30">
-        <h2 className="text-xl font-bold text-amber-400 mb-4">The Golden Rule: Check Constraints First</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-4">
+          The Golden Rule: Check Constraints First
+        </h2>
         <p className="text-gray-300 mb-4">
-          Before anything else, look at the input size. This tells you which algorithms are even possible.
+          Before anything else, look at the input size. This tells you which
+          algorithms are even possible.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="p-3 bg-gray-900/50 rounded-lg text-center">
@@ -97,27 +105,47 @@ function CheatsheetTab() {
 
       {/* Quick Pattern Lookup */}
       <div className="p-6 bg-gray-900 rounded-xl border border-gray-800">
-        <h2 className="text-xl font-bold text-white mb-4">Quick Pattern Lookup</h2>
+        <h2 className="text-xl font-bold text-white mb-4">
+          Quick Pattern Lookup
+        </h2>
 
         <div className="space-y-4">
           {/* By Input Type */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">If you see this input...</h3>
+            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+              If you see this input...
+            </h3>
             <div className="grid md:grid-cols-2 gap-2">
               {[
-                { input: 'Sorted array', patterns: 'Binary Search, Two Pointers' },
-                { input: 'Unsorted array', patterns: 'HashMap, Sort first, Sliding Window' },
-                { input: 'String', patterns: 'Two Pointers, Sliding Window, Stack' },
-                { input: 'Tree', patterns: 'DFS, BFS, Recursion' },
-                { input: 'Graph', patterns: 'BFS, DFS, Union Find' },
-                { input: '2D Grid', patterns: 'DFS/BFS, DP' },
-                { input: 'Linked List', patterns: 'Two Pointers (fast/slow)' },
-                { input: 'Intervals', patterns: 'Sort + Greedy' },
+                {
+                  input: "Sorted array",
+                  patterns: "Binary Search, Two Pointers",
+                },
+                {
+                  input: "Unsorted array",
+                  patterns: "HashMap, Sort first, Sliding Window",
+                },
+                {
+                  input: "String",
+                  patterns: "Two Pointers, Sliding Window, Stack",
+                },
+                { input: "Tree", patterns: "DFS, BFS, Recursion" },
+                { input: "Graph", patterns: "BFS, DFS, Union Find" },
+                { input: "2D Grid", patterns: "DFS/BFS, DP" },
+                { input: "Linked List", patterns: "Two Pointers (fast/slow)" },
+                { input: "Intervals", patterns: "Sort + Greedy" },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 p-2 bg-gray-800/50 rounded-lg">
-                  <span className="text-white font-medium min-w-[100px]">{item.input}</span>
+                <div
+                  key={i}
+                  className="flex items-center gap-3 p-2 bg-gray-800/50 rounded-lg"
+                >
+                  <span className="text-white font-medium min-w-[100px]">
+                    {item.input}
+                  </span>
                   <span className="text-gray-400">→</span>
-                  <span className="text-indigo-400 text-sm">{item.patterns}</span>
+                  <span className="text-indigo-400 text-sm">
+                    {item.patterns}
+                  </span>
                 </div>
               ))}
             </div>
@@ -125,20 +153,35 @@ function CheatsheetTab() {
 
           {/* By Output Type */}
           <div className="pt-4 border-t border-gray-800">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">If you need this output...</h3>
+            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+              If you need this output...
+            </h3>
             <div className="grid md:grid-cols-2 gap-2">
               {[
-                { output: 'All combinations/subsets', pattern: 'Backtracking' },
-                { output: 'Max/Min value', pattern: 'DP or Greedy' },
-                { output: 'True/False (can reach?)', pattern: 'DP, BFS, or DFS' },
-                { output: 'Shortest path', pattern: 'BFS (unweighted)' },
-                { output: 'Number of ways', pattern: 'DP' },
-                { output: 'Kth largest/smallest', pattern: 'Heap or QuickSelect' },
+                { output: "All combinations/subsets", pattern: "Backtracking" },
+                { output: "Max/Min value", pattern: "DP or Greedy" },
+                {
+                  output: "True/False (can reach?)",
+                  pattern: "DP, BFS, or DFS",
+                },
+                { output: "Shortest path", pattern: "BFS (unweighted)" },
+                { output: "Number of ways", pattern: "DP" },
+                {
+                  output: "Kth largest/smallest",
+                  pattern: "Heap or QuickSelect",
+                },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3 p-2 bg-gray-800/50 rounded-lg">
-                  <span className="text-white font-medium min-w-[160px]">{item.output}</span>
+                <div
+                  key={i}
+                  className="flex items-center gap-3 p-2 bg-gray-800/50 rounded-lg"
+                >
+                  <span className="text-white font-medium min-w-[160px]">
+                    {item.output}
+                  </span>
                   <span className="text-gray-400">→</span>
-                  <span className="text-emerald-400 text-sm">{item.pattern}</span>
+                  <span className="text-emerald-400 text-sm">
+                    {item.pattern}
+                  </span>
                 </div>
               ))}
             </div>
@@ -148,34 +191,55 @@ function CheatsheetTab() {
 
       {/* Decision Flowchart */}
       <div className="p-6 bg-gray-900 rounded-xl border border-gray-800">
-        <h2 className="text-xl font-bold text-white mb-4">Simple Decision Flow</h2>
+        <h2 className="text-xl font-bold text-white mb-4">
+          Simple Decision Flow
+        </h2>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">1</div>
+            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              1
+            </div>
             <div>
               <span className="text-white font-medium">Check n</span>
-              <span className="text-gray-400 ml-2">→ Eliminates impossible approaches</span>
+              <span className="text-gray-400 ml-2">
+                → Eliminates impossible approaches
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">2</div>
+            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              2
+            </div>
             <div>
               <span className="text-white font-medium">Look at input type</span>
-              <span className="text-gray-400 ml-2">→ Array? Tree? Graph? String?</span>
+              <span className="text-gray-400 ml-2">
+                → Array? Tree? Graph? String?
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              3
+            </div>
             <div>
-              <span className="text-white font-medium">Check what output is needed</span>
-              <span className="text-gray-400 ml-2">→ Single number? List? Boolean?</span>
+              <span className="text-white font-medium">
+                Check what output is needed
+              </span>
+              <span className="text-gray-400 ml-2">
+                → Single number? List? Boolean?
+              </span>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">4</div>
+            <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+              4
+            </div>
             <div>
               <span className="text-white font-medium">Spot keywords</span>
-              <span className="text-gray-400 ml-2">→ &quot;Shortest&quot;, &quot;All combinations&quot;, &quot;Maximum&quot;</span>
+              <span className="text-gray-400 ml-2">
+                → &quot;Shortest&quot;, &quot;All combinations&quot;,
+                &quot;Maximum&quot;
+              </span>
             </div>
           </div>
         </div>
@@ -184,15 +248,35 @@ function CheatsheetTab() {
   );
 }
 
-function ConstraintsTab({ currentLang, setCurrentLang }: { currentLang: Language; setCurrentLang: (l: Language) => void }) {
-  const [selected, setSelected] = useState<string>('small');
+function ConstraintsTab({
+  currentLang,
+  setCurrentLang,
+}: {
+  currentLang: Language;
+  setCurrentLang: (l: Language) => void;
+}) {
+  const [selected, setSelected] = useState<string>("small");
 
-  const data: Record<string, { title: string; range: string; desc: string; algos: string[]; code: Record<Language, string> }> = {
+  const data: Record<
+    string,
+    {
+      title: string;
+      range: string;
+      desc: string;
+      algos: string[];
+      code: Record<Language, string>;
+    }
+  > = {
     small: {
-      title: 'Small n (≤ 20)',
-      range: 'n ≤ 20',
-      desc: 'You can try every possibility. Brute force, recursion, and backtracking work fine here.',
-      algos: ['Backtracking', 'Recursion', 'Generate all subsets (2ⁿ)', 'Generate all permutations (n!)'],
+      title: "Small n (≤ 20)",
+      range: "n ≤ 20",
+      desc: "You can try every possibility. Brute force, recursion, and backtracking work fine here.",
+      algos: [
+        "Backtracking",
+        "Recursion",
+        "Generate all subsets (2ⁿ)",
+        "Generate all permutations (n!)",
+      ],
       code: {
         java: `// Generate all subsets - O(2^n)
 void subsets(int[] nums, int i, List<Integer> curr) {
@@ -234,10 +318,10 @@ function subsets(nums, i, curr, result) {
       },
     },
     medium: {
-      title: 'Medium n (≤ 3000)',
-      range: 'n ≤ 3000',
-      desc: 'Nested loops are OK. O(n²) solutions will pass.',
-      algos: ['Two nested loops', 'Simple DP', 'Compare all pairs'],
+      title: "Medium n (≤ 3000)",
+      range: "n ≤ 3000",
+      desc: "Nested loops are OK. O(n²) solutions will pass.",
+      algos: ["Two nested loops", "Simple DP", "Compare all pairs"],
       code: {
         java: `// Two Sum (brute force) - O(n²)
 int[] twoSum(int[] nums, int target) {
@@ -271,10 +355,16 @@ function twoSum(nums, target) {
       },
     },
     large: {
-      title: 'Large n (≤ 10⁶)',
-      range: 'n ≤ 10⁶',
-      desc: 'Need O(n) or O(n log n). Use single loops, sorting, or hash maps.',
-      algos: ['Single loop', 'Two Pointers', 'Sliding Window', 'HashMap', 'Sorting'],
+      title: "Large n (≤ 10⁶)",
+      range: "n ≤ 10⁶",
+      desc: "Need O(n) or O(n log n). Use single loops, sorting, or hash maps.",
+      algos: [
+        "Single loop",
+        "Two Pointers",
+        "Sliding Window",
+        "HashMap",
+        "Sorting",
+      ],
       code: {
         java: `// Two Sum (optimized) - O(n)
 int[] twoSum(int[] nums, int target) {
@@ -312,10 +402,10 @@ function twoSum(nums, target) {
       },
     },
     huge: {
-      title: 'Huge n (> 10⁶)',
-      range: 'n > 10⁶',
-      desc: 'Need O(log n) or O(1). Binary search or math formulas only.',
-      algos: ['Binary Search', 'Math formulas', 'Bit manipulation'],
+      title: "Huge n (> 10⁶)",
+      range: "n > 10⁶",
+      desc: "Need O(log n) or O(1). Binary search or math formulas only.",
+      algos: ["Binary Search", "Math formulas", "Bit manipulation"],
       code: {
         java: `// Binary Search - O(log n)
 int search(int[] nums, int target) {
@@ -367,8 +457,8 @@ function search(nums, target) {
             onClick={() => setSelected(key)}
             className={`px-4 py-2 rounded-lg font-medium transition ${
               selected === key
-                ? 'bg-indigo-500 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                ? "bg-indigo-500 text-white"
+                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
             }`}
           >
             {val.range}
@@ -382,10 +472,15 @@ function search(nums, target) {
         <p className="text-gray-400 mb-4">{current.desc}</p>
 
         <div className="mb-4">
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Common algorithms:</h3>
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">
+            Common algorithms:
+          </h3>
           <div className="flex flex-wrap gap-2">
             {current.algos.map((algo, i) => (
-              <span key={i} className="px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-lg text-sm">
+              <span
+                key={i}
+                className="px-3 py-1 bg-indigo-500/20 text-indigo-400 rounded-lg text-sm"
+              >
                 {algo}
               </span>
             ))}
@@ -394,11 +489,13 @@ function search(nums, target) {
 
         <div>
           <div className="flex justify-between items-center mb-2">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Example:</h3>
+            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
+              Example:
+            </h3>
             <LanguageToggle
               currentLang={currentLang}
               onChange={(l) => setCurrentLang(l as Language)}
-              languages={['java', 'python', 'javascript']}
+              languages={["java", "python", "javascript"]}
               size="sm"
             />
           </div>
@@ -422,9 +519,9 @@ function PatternsTab({
 }) {
   const patterns = [
     {
-      id: 'two-pointers',
-      name: 'Two Pointers',
-      when: 'Sorted array, find pairs, palindrome check',
+      id: "two-pointers",
+      name: "Two Pointers",
+      when: "Sorted array, find pairs, palindrome check",
       template: {
         java: `// Two Pointers - find pair with target sum
 int left = 0, right = arr.length - 1;
@@ -453,12 +550,12 @@ while (left < right) {
     else right--;
 }`,
       },
-      problems: ['Two Sum II', '3Sum', 'Container With Most Water'],
+      problems: ["Two Sum II", "3Sum", "Container With Most Water"],
     },
     {
-      id: 'sliding-window',
-      name: 'Sliding Window',
-      when: 'Subarray/substring problems, contiguous elements',
+      id: "sliding-window",
+      name: "Sliding Window",
+      when: "Subarray/substring problems, contiguous elements",
       template: {
         java: `// Sliding Window - max sum of k elements
 int left = 0, sum = 0, maxSum = 0;
@@ -490,12 +587,15 @@ for (let right = 0; right < arr.length; right++) {
     }
 }`,
       },
-      problems: ['Maximum Subarray', 'Longest Substring Without Repeating Characters'],
+      problems: [
+        "Maximum Subarray",
+        "Longest Substring Without Repeating Characters",
+      ],
     },
     {
-      id: 'binary-search',
-      name: 'Binary Search',
-      when: 'Sorted array, find target, minimize/maximize answer',
+      id: "binary-search",
+      name: "Binary Search",
+      when: "Sorted array, find target, minimize/maximize answer",
       template: {
         java: `// Binary Search
 int left = 0, right = arr.length - 1;
@@ -527,12 +627,12 @@ while (left <= right) {
 }
 return -1;`,
       },
-      problems: ['Binary Search', 'Search in Rotated Sorted Array'],
+      problems: ["Binary Search", "Search in Rotated Sorted Array"],
     },
     {
-      id: 'bfs-dfs',
-      name: 'BFS / DFS',
-      when: 'Trees, graphs, grids, shortest path, connected components',
+      id: "bfs-dfs",
+      name: "BFS / DFS",
+      when: "Trees, graphs, grids, shortest path, connected components",
       template: {
         java: `// BFS - shortest path
 Queue<int[]> queue = new LinkedList<>();
@@ -584,11 +684,11 @@ while (queue.length > 0) {
     }
 }`,
       },
-      problems: ['Number of Islands', 'Word Ladder', 'Binary Tree Level Order'],
+      problems: ["Number of Islands", "Word Ladder", "Binary Tree Level Order"],
     },
     {
-      id: 'dp',
-      name: 'Dynamic Programming',
+      id: "dp",
+      name: "Dynamic Programming",
       when: '"Number of ways", "Maximum/minimum", overlapping subproblems',
       template: {
         java: `// DP - Climbing Stairs (how many ways?)
@@ -613,12 +713,12 @@ for (let i = 2; i <= n; i++) {
 }
 return dp[n];`,
       },
-      problems: ['Climbing Stairs', 'House Robber', 'Coin Change'],
+      problems: ["Climbing Stairs", "House Robber", "Coin Change"],
     },
     {
-      id: 'backtracking',
-      name: 'Backtracking',
-      when: 'Generate all combinations/permutations, small n (≤20)',
+      id: "backtracking",
+      name: "Backtracking",
+      when: "Generate all combinations/permutations, small n (≤20)",
       template: {
         java: `// Backtracking - generate subsets
 void backtrack(int[] nums, int start, List<Integer> curr) {
@@ -649,12 +749,12 @@ function backtrack(start, curr) {
     }
 }`,
       },
-      problems: ['Subsets', 'Permutations', 'Combination Sum'],
+      problems: ["Subsets", "Permutations", "Combination Sum"],
     },
     {
-      id: 'heap',
-      name: 'Heap',
-      when: 'K largest/smallest, median, priority scheduling',
+      id: "heap",
+      name: "Heap",
+      when: "K largest/smallest, median, priority scheduling",
       template: {
         java: `// Heap - find K largest elements
 PriorityQueue<Integer> minHeap = new PriorityQueue<>();
@@ -684,12 +784,16 @@ for (const num of nums) {
 }
 // result contains k largest elements`,
       },
-      problems: ['Kth Largest Element', 'Top K Frequent Elements', 'Merge K Sorted Lists'],
+      problems: [
+        "Kth Largest Element",
+        "Top K Frequent Elements",
+        "Merge K Sorted Lists",
+      ],
     },
     {
-      id: 'expand-center',
-      name: 'Expand Around Center',
-      when: 'Palindrome substrings, longest palindrome, O(1) space vs O(n²) DP',
+      id: "expand-center",
+      name: "Expand Around Center",
+      when: "Palindrome substrings, longest palindrome, O(1) space vs O(n²) DP",
       template: {
         java: `// Expand Around Center - O(n²) time, O(1) space
 // For each center, expand outward while chars match
@@ -752,11 +856,15 @@ function longestPalindrome(s) {
     return s.substring(start, end + 1);
 }`,
       },
-      problems: ['Longest Palindromic Substring', 'Palindromic Substrings', 'Valid Palindrome II'],
+      problems: [
+        "Longest Palindromic Substring",
+        "Palindromic Substrings",
+        "Valid Palindrome II",
+      ],
     },
   ];
 
-  const selected = patterns.find(p => p.id === selectedPattern);
+  const selected = patterns.find((p) => p.id === selectedPattern);
 
   return (
     <div className="space-y-6">
@@ -765,11 +873,15 @@ function longestPalindrome(s) {
         {patterns.map((pattern) => (
           <button
             key={pattern.id}
-            onClick={() => setSelectedPattern(selectedPattern === pattern.id ? null : pattern.id)}
+            onClick={() =>
+              setSelectedPattern(
+                selectedPattern === pattern.id ? null : pattern.id
+              )
+            }
             className={`p-4 rounded-xl border text-left transition ${
               selectedPattern === pattern.id
-                ? 'bg-indigo-500/20 border-indigo-500'
-                : 'bg-gray-900 border-gray-800 hover:border-gray-700'
+                ? "bg-indigo-500/20 border-indigo-500"
+                : "bg-gray-900 border-gray-800 hover:border-gray-700"
             }`}
           >
             <div className="font-medium text-white">{pattern.name}</div>
@@ -787,22 +899,32 @@ function longestPalindrome(s) {
 
           <div className="mb-4">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Template:</h3>
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
+                Template:
+              </h3>
               <LanguageToggle
                 currentLang={currentLang}
                 onChange={(l) => setCurrentLang(l as Language)}
-                languages={['java', 'python', 'javascript']}
+                languages={["java", "python", "javascript"]}
                 size="sm"
               />
             </div>
-            <CodeBlock code={selected.template[currentLang]} language={currentLang} />
+            <CodeBlock
+              code={selected.template[currentLang]}
+              language={currentLang}
+            />
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">Practice:</h3>
+            <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">
+              Practice:
+            </h3>
             <div className="flex flex-wrap gap-2">
               {selected.problems.map((problem, i) => {
-                const slug = problem.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                const slug = problem
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/(^-|-$)/g, "");
                 return (
                   <a
                     key={i}
@@ -831,39 +953,99 @@ function longestPalindrome(s) {
 
 function KeywordsTab() {
   const keywords = [
-    { category: 'Dynamic Programming', color: 'indigo', words: ['Number of ways', 'Maximum profit', 'Minimum cost', 'Can you reach', 'Longest/Shortest'] },
-    { category: 'Two Pointers', color: 'purple', words: ['Sorted array', 'Palindrome', 'Two sum (sorted)', 'Remove duplicates'] },
-    { category: 'Sliding Window', color: 'emerald', words: ['Substring', 'Subarray', 'Consecutive', 'Window', 'Contiguous'] },
-    { category: 'BFS', color: 'cyan', words: ['Shortest path', 'Level order', 'Nearest', 'Minimum steps'] },
-    { category: 'DFS / Backtracking', color: 'rose', words: ['All combinations', 'All permutations', 'All paths', 'Generate all'] },
-    { category: 'Heap', color: 'green', words: ['K largest', 'K smallest', 'Top K', 'Median', 'Priority'] },
-    { category: 'Stack', color: 'yellow', words: ['Parentheses', 'Brackets', 'Valid expression', 'Next greater'] },
-    { category: 'HashMap', color: 'blue', words: ['Frequency', 'Count', 'Anagram', 'Two sum (unsorted)'] },
-    { category: 'Binary Search', color: 'violet', words: ['Sorted', 'Search', 'Kth element', 'Minimize maximum'] },
-    { category: 'Union Find', color: 'red', words: ['Connected components', 'Groups', 'Islands', 'Friends'] },
+    {
+      category: "Dynamic Programming",
+      color: "indigo",
+      words: [
+        "Number of ways",
+        "Maximum profit",
+        "Minimum cost",
+        "Can you reach",
+        "Longest/Shortest",
+      ],
+    },
+    {
+      category: "Two Pointers",
+      color: "purple",
+      words: [
+        "Sorted array",
+        "Palindrome",
+        "Two sum (sorted)",
+        "Remove duplicates",
+      ],
+    },
+    {
+      category: "Sliding Window",
+      color: "emerald",
+      words: ["Substring", "Subarray", "Consecutive", "Window", "Contiguous"],
+    },
+    {
+      category: "BFS",
+      color: "cyan",
+      words: ["Shortest path", "Level order", "Nearest", "Minimum steps"],
+    },
+    {
+      category: "DFS / Backtracking",
+      color: "rose",
+      words: [
+        "All combinations",
+        "All permutations",
+        "All paths",
+        "Generate all",
+      ],
+    },
+    {
+      category: "Heap",
+      color: "green",
+      words: ["K largest", "K smallest", "Top K", "Median", "Priority"],
+    },
+    {
+      category: "Stack",
+      color: "yellow",
+      words: ["Parentheses", "Brackets", "Valid expression", "Next greater"],
+    },
+    {
+      category: "HashMap",
+      color: "blue",
+      words: ["Frequency", "Count", "Anagram", "Two sum (unsorted)"],
+    },
+    {
+      category: "Binary Search",
+      color: "violet",
+      words: ["Sorted", "Search", "Kth element", "Minimize maximum"],
+    },
+    {
+      category: "Union Find",
+      color: "red",
+      words: ["Connected components", "Groups", "Islands", "Friends"],
+    },
   ];
 
   const colorMap: Record<string, string> = {
-    indigo: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-    purple: 'bg-purple-500/20 text-purple-400 border-purple-500/30',
-    emerald: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-    cyan: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-    rose: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
-    green: 'bg-green-500/20 text-green-400 border-green-500/30',
-    yellow: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-    blue: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-    violet: 'bg-violet-500/20 text-violet-400 border-violet-500/30',
-    red: 'bg-red-500/20 text-red-400 border-red-500/30',
+    indigo: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+    purple: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+    emerald: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    cyan: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+    rose: "bg-rose-500/20 text-rose-400 border-rose-500/30",
+    green: "bg-green-500/20 text-green-400 border-green-500/30",
+    yellow: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+    blue: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    violet: "bg-violet-500/20 text-violet-400 border-violet-500/30",
+    red: "bg-red-500/20 text-red-400 border-red-500/30",
   };
 
   return (
     <div className="space-y-4">
       <p className="text-gray-400 mb-6">
-        When you see these words in a problem, they usually hint at specific patterns:
+        When you see these words in a problem, they usually hint at specific
+        patterns:
       </p>
 
       {keywords.map((group, i) => (
-        <div key={i} className={`p-4 rounded-xl border ${colorMap[group.color]}`}>
+        <div
+          key={i}
+          className={`p-4 rounded-xl border ${colorMap[group.color]}`}
+        >
           <div className="font-semibold mb-2">{group.category}</div>
           <div className="flex flex-wrap gap-2">
             {group.words.map((word, j) => (

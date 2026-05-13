@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 export default function CycleDetectionVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -9,8 +9,12 @@ export default function CycleDetectionVisualizer() {
   const [slowIdx, setSlowIdx] = useState(0);
   const [fastIdx, setFastIdx] = useState(0);
   const [step, setStep] = useState(0);
-  const [phase, setPhase] = useState<'init' | 'detecting' | 'found' | 'finding-start' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to detect cycle using Floyd\'s algorithm');
+  const [phase, setPhase] = useState<
+    "init" | "detecting" | "found" | "finding-start" | "done"
+  >("init");
+  const [message, setMessage] = useState(
+    "Click Play to detect cycle using Floyd's algorithm"
+  );
   const [visitedSlow, setVisitedSlow] = useState<Set<number>>(new Set());
   const [visitedFast, setVisitedFast] = useState<Set<number>>(new Set());
 
@@ -29,10 +33,10 @@ export default function CycleDetectionVisualizer() {
     setSlowIdx(0);
     setFastIdx(0);
     setStep(0);
-    setPhase('init');
+    setPhase("init");
     setVisitedSlow(new Set());
     setVisitedFast(new Set());
-    setMessage('Click Play to detect cycle using Floyd\'s algorithm');
+    setMessage("Click Play to detect cycle using Floyd's algorithm");
     setIsPlaying(false);
   }, []);
 
@@ -40,12 +44,12 @@ export default function CycleDetectionVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('detecting');
-        setMessage('Start: Both pointers at head. Slow moves 1, Fast moves 2.');
+      if (phase === "init") {
+        setPhase("detecting");
+        setMessage("Start: Both pointers at head. Slow moves 1, Fast moves 2.");
         setVisitedSlow(new Set([0]));
         setVisitedFast(new Set([0]));
-      } else if (phase === 'detecting') {
+      } else if (phase === "detecting") {
         const newSlowIdx = getNextIdx(slowIdx);
         const newFastIdx = getNextIdx(getNextIdx(fastIdx));
 
@@ -56,44 +60,69 @@ export default function CycleDetectionVisualizer() {
         setVisitedFast(new Set([...visitedFast, newFastIdx]));
 
         if (newSlowIdx === newFastIdx) {
-          setPhase('found');
-          setMessage(`Step ${step + 1}: CYCLE DETECTED! Slow and Fast meet at node ${nodes[newSlowIdx]}`);
+          setPhase("found");
+          setMessage(
+            `Step ${step + 1}: CYCLE DETECTED! Slow and Fast meet at node ${nodes[newSlowIdx]}`
+          );
         } else {
-          setMessage(`Step ${step + 1}: Slow at ${nodes[newSlowIdx]}, Fast at ${nodes[newFastIdx]}`);
+          setMessage(
+            `Step ${step + 1}: Slow at ${nodes[newSlowIdx]}, Fast at ${nodes[newFastIdx]}`
+          );
         }
-      } else if (phase === 'found') {
+      } else if (phase === "found") {
         setSlowIdx(0);
-        setPhase('finding-start');
-        setMessage('Now find cycle start: Move slow to head, both move 1 step at a time');
-      } else if (phase === 'finding-start') {
-        const newSlowIdx = getNextIdx(slowIdx === 0 && step === 0 ? -1 : slowIdx);
+        setPhase("finding-start");
+        setMessage(
+          "Now find cycle start: Move slow to head, both move 1 step at a time"
+        );
+      } else if (phase === "finding-start") {
+        const newSlowIdx = getNextIdx(
+          slowIdx === 0 && step === 0 ? -1 : slowIdx
+        );
         const actualNewSlow = slowIdx === 0 ? slowIdx : getNextIdx(slowIdx);
         const newFastIdx = getNextIdx(fastIdx);
 
         if (slowIdx === 0 && fastIdx !== 0) {
           // First step after reset
           setSlowIdx(0);
-          setMessage(`Slow at head (${nodes[0]}), Fast at ${nodes[fastIdx]}. Both move 1 step.`);
+          setMessage(
+            `Slow at head (${nodes[0]}), Fast at ${nodes[fastIdx]}. Both move 1 step.`
+          );
         }
 
-        const nextSlow = slowIdx === 0 ? getNextIdx(slowIdx) : getNextIdx(slowIdx);
+        const nextSlow =
+          slowIdx === 0 ? getNextIdx(slowIdx) : getNextIdx(slowIdx);
         const nextFast = getNextIdx(fastIdx);
 
         setSlowIdx(nextSlow);
         setFastIdx(nextFast);
 
         if (nextSlow === nextFast) {
-          setPhase('done');
-          setMessage(`Cycle starts at node ${nodes[nextSlow]}! Both pointers meet at the cycle entry.`);
+          setPhase("done");
+          setMessage(
+            `Cycle starts at node ${nodes[nextSlow]}! Both pointers meet at the cycle entry.`
+          );
           setIsPlaying(false);
         } else {
-          setMessage(`Moving: Slow to ${nodes[nextSlow]}, Fast to ${nodes[nextFast]}`);
+          setMessage(
+            `Moving: Slow to ${nodes[nextSlow]}, Fast to ${nodes[nextFast]}`
+          );
         }
       }
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, slowIdx, fastIdx, step, visitedSlow, visitedFast, speed, nodes]);
+  }, [
+    isPlaying,
+    phase,
+    slowIdx,
+    fastIdx,
+    step,
+    visitedSlow,
+    visitedFast,
+    speed,
+    nodes,
+  ]);
 
   // Calculate positions for circular layout of cycle
   const getNodePosition = (idx: number) => {
@@ -117,7 +146,9 @@ export default function CycleDetectionVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-green-500/10 to-teal-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Cycle Detection (Floyd&apos;s Algorithm)</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Cycle Detection (Floyd&apos;s Algorithm)
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Fast/Slow pointers: if they meet, there&apos;s a cycle
         </p>
@@ -128,12 +159,12 @@ export default function CycleDetectionVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -158,7 +189,8 @@ export default function CycleDetectionVisualizer() {
         {/* List info */}
         <div className="mb-4 p-3 bg-gray-800/50 rounded-lg">
           <div className="text-sm text-gray-400">
-            List: 1 → 2 → 3 → 4 → 5 → <span className="text-red-400">(back to 3)</span>
+            List: 1 → 2 → 3 → 4 → 5 →{" "}
+            <span className="text-red-400">(back to 3)</span>
           </div>
           <div className="text-xs text-gray-500 mt-1">
             Cycle starts at node 3
@@ -181,7 +213,7 @@ export default function CycleDetectionVisualizer() {
                     y1={start.y}
                     x2={end.x - 15}
                     y2={end.y}
-                    stroke={isCycleBack ? '#ef4444' : '#6b7280'}
+                    stroke={isCycleBack ? "#ef4444" : "#6b7280"}
                     strokeWidth="2"
                     markerEnd="url(#arrowhead)"
                   />
@@ -218,14 +250,18 @@ export default function CycleDetectionVisualizer() {
                     cy={pos.y}
                     r="20"
                     fill={
-                      isBoth ? '#eab308' :
-                      isSlow ? '#3b82f6' :
-                      isFast ? '#10b981' :
-                      isCycleStart ? '#ef4444' :
-                      '#374151'
+                      isBoth
+                        ? "#eab308"
+                        : isSlow
+                          ? "#3b82f6"
+                          : isFast
+                            ? "#10b981"
+                            : isCycleStart
+                              ? "#ef4444"
+                              : "#374151"
                     }
                     animate={{
-                      scale: isBoth ? 1.2 : (isSlow || isFast) ? 1.1 : 1,
+                      scale: isBoth ? 1.2 : isSlow || isFast ? 1.1 : 1,
                     }}
                   />
                   <text
@@ -244,11 +280,11 @@ export default function CycleDetectionVisualizer() {
                       x={pos.x}
                       y={pos.y - 28}
                       textAnchor="middle"
-                      fill={isBoth ? '#eab308' : isSlow ? '#3b82f6' : '#10b981'}
+                      fill={isBoth ? "#eab308" : isSlow ? "#3b82f6" : "#10b981"}
                       fontSize="10"
                       fontWeight="bold"
                     >
-                      {isBoth ? 'S+F' : isSlow ? 'Slow' : 'Fast'}
+                      {isBoth ? "S+F" : isSlow ? "Slow" : "Fast"}
                     </text>
                   )}
                 </g>
@@ -293,11 +329,11 @@ export default function CycleDetectionVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : phase === 'found'
-              ? 'bg-yellow-500/10 border border-yellow-500/30 text-yellow-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : phase === "found"
+                ? "bg-yellow-500/10 border border-yellow-500/30 text-yellow-400"
+                : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -306,9 +342,9 @@ export default function CycleDetectionVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-green-400">Key Insight:</strong>{' '}
-            If there&apos;s a cycle, fast will lap slow. After meeting,
-            reset slow to head - they&apos;ll meet at cycle start.
+            <strong className="text-green-400">Key Insight:</strong> If
+            there&apos;s a cycle, fast will lap slow. After meeting, reset slow
+            to head - they&apos;ll meet at cycle start.
           </p>
         </div>
       </div>

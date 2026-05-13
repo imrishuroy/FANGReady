@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Interval {
   start: number;
@@ -14,9 +14,12 @@ export default function IntervalIntersectionVisualizer() {
   const [ptrA, setPtrA] = useState(0);
   const [ptrB, setPtrB] = useState(0);
   const [result, setResult] = useState<Interval[]>([]);
-  const [currentIntersection, setCurrentIntersection] = useState<Interval | null>(null);
-  const [phase, setPhase] = useState<'init' | 'checking' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find interval intersections');
+  const [currentIntersection, setCurrentIntersection] =
+    useState<Interval | null>(null);
+  const [phase, setPhase] = useState<"init" | "checking" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to find interval intersections"
+  );
 
   const listA: Interval[] = [
     { start: 0, end: 2 },
@@ -35,8 +38,8 @@ export default function IntervalIntersectionVisualizer() {
     setPtrB(0);
     setResult([]);
     setCurrentIntersection(null);
-    setPhase('init');
-    setMessage('Click Play to find interval intersections using two pointers');
+    setPhase("init");
+    setMessage("Click Play to find interval intersections using two pointers");
     setIsPlaying(false);
   }, []);
 
@@ -48,12 +51,12 @@ export default function IntervalIntersectionVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('checking');
-        setMessage('Comparing intervals from both lists...');
-      } else if (phase === 'checking') {
+      if (phase === "init") {
+        setPhase("checking");
+        setMessage("Comparing intervals from both lists...");
+      } else if (phase === "checking") {
         if (ptrA >= listA.length || ptrB >= listB.length) {
-          setPhase('done');
+          setPhase("done");
           setCurrentIntersection(null);
           setMessage(`Done! Found ${result.length} intersections`);
           setIsPlaying(false);
@@ -72,10 +75,14 @@ export default function IntervalIntersectionVisualizer() {
           const intersection = { start, end };
           setCurrentIntersection(intersection);
           setResult([...result, intersection]);
-          setMessage(`A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}] = [max(${a.start},${b.start}), min(${a.end},${b.end})] = [${start},${end}] ✓`);
+          setMessage(
+            `A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}] = [max(${a.start},${b.start}), min(${a.end},${b.end})] = [${start},${end}] ✓`
+          );
         } else {
           setCurrentIntersection(null);
-          setMessage(`A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}]: No intersection (${start} > ${end})`);
+          setMessage(
+            `A[${ptrA}]=[${a.start},${a.end}] ∩ B[${ptrB}]=[${b.start},${b.end}]: No intersection (${start} > ${end})`
+          );
         }
 
         // Advance pointer with smaller end
@@ -93,14 +100,16 @@ export default function IntervalIntersectionVisualizer() {
   }, [isPlaying, phase, ptrA, ptrB, result, speed]);
 
   const maxEnd = Math.max(
-    ...listA.map(i => i.end),
-    ...listB.map(i => i.end)
+    ...listA.map((i) => i.end),
+    ...listB.map((i) => i.end)
   );
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Interval List Intersection</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Interval List Intersection
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Two pointers: advance the interval that ends first
         </p>
@@ -111,12 +120,12 @@ export default function IntervalIntersectionVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -141,8 +150,12 @@ export default function IntervalIntersectionVisualizer() {
         {/* List A */}
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-6 h-6 rounded bg-blue-500 flex items-center justify-center text-white text-xs font-bold">A</span>
-            <span className="text-sm text-gray-400">List A (sorted, non-overlapping)</span>
+            <span className="w-6 h-6 rounded bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+              A
+            </span>
+            <span className="text-sm text-gray-400">
+              List A (sorted, non-overlapping)
+            </span>
           </div>
           <div className="relative bg-gray-800/50 rounded-lg p-4 h-16 overflow-hidden">
             {/* Timeline */}
@@ -156,13 +169,15 @@ export default function IntervalIntersectionVisualizer() {
                   scale: idx === ptrA ? 1.05 : 1,
                 }}
                 className={`absolute h-8 rounded flex items-center justify-center text-white text-xs font-bold shadow-lg ${
-                  idx === ptrA ? 'bg-blue-500 ring-2 ring-blue-300' : 'bg-blue-500/50'
+                  idx === ptrA
+                    ? "bg-blue-500 ring-2 ring-blue-300"
+                    : "bg-blue-500/50"
                 }`}
                 style={{
                   left: `${(int.start / maxEnd) * 100}%`,
                   width: `${((int.end - int.start) / maxEnd) * 100}%`,
-                  top: '8px',
-                  minWidth: '50px',
+                  top: "8px",
+                  minWidth: "50px",
                 }}
               >
                 [{int.start},{int.end}]
@@ -174,8 +189,12 @@ export default function IntervalIntersectionVisualizer() {
         {/* List B */}
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-6 h-6 rounded bg-green-500 flex items-center justify-center text-white text-xs font-bold">B</span>
-            <span className="text-sm text-gray-400">List B (sorted, non-overlapping)</span>
+            <span className="w-6 h-6 rounded bg-green-500 flex items-center justify-center text-white text-xs font-bold">
+              B
+            </span>
+            <span className="text-sm text-gray-400">
+              List B (sorted, non-overlapping)
+            </span>
           </div>
           <div className="relative bg-gray-800/50 rounded-lg p-4 h-16 overflow-hidden">
             {/* Timeline */}
@@ -189,13 +208,15 @@ export default function IntervalIntersectionVisualizer() {
                   scale: idx === ptrB ? 1.05 : 1,
                 }}
                 className={`absolute h-8 rounded flex items-center justify-center text-white text-xs font-bold shadow-lg ${
-                  idx === ptrB ? 'bg-green-500 ring-2 ring-green-300' : 'bg-green-500/50'
+                  idx === ptrB
+                    ? "bg-green-500 ring-2 ring-green-300"
+                    : "bg-green-500/50"
                 }`}
                 style={{
                   left: `${(int.start / maxEnd) * 100}%`,
                   width: `${((int.end - int.start) / maxEnd) * 100}%`,
-                  top: '8px',
-                  minWidth: '50px',
+                  top: "8px",
+                  minWidth: "50px",
                 }}
               >
                 [{int.start},{int.end}]
@@ -212,7 +233,9 @@ export default function IntervalIntersectionVisualizer() {
             className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg"
           >
             <div className="flex items-center gap-3">
-              <span className="text-yellow-400 text-sm">Found intersection:</span>
+              <span className="text-yellow-400 text-sm">
+                Found intersection:
+              </span>
               <span className="px-3 py-1 bg-yellow-500 text-black rounded font-mono font-bold">
                 [{currentIntersection.start}, {currentIntersection.end}]
               </span>
@@ -238,7 +261,9 @@ export default function IntervalIntersectionVisualizer() {
                 ))}
               </AnimatePresence>
               {result.length === 0 && (
-                <span className="text-gray-500">Intersections will appear here...</span>
+                <span className="text-gray-500">
+                  Intersections will appear here...
+                </span>
               )}
             </div>
           </div>
@@ -255,7 +280,9 @@ export default function IntervalIntersectionVisualizer() {
             <div className="text-xs text-gray-500">Pointer B</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-cyan-400">{result.length}</div>
+            <div className="text-2xl font-bold text-cyan-400">
+              {result.length}
+            </div>
             <div className="text-xs text-gray-500">Intersections</div>
           </div>
         </div>
@@ -266,9 +293,9 @@ export default function IntervalIntersectionVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -277,9 +304,9 @@ export default function IntervalIntersectionVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-cyan-400">Key Insight:</strong>{' '}
-            Intersection = [max(a.start, b.start), min(a.end, b.end)].
-            Valid if start {'<='} end. Advance the pointer with smaller end time.
+            <strong className="text-cyan-400">Key Insight:</strong> Intersection
+            = [max(a.start, b.start), min(a.end, b.end)]. Valid if start {"<="}{" "}
+            end. Advance the pointer with smaller end time.
           </p>
         </div>
       </div>

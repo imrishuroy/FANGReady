@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   createContext,
@@ -7,23 +7,25 @@ import {
   useEffect,
   useCallback,
   type ReactNode,
-} from 'react';
-import { apiClient } from '@/lib/api';
-import type { User, RegisterRequest, LoginRequest } from '@/types';
+} from "react";
+import { apiClient } from "@/lib/api";
+import type { User, RegisterRequest, LoginRequest } from "@/types";
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (req: LoginRequest) => Promise<{ success: boolean; error?: string }>;
-  register: (req: RegisterRequest) => Promise<{ success: boolean; error?: string }>;
+  register: (
+    req: RegisterRequest
+  ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const ACCESS_TOKEN_KEY = 'faangready_access_token';
+const ACCESS_TOKEN_KEY = "faangready_access_token";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -73,9 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(ACCESS_TOKEN_KEY, response.data.accessToken);
         return { success: true };
       }
-      return { success: false, error: response.error?.message || 'Login failed' };
+      return {
+        success: false,
+        error: response.error?.message || "Login failed",
+      };
     } catch {
-      return { success: false, error: 'An error occurred during login' };
+      return { success: false, error: "An error occurred during login" };
     }
   }, []);
 
@@ -87,9 +92,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(ACCESS_TOKEN_KEY, response.data.accessToken);
         return { success: true };
       }
-      return { success: false, error: response.error?.message || 'Registration failed' };
+      return {
+        success: false,
+        error: response.error?.message || "Registration failed",
+      };
     } catch {
-      return { success: false, error: 'An error occurred during registration' };
+      return { success: false, error: "An error occurred during registration" };
     }
   }, []);
 
@@ -123,7 +131,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

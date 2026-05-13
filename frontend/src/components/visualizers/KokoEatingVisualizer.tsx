@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 interface Step {
   left: number;
@@ -22,8 +22,10 @@ export default function KokoEatingVisualizer() {
   const [mid, setMid] = useState(-1);
   const [currentHours, setCurrentHours] = useState<number | null>(null);
   const [answer, setAnswer] = useState<number | null>(null);
-  const [phase, setPhase] = useState<'init' | 'running' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find minimum eating speed');
+  const [phase, setPhase] = useState<"init" | "running" | "done">("init");
+  const [message, setMessage] = useState(
+    "Click Play to find minimum eating speed"
+  );
   const [stepIndex, setStepIndex] = useState(-1);
   const [steps, setSteps] = useState<Step[]>([]);
 
@@ -33,7 +35,8 @@ export default function KokoEatingVisualizer() {
 
   const generateSteps = useCallback(() => {
     const allSteps: Step[] = [];
-    let l = 1, r = Math.max(...piles);
+    let l = 1,
+      r = Math.max(...piles);
 
     while (l < r) {
       const m = l + Math.floor((r - l) / 2);
@@ -41,10 +44,12 @@ export default function KokoEatingVisualizer() {
       const canFinish = hrs <= hours;
 
       allSteps.push({
-        left: l, right: r, mid: m,
+        left: l,
+        right: r,
+        mid: m,
         hoursNeeded: hrs,
         canFinish,
-        message: `Speed ${m}: ${piles.map(p => Math.ceil(p / m)).join(' + ')} = ${hrs} hours. ${canFinish ? `${hrs} <= ${hours}, try slower.` : `${hrs} > ${hours}, need faster.`}`
+        message: `Speed ${m}: ${piles.map((p) => Math.ceil(p / m)).join(" + ")} = ${hrs} hours. ${canFinish ? `${hrs} <= ${hours}, try slower.` : `${hrs} > ${hours}, need faster.`}`,
       });
 
       if (canFinish) {
@@ -63,8 +68,8 @@ export default function KokoEatingVisualizer() {
     setMid(-1);
     setCurrentHours(null);
     setAnswer(null);
-    setPhase('init');
-    setMessage('Click Play to find minimum eating speed');
+    setPhase("init");
+    setMessage("Click Play to find minimum eating speed");
     setStepIndex(-1);
     setSteps(generateSteps());
     setIsPlaying(false);
@@ -78,8 +83,8 @@ export default function KokoEatingVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('running');
+      if (phase === "init") {
+        setPhase("running");
         setStepIndex(0);
         const step = steps[0];
         setLeft(step.left);
@@ -92,12 +97,14 @@ export default function KokoEatingVisualizer() {
 
       const nextStepIdx = stepIndex + 1;
       if (nextStepIdx >= steps.length) {
-        setPhase('done');
+        setPhase("done");
         const finalSpeed = steps[steps.length - 1].canFinish
           ? steps[steps.length - 1].mid
           : steps[steps.length - 1].mid + 1;
         setAnswer(left);
-        setMessage(`Minimum speed = ${left} bananas/hour to finish in ${hours} hours`);
+        setMessage(
+          `Minimum speed = ${left} bananas/hour to finish in ${hours} hours`
+        );
         setIsPlaying(false);
         return;
       }
@@ -117,7 +124,9 @@ export default function KokoEatingVisualizer() {
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Binary Search on Answer</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Binary Search on Answer
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Koko Eating Bananas - Find minimum speed to finish in time
         </p>
@@ -128,12 +137,12 @@ export default function KokoEatingVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -159,11 +168,15 @@ export default function KokoEatingVisualizer() {
         <div className="mb-4 grid grid-cols-2 gap-2">
           <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-center">
             <div className="text-gray-400 text-sm">Time Limit</div>
-            <span className="text-yellow-400 font-bold text-xl">{hours} hours</span>
+            <span className="text-yellow-400 font-bold text-xl">
+              {hours} hours
+            </span>
           </div>
           <div className="p-3 bg-gray-800/50 rounded-lg text-center">
             <div className="text-gray-400 text-sm">Speed Range</div>
-            <span className="text-gray-300 font-mono">[{left}, {right}]</span>
+            <span className="text-gray-300 font-mono">
+              [{left}, {right}]
+            </span>
           </div>
         </div>
 
@@ -176,7 +189,7 @@ export default function KokoEatingVisualizer() {
                 <div className="text-2xl mb-1">🍌</div>
                 <motion.div
                   animate={{
-                    backgroundColor: mid > 0 ? '#f59e0b' : '#4b5563'
+                    backgroundColor: mid > 0 ? "#f59e0b" : "#4b5563",
                   }}
                   className="w-14 h-14 rounded-lg flex flex-col items-center justify-center"
                 >
@@ -194,19 +207,21 @@ export default function KokoEatingVisualizer() {
 
         {/* Search space visualization */}
         <div className="mb-4 p-3 bg-gray-800/50 rounded-lg">
-          <div className="text-sm text-gray-400 mb-2">Search Space (Speed):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Search Space (Speed):
+          </div>
           <div className="relative h-8 bg-gray-700 rounded-full overflow-hidden">
             <motion.div
               animate={{
                 left: `${((left - 1) / 10) * 100}%`,
-                width: `${((right - left + 1) / 11) * 100}%`
+                width: `${((right - left + 1) / 11) * 100}%`,
               }}
               className="absolute h-full bg-yellow-500/30"
             />
             {mid > 0 && (
               <motion.div
                 animate={{
-                  left: `${((mid - 1) / 10) * 100}%`
+                  left: `${((mid - 1) / 10) * 100}%`,
                 }}
                 className="absolute top-0 w-1 h-full bg-yellow-400"
               />
@@ -220,22 +235,29 @@ export default function KokoEatingVisualizer() {
         </div>
 
         {/* Current test */}
-        {mid > 0 && phase === 'running' && (
+        {mid > 0 && phase === "running" && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className={`mb-4 p-3 rounded-lg text-center ${
               currentHours !== null && currentHours <= hours
-                ? 'bg-green-500/20 border border-green-500/50'
-                : 'bg-red-500/20 border border-red-500/50'
+                ? "bg-green-500/20 border border-green-500/50"
+                : "bg-red-500/20 border border-red-500/50"
             }`}
           >
             <div className="text-lg font-bold">
               <span className="text-gray-300">Testing speed </span>
               <span className="text-yellow-400">{mid}</span>
             </div>
-            <div className={currentHours !== null && currentHours <= hours ? 'text-green-400' : 'text-red-400'}>
-              {currentHours} hours needed {currentHours !== null && currentHours <= hours ? '✓' : '✗'}
+            <div
+              className={
+                currentHours !== null && currentHours <= hours
+                  ? "text-green-400"
+                  : "text-red-400"
+              }
+            >
+              {currentHours} hours needed{" "}
+              {currentHours !== null && currentHours <= hours ? "✓" : "✗"}
             </div>
           </motion.div>
         )}
@@ -262,9 +284,9 @@ export default function KokoEatingVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -273,9 +295,13 @@ export default function KokoEatingVisualizer() {
         {/* Key insight */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-yellow-400">Binary Search on Answer:</strong>{' '}
-            Instead of searching an array, search the range of possible answers [1, max(piles)].
-            Use a predicate <code className="text-amber-400">canFinish(speed)</code> to guide the search.
+            <strong className="text-yellow-400">
+              Binary Search on Answer:
+            </strong>{" "}
+            Instead of searching an array, search the range of possible answers
+            [1, max(piles)]. Use a predicate{" "}
+            <code className="text-amber-400">canFinish(speed)</code> to guide
+            the search.
           </p>
         </div>
       </div>

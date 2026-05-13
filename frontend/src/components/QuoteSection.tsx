@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { quotes } from '@/lib/quotes';
+import { useState, useEffect } from "react";
+import { quotes } from "@/lib/quotes";
 
 export default function QuoteSection() {
   const [quote, setQuote] = useState(quotes[0]);
@@ -16,11 +16,11 @@ export default function QuoteSection() {
       <blockquote className="max-w-3xl mx-auto">
         <p
           className="text-xl italic leading-relaxed"
-          style={{ color: 'var(--text-2)', fontFamily: 'var(--font-body)' }}
+          style={{ color: "var(--text-2)", fontFamily: "var(--font-body)" }}
         >
           &ldquo;{quote.text}&rdquo;
         </p>
-        <footer className="mt-2" style={{ color: 'var(--text-3)' }}>
+        <footer className="mt-2" style={{ color: "var(--text-3)" }}>
           — {quote.author}
         </footer>
       </blockquote>

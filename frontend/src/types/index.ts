@@ -33,7 +33,7 @@ export interface TutorialSection {
 export interface Pattern {
   id: string;
   category: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Easy-Medium' | 'Medium-Hard';
+  difficulty: "Easy" | "Medium" | "Hard" | "Easy-Medium" | "Medium-Hard";
   description: string;
   whenToUse: string[];
   codeTemplates: CodeTemplates;
@@ -52,7 +52,7 @@ export interface Question {
   id: string;
   name: string;
   url: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: "Easy" | "Medium" | "Hard";
   pattern: string;
   companies: string[];
   frequency: string;
@@ -129,7 +129,7 @@ export interface Problem {
   patternId?: string;
   title: string;
   slug: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: "Easy" | "Medium" | "Hard";
   description: string;
   constraints?: string;
   examples?: string;
@@ -185,15 +185,15 @@ export interface ProblemListResponse {
 
 // Submission types
 export type SubmissionStatus =
-  | 'pending'
-  | 'running'
-  | 'accepted'
-  | 'wrong_answer'
-  | 'time_limit_exceeded'
-  | 'memory_limit_exceeded'
-  | 'runtime_error'
-  | 'compilation_error'
-  | 'internal_error';
+  | "pending"
+  | "running"
+  | "accepted"
+  | "wrong_answer"
+  | "time_limit_exceeded"
+  | "memory_limit_exceeded"
+  | "runtime_error"
+  | "compilation_error"
+  | "internal_error";
 
 export interface SubmissionResult {
   id: string;

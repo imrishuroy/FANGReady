@@ -1,21 +1,27 @@
-'use client';
+"use client";
 
-import CodeBlock from '@/components/ui/CodeBlock';
+import CodeBlock from "@/components/ui/CodeBlock";
 
 export default function DataStructuresSection() {
   return (
     <div className="prose prose-invert max-w-none">
-      <h1 className="text-3xl font-bold text-white mb-6">Recursion with Data Structures</h1>
+      <h1 className="text-3xl font-bold text-white mb-6">
+        Recursion with Data Structures
+      </h1>
 
       <p className="text-lg text-gray-300 leading-relaxed mb-8">
-        Data structures like linked lists, trees, and graphs are inherently recursive. A linked list is
-        either empty or a node followed by another linked list. A tree is either empty or a node with
-        subtrees as children.
+        Data structures like linked lists, trees, and graphs are inherently
+        recursive. A linked list is either empty or a node followed by another
+        linked list. A tree is either empty or a node with subtrees as children.
       </p>
 
-      <h2 className="text-2xl font-bold text-white mb-4">Linked List Operations</h2>
+      <h2 className="text-2xl font-bold text-white mb-4">
+        Linked List Operations
+      </h2>
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Print List in Reverse</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Print List in Reverse
+      </h3>
       <CodeBlock
         code={`class ListNode {
     int val;
@@ -34,7 +40,9 @@ public void printReverse(ListNode head) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Sum of List Values</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Sum of List Values
+      </h3>
       <CodeBlock
         code={`public int sumList(ListNode head) {
     if (head == null) return 0;
@@ -43,7 +51,9 @@ public void printReverse(ListNode head) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Search in List</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Search in List
+      </h3>
       <CodeBlock
         code={`public boolean search(ListNode head, int target) {
     if (head == null) return false;
@@ -53,7 +63,9 @@ public void printReverse(ListNode head) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Reverse Linked List</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Reverse Linked List
+      </h3>
       <CodeBlock
         code={`public ListNode reverse(ListNode head) {
     if (head == null || head.next == null) {
@@ -69,9 +81,13 @@ public void printReverse(ListNode head) {
         language="java"
       />
 
-      <h2 className="text-2xl font-bold text-white mb-4 mt-10">Binary Search Tree Operations</h2>
+      <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+        Binary Search Tree Operations
+      </h2>
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Insert Value</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Insert Value
+      </h3>
       <CodeBlock
         code={`class TreeNode {
     int val;
@@ -92,7 +108,9 @@ public TreeNode insert(TreeNode root, int val) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Tree Traversals</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Tree Traversals
+      </h3>
       <CodeBlock
         code={`// Inorder: Left, Root, Right (sorted order for BST)
 public void inorder(TreeNode root) {
@@ -120,7 +138,9 @@ public void postorder(TreeNode root) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Search in BST</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Search in BST
+      </h3>
       <CodeBlock
         code={`public boolean search(TreeNode root, int target) {
     if (root == null) return false;
@@ -136,7 +156,9 @@ public void postorder(TreeNode root) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Tree Height</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Tree Height
+      </h3>
       <CodeBlock
         code={`public int height(TreeNode root) {
     if (root == null) return 0;
@@ -147,9 +169,13 @@ public void postorder(TreeNode root) {
         language="java"
       />
 
-      <h2 className="text-2xl font-bold text-white mb-4 mt-10">Graph Traversals</h2>
+      <h2 className="text-2xl font-bold text-white mb-4 mt-10">
+        Graph Traversals
+      </h2>
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Depth-First Search (DFS)</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Depth-First Search (DFS)
+      </h3>
       <CodeBlock
         code={`public void dfs(Map<Integer, List<Integer>> graph,
                 int node, Set<Integer> visited) {
@@ -165,7 +191,9 @@ public void postorder(TreeNode root) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Topological Sort</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Topological Sort
+      </h3>
       <CodeBlock
         code={`public void topologicalSort(Map<Integer, List<Integer>> graph,
                              int node,
@@ -185,7 +213,9 @@ public void postorder(TreeNode root) {
         language="java"
       />
 
-      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">Detect Cycle in Graph</h3>
+      <h3 className="text-xl font-semibold text-gray-300 mb-3 mt-6">
+        Detect Cycle in Graph
+      </h3>
       <CodeBlock
         code={`public boolean hasCycle(Map<Integer, List<Integer>> graph,
                         int node,
@@ -210,7 +240,9 @@ public void postorder(TreeNode root) {
       />
 
       <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-6 mt-8">
-        <h4 className="text-lg font-semibold text-indigo-300 mb-3">Key Takeaways</h4>
+        <h4 className="text-lg font-semibold text-indigo-300 mb-3">
+          Key Takeaways
+        </h4>
         <ul className="text-gray-300 space-y-2">
           <li>Linked lists: Think of it as head + rest of list</li>
           <li>Trees: Process current node, then recurse on children</li>

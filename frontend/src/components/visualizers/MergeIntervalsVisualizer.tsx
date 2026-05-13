@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Interval {
   start: number;
   end: number;
   id: number;
-  state: 'unsorted' | 'sorted' | 'current' | 'comparing' | 'merged' | 'added';
+  state: "unsorted" | "sorted" | "current" | "comparing" | "merged" | "added";
 }
 
 export default function MergeIntervalsVisualizer() {
@@ -16,8 +16,12 @@ export default function MergeIntervalsVisualizer() {
   const [intervals, setIntervals] = useState<Interval[]>([]);
   const [result, setResult] = useState<Interval[]>([]);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [phase, setPhase] = useState<'init' | 'sorting' | 'merging' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to merge overlapping intervals');
+  const [phase, setPhase] = useState<"init" | "sorting" | "merging" | "done">(
+    "init"
+  );
+  const [message, setMessage] = useState(
+    "Click Play to merge overlapping intervals"
+  );
 
   const initialIntervals = [
     { start: 1, end: 3 },
@@ -30,13 +34,13 @@ export default function MergeIntervalsVisualizer() {
     const ints = initialIntervals.map((int, i) => ({
       ...int,
       id: i,
-      state: 'unsorted' as const,
+      state: "unsorted" as const,
     }));
     setIntervals(ints);
     setResult([]);
     setCurrentIdx(0);
-    setPhase('init');
-    setMessage('Click Play to merge overlapping intervals');
+    setPhase("init");
+    setMessage("Click Play to merge overlapping intervals");
     setIsPlaying(false);
   }, []);
 
@@ -48,25 +52,32 @@ export default function MergeIntervalsVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('sorting');
-        setMessage('Step 1: Sort intervals by start time');
-      } else if (phase === 'sorting') {
+      if (phase === "init") {
+        setPhase("sorting");
+        setMessage("Step 1: Sort intervals by start time");
+      } else if (phase === "sorting") {
         const sorted = [...intervals].sort((a, b) => a.start - b.start);
         sorted.forEach((int, i) => (int.id = i));
-        const updated = sorted.map(int => ({ ...int, state: 'sorted' as const }));
+        const updated = sorted.map((int) => ({
+          ...int,
+          state: "sorted" as const,
+        }));
         setIntervals(updated);
 
         // Initialize result with first interval
-        const first = { ...updated[0], state: 'added' as const };
+        const first = { ...updated[0], state: "added" as const };
         setResult([first]);
         setCurrentIdx(1);
-        setPhase('merging');
-        setMessage(`Sorted! Starting with first interval [${first.start}, ${first.end}]`);
-      } else if (phase === 'merging') {
+        setPhase("merging");
+        setMessage(
+          `Sorted! Starting with first interval [${first.start}, ${first.end}]`
+        );
+      } else if (phase === "merging") {
         if (currentIdx >= intervals.length) {
-          setPhase('done');
-          setMessage(`Done! Merged ${initialIntervals.length} intervals into ${result.length}`);
+          setPhase("done");
+          setMessage(
+            `Done! Merged ${initialIntervals.length} intervals into ${result.length}`
+          );
           setIsPlaying(false);
           return;
         }
@@ -76,7 +87,7 @@ export default function MergeIntervalsVisualizer() {
 
         // Mark current as being processed
         const updatedIntervals = intervals.map((int, i) =>
-          i === currentIdx ? { ...int, state: 'current' as const } : int
+          i === currentIdx ? { ...int, state: "current" as const } : int
         );
         setIntervals(updatedIntervals);
 
@@ -87,15 +98,19 @@ export default function MergeIntervalsVisualizer() {
           newResult[newResult.length - 1] = {
             ...last,
             end: newEnd,
-            state: 'merged' as const,
+            state: "merged" as const,
           };
           setResult(newResult);
-          setMessage(`[${curr.start}, ${curr.end}] overlaps with [${last.start}, ${last.end}] (${curr.start} <= ${last.end}). Merge to [${last.start}, ${newEnd}]`);
+          setMessage(
+            `[${curr.start}, ${curr.end}] overlaps with [${last.start}, ${last.end}] (${curr.start} <= ${last.end}). Merge to [${last.start}, ${newEnd}]`
+          );
         } else {
           // No overlap - add as new
-          const newInterval = { ...curr, state: 'added' as const };
+          const newInterval = { ...curr, state: "added" as const };
           setResult([...result, newInterval]);
-          setMessage(`[${curr.start}, ${curr.end}] doesn't overlap (${curr.start} > ${last.end}). Add as new interval.`);
+          setMessage(
+            `[${curr.start}, ${curr.end}] doesn't overlap (${curr.start} > ${last.end}). Add as new interval.`
+          );
         }
 
         setCurrentIdx(currentIdx + 1);
@@ -106,15 +121,20 @@ export default function MergeIntervalsVisualizer() {
   }, [isPlaying, phase, currentIdx, intervals, result, speed]);
 
   const scale = 8;
-  const maxEnd = Math.max(...initialIntervals.map(i => i.end));
+  const maxEnd = Math.max(...initialIntervals.map((i) => i.end));
 
   const getIntervalColor = (state: string) => {
     switch (state) {
-      case 'current': return 'bg-yellow-500';
-      case 'merged': return 'bg-green-500';
-      case 'added': return 'bg-blue-500';
-      case 'sorted': return 'bg-gray-600';
-      default: return 'bg-gray-700';
+      case "current":
+        return "bg-yellow-500";
+      case "merged":
+        return "bg-green-500";
+      case "added":
+        return "bg-blue-500";
+      case "sorted":
+        return "bg-gray-600";
+      default:
+        return "bg-gray-700";
     }
   };
 
@@ -132,12 +152,12 @@ export default function MergeIntervalsVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -161,7 +181,9 @@ export default function MergeIntervalsVisualizer() {
 
         {/* Timeline visualization */}
         <div className="mb-6">
-          <div className="text-sm text-gray-400 mb-2">Input Intervals (on timeline):</div>
+          <div className="text-sm text-gray-400 mb-2">
+            Input Intervals (on timeline):
+          </div>
           <div className="relative bg-gray-800/50 rounded-lg p-4 h-40 overflow-hidden">
             {/* Timeline axis */}
             <div className="absolute bottom-4 left-4 right-4 h-0.5 bg-gray-600">
@@ -185,7 +207,7 @@ export default function MergeIntervalsVisualizer() {
                 initial={{ opacity: 0 }}
                 animate={{
                   opacity: 1,
-                  y: int.state === 'current' ? -5 : 0,
+                  y: int.state === "current" ? -5 : 0,
                 }}
                 className={`absolute h-8 rounded ${getIntervalColor(int.state)} flex items-center justify-center text-white text-xs font-bold shadow-lg`}
                 style={{
@@ -217,7 +239,7 @@ export default function MergeIntervalsVisualizer() {
                   style={{
                     left: `${(int.start / (maxEnd + 1)) * 100}%`,
                     width: `${((int.end - int.start) / (maxEnd + 1)) * 100}%`,
-                    top: '8px',
+                    top: "8px",
                   }}
                 >
                   [{int.start}, {int.end}]
@@ -236,15 +258,21 @@ export default function MergeIntervalsVisualizer() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-emerald-400">{intervals.length}</div>
+            <div className="text-2xl font-bold text-emerald-400">
+              {intervals.length}
+            </div>
             <div className="text-xs text-gray-500">Input Count</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-blue-400">{result.length}</div>
+            <div className="text-2xl font-bold text-blue-400">
+              {result.length}
+            </div>
             <div className="text-xs text-gray-500">Result Count</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-purple-400">{currentIdx}/{intervals.length}</div>
+            <div className="text-2xl font-bold text-purple-400">
+              {currentIdx}/{intervals.length}
+            </div>
             <div className="text-xs text-gray-500">Processed</div>
           </div>
         </div>
@@ -255,9 +283,9 @@ export default function MergeIntervalsVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -266,9 +294,9 @@ export default function MergeIntervalsVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-emerald-400">Key Insight:</strong>{' '}
-            Sort by start time, then check if curr.start {'<='} prev.end.
-            If overlap, merge by extending end to max(prev.end, curr.end).
+            <strong className="text-emerald-400">Key Insight:</strong> Sort by
+            start time, then check if curr.start {"<="} prev.end. If overlap,
+            merge by extending end to max(prev.end, curr.end).
           </p>
         </div>
       </div>

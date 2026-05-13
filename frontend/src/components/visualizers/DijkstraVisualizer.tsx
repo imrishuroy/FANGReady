@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 
 interface Node {
   id: number;
@@ -9,7 +9,7 @@ interface Node {
   x: number;
   y: number;
   dist: number;
-  state: 'unvisited' | 'inQueue' | 'processing' | 'visited';
+  state: "unvisited" | "inQueue" | "processing" | "visited";
   prev: number | null;
 }
 
@@ -28,34 +28,36 @@ export default function DijkstraVisualizer() {
   const [priorityQueue, setPriorityQueue] = useState<[number, number][]>([]);
   const [source, setSource] = useState(0);
   const [target, setTarget] = useState(5);
-  const [message, setMessage] = useState('Click Play to find shortest path from A to F');
-  const [phase, setPhase] = useState<'init' | 'processing' | 'done'>('init');
+  const [message, setMessage] = useState(
+    "Click Play to find shortest path from A to F"
+  );
+  const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
 
   const nodePositions = [
-    { id: 0, label: 'A', x: 50, y: 100 },
-    { id: 1, label: 'B', x: 150, y: 50 },
-    { id: 2, label: 'C', x: 150, y: 150 },
-    { id: 3, label: 'D', x: 280, y: 50 },
-    { id: 4, label: 'E', x: 280, y: 150 },
-    { id: 5, label: 'F', x: 380, y: 100 },
+    { id: 0, label: "A", x: 50, y: 100 },
+    { id: 1, label: "B", x: 150, y: 50 },
+    { id: 2, label: "C", x: 150, y: 150 },
+    { id: 3, label: "D", x: 280, y: 50 },
+    { id: 4, label: "E", x: 280, y: 150 },
+    { id: 5, label: "F", x: 380, y: 100 },
   ];
 
   const graphEdges: [number, number, number][] = [
-    [0, 1, 4],  // A-B: 4
-    [0, 2, 2],  // A-C: 2
-    [1, 2, 1],  // B-C: 1
-    [1, 3, 5],  // B-D: 5
-    [2, 4, 3],  // C-E: 3
-    [3, 4, 1],  // D-E: 1
-    [3, 5, 2],  // D-F: 2
-    [4, 5, 1],  // E-F: 1
+    [0, 1, 4], // A-B: 4
+    [0, 2, 2], // A-C: 2
+    [1, 2, 1], // B-C: 1
+    [1, 3, 5], // B-D: 5
+    [2, 4, 3], // C-E: 3
+    [3, 4, 1], // D-E: 1
+    [3, 5, 2], // D-F: 2
+    [4, 5, 1], // E-F: 1
   ];
 
   const initGraph = useCallback(() => {
-    const newNodes: Node[] = nodePositions.map(pos => ({
+    const newNodes: Node[] = nodePositions.map((pos) => ({
       ...pos,
       dist: pos.id === source ? 0 : Infinity,
-      state: pos.id === source ? 'inQueue' : 'unvisited',
+      state: pos.id === source ? "inQueue" : "unvisited",
       prev: null,
     }));
 
@@ -69,8 +71,10 @@ export default function DijkstraVisualizer() {
     setNodes(newNodes);
     setEdges(newEdges);
     setPriorityQueue([[0, source]]);
-    setPhase('init');
-    setMessage(`Click Play to find shortest path from ${nodePositions[source].label} to ${nodePositions[target].label}`);
+    setPhase("init");
+    setMessage(
+      `Click Play to find shortest path from ${nodePositions[source].label} to ${nodePositions[target].label}`
+    );
     setIsPlaying(false);
   }, [source, target]);
 
@@ -95,10 +99,10 @@ export default function DijkstraVisualizer() {
 
     const timer = setTimeout(() => {
       if (priorityQueue.length === 0) {
-        setPhase('done');
+        setPhase("done");
         const targetNode = nodes[target];
         if (targetNode.dist === Infinity) {
-          setMessage('No path found!');
+          setMessage("No path found!");
         } else {
           const path: string[] = [];
           let curr: number | null = target;
@@ -106,7 +110,9 @@ export default function DijkstraVisualizer() {
             path.unshift(nodes[curr].label);
             curr = nodes[curr].prev;
           }
-          setMessage(`Shortest path: ${path.join(' -> ')} (distance: ${targetNode.dist})`);
+          setMessage(
+            `Shortest path: ${path.join(" -> ")} (distance: ${targetNode.dist})`
+          );
         }
         setIsPlaying(false);
         return;
@@ -122,13 +128,13 @@ export default function DijkstraVisualizer() {
       }
 
       const newNodes = [...nodes];
-      newNodes[u] = { ...newNodes[u], state: 'processing' };
+      newNodes[u] = { ...newNodes[u], state: "processing" };
       setNodes(newNodes);
       setMessage(`Processing node ${nodes[u].label} (distance: ${dist})`);
 
       setTimeout(() => {
         const updatedNodes = [...newNodes];
-        updatedNodes[u] = { ...updatedNodes[u], state: 'visited' };
+        updatedNodes[u] = { ...updatedNodes[u], state: "visited" };
 
         const neighbors = getNeighbors(u);
         const toAdd: [number, number][] = [];
@@ -141,13 +147,16 @@ export default function DijkstraVisualizer() {
               ...updatedNodes[v],
               dist: newDist,
               prev: u,
-              state: updatedNodes[v].state === 'visited' ? 'visited' : 'inQueue',
+              state:
+                updatedNodes[v].state === "visited" ? "visited" : "inQueue",
             };
             toAdd.push([newDist, v]);
 
             for (let i = 0; i < newEdges.length; i++) {
-              if ((newEdges[i].from === u && newEdges[i].to === v) ||
-                  (newEdges[i].to === u && newEdges[i].from === v)) {
+              if (
+                (newEdges[i].from === u && newEdges[i].to === v) ||
+                (newEdges[i].to === u && newEdges[i].from === v)
+              ) {
                 newEdges[i] = { ...newEdges[i], used: true };
               }
             }
@@ -159,14 +168,16 @@ export default function DijkstraVisualizer() {
         setPriorityQueue([...newQueue, ...toAdd]);
 
         if (u === target) {
-          setPhase('done');
+          setPhase("done");
           const path: string[] = [];
           let curr: number | null = target;
           while (curr !== null) {
             path.unshift(updatedNodes[curr].label);
             curr = updatedNodes[curr].prev;
           }
-          setMessage(`Found shortest path: ${path.join(' -> ')} (distance: ${updatedNodes[target].dist})`);
+          setMessage(
+            `Found shortest path: ${path.join(" -> ")} (distance: ${updatedNodes[target].dist})`
+          );
           setIsPlaying(false);
         }
       }, speed / 2);
@@ -176,31 +187,41 @@ export default function DijkstraVisualizer() {
   }, [isPlaying, priorityQueue, nodes, edges, speed, target]);
 
   const getNodeColor = (node: Node) => {
-    if (node.id === source) return 'bg-green-500';
-    if (node.id === target) return node.state === 'visited' ? 'bg-green-500' : 'bg-red-500';
+    if (node.id === source) return "bg-green-500";
+    if (node.id === target)
+      return node.state === "visited" ? "bg-green-500" : "bg-red-500";
     switch (node.state) {
-      case 'visited': return 'bg-blue-500';
-      case 'processing': return 'bg-yellow-500 animate-pulse';
-      case 'inQueue': return 'bg-cyan-500';
-      default: return 'bg-gray-600';
+      case "visited":
+        return "bg-blue-500";
+      case "processing":
+        return "bg-yellow-500 animate-pulse";
+      case "inQueue":
+        return "bg-cyan-500";
+      default:
+        return "bg-gray-600";
     }
   };
 
   const getEdgeColor = (edge: Edge) => {
     const fromNode = nodes[edge.from];
     const toNode = nodes[edge.to];
-    if (edge.used && (fromNode?.state === 'visited' || toNode?.state === 'visited')) {
-      return '#22c55e';
+    if (
+      edge.used &&
+      (fromNode?.state === "visited" || toNode?.state === "visited")
+    ) {
+      return "#22c55e";
     }
-    return '#4b5563';
+    return "#4b5563";
   };
 
-  const formatDist = (d: number) => d === Infinity ? '∞' : d;
+  const formatDist = (d: number) => (d === Infinity ? "∞" : d);
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
       <div className="p-4 bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border-b border-gray-800">
-        <h3 className="text-lg font-semibold text-white">Dijkstra&apos;s Algorithm</h3>
+        <h3 className="text-lg font-semibold text-white">
+          Dijkstra&apos;s Algorithm
+        </h3>
         <p className="text-gray-400 text-sm mt-1">
           Find shortest path in weighted graph using priority queue
         </p>
@@ -211,12 +232,12 @@ export default function DijkstraVisualizer() {
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={initGraph}
@@ -304,7 +325,9 @@ export default function DijkstraVisualizer() {
 
         {/* Priority Queue */}
         <div className="bg-gray-800/50 rounded-lg p-3 mb-4">
-          <div className="text-xs text-gray-500 mb-2">Priority Queue (min-heap by distance)</div>
+          <div className="text-xs text-gray-500 mb-2">
+            Priority Queue (min-heap by distance)
+          </div>
           <div className="flex flex-wrap gap-2 min-h-[32px]">
             {[...priorityQueue]
               .sort((a, b) => a[0] - b[0])
@@ -312,7 +335,9 @@ export default function DijkstraVisualizer() {
                 <span
                   key={i}
                   className={`px-3 py-1 rounded text-sm font-mono ${
-                    i === 0 ? 'bg-yellow-500 text-black' : 'bg-gray-700 text-gray-300'
+                    i === 0
+                      ? "bg-yellow-500 text-black"
+                      : "bg-gray-700 text-gray-300"
                   }`}
                 >
                   ({nodes[nodeId]?.label}, {dist})
@@ -332,15 +357,19 @@ export default function DijkstraVisualizer() {
               <div
                 key={node.id}
                 className={`flex flex-col items-center p-2 rounded-lg min-w-[50px] ${
-                  node.state === 'visited' ? 'bg-blue-500/20' :
-                  node.state === 'processing' ? 'bg-yellow-500/20' :
-                  'bg-gray-700/50'
+                  node.state === "visited"
+                    ? "bg-blue-500/20"
+                    : node.state === "processing"
+                      ? "bg-yellow-500/20"
+                      : "bg-gray-700/50"
                 }`}
               >
                 <span className="text-white font-bold">{node.label}</span>
-                <span className={`text-sm font-mono ${
-                  node.dist === Infinity ? 'text-gray-500' : 'text-cyan-400'
-                }`}>
+                <span
+                  className={`text-sm font-mono ${
+                    node.dist === Infinity ? "text-gray-500" : "text-cyan-400"
+                  }`}
+                >
                   {formatDist(node.dist)}
                 </span>
               </div>
@@ -354,9 +383,9 @@ export default function DijkstraVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
+              : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -385,9 +414,10 @@ export default function DijkstraVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-orange-400">Dijkstra:</strong>{' '}
-            Always process the node with smallest known distance. Update neighbors if going through current node is shorter.
-            Time: O((V+E) log V) with min-heap.
+            <strong className="text-orange-400">Dijkstra:</strong> Always
+            process the node with smallest known distance. Update neighbors if
+            going through current node is shorter. Time: O((V+E) log V) with
+            min-heap.
           </p>
         </div>
       </div>

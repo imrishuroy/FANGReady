@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function FindAnagramsVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -10,14 +10,20 @@ export default function FindAnagramsVisualizer() {
   const [sFreq, setSFreq] = useState<Map<string, number>>(new Map());
   const [matches, setMatches] = useState(0);
   const [foundIndices, setFoundIndices] = useState<number[]>([]);
-  const [phase, setPhase] = useState<'init' | 'processing' | 'done'>('init');
-  const [message, setMessage] = useState('Click Play to find all anagrams of "abc" in the string');
+  const [phase, setPhase] = useState<"init" | "processing" | "done">("init");
+  const [message, setMessage] = useState(
+    'Click Play to find all anagrams of "abc" in the string'
+  );
 
-  const s = 'cbaebabacd';
-  const p = 'abc';
+  const s = "cbaebabacd";
+  const p = "abc";
 
   // Pattern frequency (constant)
-  const pFreq = new Map<string, number>([['a', 1], ['b', 1], ['c', 1]]);
+  const pFreq = new Map<string, number>([
+    ["a", 1],
+    ["b", 1],
+    ["c", 1],
+  ]);
   const required = pFreq.size; // 3
 
   const reset = useCallback(() => {
@@ -25,7 +31,7 @@ export default function FindAnagramsVisualizer() {
     setSFreq(new Map());
     setMatches(0);
     setFoundIndices([]);
-    setPhase('init');
+    setPhase("init");
     setMessage(`Click Play to find all anagrams of "${p}" in the string`);
     setIsPlaying(false);
   }, []);
@@ -34,14 +40,18 @@ export default function FindAnagramsVisualizer() {
     if (!isPlaying) return;
 
     const timer = setTimeout(() => {
-      if (phase === 'init') {
-        setPhase('processing');
+      if (phase === "init") {
+        setPhase("processing");
         setCurrentIdx(0);
-        setMessage(`Pattern "${p}" has ${required} unique characters: {a:1, b:1, c:1}`);
-      } else if (phase === 'processing') {
+        setMessage(
+          `Pattern "${p}" has ${required} unique characters: {a:1, b:1, c:1}`
+        );
+      } else if (phase === "processing") {
         if (currentIdx >= s.length) {
-          setPhase('done');
-          setMessage(`Done! Found ${foundIndices.length} anagrams at indices: [${foundIndices.join(', ')}]`);
+          setPhase("done");
+          setMessage(
+            `Done! Found ${foundIndices.length} anagrams at indices: [${foundIndices.join(", ")}]`
+          );
           setIsPlaying(false);
           return;
         }
@@ -84,10 +94,14 @@ export default function FindAnagramsVisualizer() {
         if (newMatches === required && currentIdx >= p.length - 1) {
           const startIdx = currentIdx - p.length + 1;
           setFoundIndices([...foundIndices, startIdx]);
-          setMessage(`Anagram found at index ${startIdx}! Window "${s.slice(startIdx, currentIdx + 1)}" matches "${p}"`);
+          setMessage(
+            `Anagram found at index ${startIdx}! Window "${s.slice(startIdx, currentIdx + 1)}" matches "${p}"`
+          );
         } else {
           const windowStart = Math.max(0, currentIdx - p.length + 1);
-          setMessage(`Window "${s.slice(windowStart, currentIdx + 1)}" - matches: ${newMatches}/${required}`);
+          setMessage(
+            `Window "${s.slice(windowStart, currentIdx + 1)}" - matches: ${newMatches}/${required}`
+          );
         }
 
         setCurrentIdx(currentIdx + 1);
@@ -95,7 +109,18 @@ export default function FindAnagramsVisualizer() {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, phase, currentIdx, sFreq, matches, foundIndices, s, p, required, speed]);
+  }, [
+    isPlaying,
+    phase,
+    currentIdx,
+    sFreq,
+    matches,
+    foundIndices,
+    s,
+    p,
+    required,
+    speed,
+  ]);
 
   const getWindowRange = (): [number, number] => {
     if (currentIdx < 0) return [-1, -1];
@@ -120,12 +145,12 @@ export default function FindAnagramsVisualizer() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            disabled={phase === 'done'}
+            disabled={phase === "done"}
             className={`px-4 py-2 rounded-lg font-medium transition ${
-              isPlaying ? 'bg-yellow-500 text-black' : 'bg-green-500 text-white'
+              isPlaying ? "bg-yellow-500 text-black" : "bg-green-500 text-white"
             } disabled:opacity-50`}
           >
-            {isPlaying ? 'Pause' : 'Play'}
+            {isPlaying ? "Pause" : "Play"}
           </button>
           <button
             onClick={reset}
@@ -151,10 +176,12 @@ export default function FindAnagramsVisualizer() {
         <div className="mb-4 p-3 bg-pink-500/10 border border-pink-500/30 rounded-lg flex items-center gap-4">
           <div>
             <span className="text-gray-400">Pattern: </span>
-            <span className="text-xl font-mono font-bold text-pink-400">"{p}"</span>
+            <span className="text-xl font-mono font-bold text-pink-400">
+              "{p}"
+            </span>
           </div>
           <div className="text-sm text-gray-400">
-            Required: {'{'}a:1, b:1, c:1{'}'} ({required} chars)
+            Required: {"{"}a:1, b:1, c:1{"}"} ({required} chars)
           </div>
         </div>
 
@@ -162,9 +189,12 @@ export default function FindAnagramsVisualizer() {
         <div className="mb-4">
           <div className="text-sm text-gray-400 mb-2">String: "{s}"</div>
           <div className="flex gap-1">
-            {s.split('').map((char, idx) => {
-              const inWindow = idx >= winLeft && idx <= winRight && currentIdx >= 0;
-              const isFound = foundIndices.some(start => idx >= start && idx < start + p.length);
+            {s.split("").map((char, idx) => {
+              const inWindow =
+                idx >= winLeft && idx <= winRight && currentIdx >= 0;
+              const isFound = foundIndices.some(
+                (start) => idx >= start && idx < start + p.length
+              );
 
               return (
                 <motion.div
@@ -174,13 +204,13 @@ export default function FindAnagramsVisualizer() {
                     y: idx === currentIdx ? -5 : 0,
                   }}
                   className={`w-9 h-11 rounded-lg flex flex-col items-center justify-center font-mono ${
-                    phase === 'done' && isFound
-                      ? 'bg-green-500 text-white'
+                    phase === "done" && isFound
+                      ? "bg-green-500 text-white"
                       : inWindow
-                      ? matches === required
-                        ? 'bg-green-500 text-white ring-2 ring-green-300'
-                        : 'bg-pink-500 text-white'
-                      : 'bg-gray-700 text-gray-300'
+                        ? matches === required
+                          ? "bg-green-500 text-white ring-2 ring-green-300"
+                          : "bg-pink-500 text-white"
+                        : "bg-gray-700 text-gray-300"
                   }`}
                 >
                   <span className="text-base font-bold">{char}</span>
@@ -197,7 +227,10 @@ export default function FindAnagramsVisualizer() {
             <div className="text-sm text-gray-400 mb-2">Pattern Frequency:</div>
             <div className="flex gap-2 flex-wrap">
               {Array.from(pFreq.entries()).map(([char, count]) => (
-                <div key={char} className="px-2 py-1 bg-pink-500/30 rounded font-mono text-sm text-pink-300">
+                <div
+                  key={char}
+                  className="px-2 py-1 bg-pink-500/30 rounded font-mono text-sm text-pink-300"
+                >
                   {char}: {count}
                 </div>
               ))}
@@ -217,8 +250,8 @@ export default function FindAnagramsVisualizer() {
                       exit={{ opacity: 0, scale: 0 }}
                       className={`px-2 py-1 rounded font-mono text-sm ${
                         matchesPattern
-                          ? 'bg-green-500/30 text-green-300 ring-1 ring-green-500'
-                          : 'bg-gray-700 text-gray-300'
+                          ? "bg-green-500/30 text-green-300 ring-1 ring-green-500"
+                          : "bg-gray-700 text-gray-300"
                       }`}
                     >
                       {char}: {count}
@@ -237,21 +270,25 @@ export default function FindAnagramsVisualizer() {
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">Matches</div>
-            <div className={`text-2xl font-bold ${
-              matches === required ? 'text-green-400' : 'text-pink-400'
-            }`}>
+            <div
+              className={`text-2xl font-bold ${
+                matches === required ? "text-green-400" : "text-pink-400"
+              }`}
+            >
               {matches}/{required}
             </div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">Window</div>
             <div className="text-lg font-mono text-pink-400">
-              {currentIdx >= 0 ? `"${s.slice(winLeft, winRight + 1)}"` : '-'}
+              {currentIdx >= 0 ? `"${s.slice(winLeft, winRight + 1)}"` : "-"}
             </div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500 mb-1">Found</div>
-            <div className="text-2xl font-bold text-green-400">{foundIndices.length}</div>
+            <div className="text-2xl font-bold text-green-400">
+              {foundIndices.length}
+            </div>
           </div>
         </div>
 
@@ -259,7 +296,7 @@ export default function FindAnagramsVisualizer() {
         {foundIndices.length > 0 && (
           <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
             <div className="text-sm text-green-400">
-              Anagrams found at indices: [{foundIndices.join(', ')}]
+              Anagrams found at indices: [{foundIndices.join(", ")}]
               {foundIndices.map((idx) => (
                 <span key={idx} className="ml-2 font-mono">
                   "{s.slice(idx, idx + p.length)}"
@@ -275,11 +312,11 @@ export default function FindAnagramsVisualizer() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className={`p-3 rounded-lg text-sm ${
-            phase === 'done'
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
+            phase === "done"
+              ? "bg-green-500/10 border border-green-500/30 text-green-400"
               : matches === required
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400'
-              : 'bg-gray-800 text-gray-300'
+                ? "bg-green-500/10 border border-green-500/30 text-green-400"
+                : "bg-gray-800 text-gray-300"
           }`}
         >
           {message}
@@ -288,9 +325,10 @@ export default function FindAnagramsVisualizer() {
         {/* Algorithm explanation */}
         <div className="mt-4 p-3 bg-gray-800/30 rounded-lg text-sm text-gray-400">
           <p>
-            <strong className="text-pink-400">Key Insight:</strong>{' '}
-            Track how many unique characters have matching frequencies. When matches equals
-            required unique chars, the window is an anagram. O(n) with a "matches" counter!
+            <strong className="text-pink-400">Key Insight:</strong> Track how
+            many unique characters have matching frequencies. When matches
+            equals required unique chars, the window is an anagram. O(n) with a
+            "matches" counter!
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
 interface TreeNode {
   id: string;
@@ -15,78 +15,100 @@ interface TreeNode {
 }
 
 interface RecursionTreeVisualizerProps {
-  example?: 'fibonacci' | 'power' | 'factorial';
+  example?: "fibonacci" | "power" | "factorial";
   inputValue?: number;
 }
 
 export default function RecursionTreeVisualizer({
-  example: _example = 'fibonacci',
-  inputValue = 5
+  example: _example = "fibonacci",
+  inputValue = 5,
 }: RecursionTreeVisualizerProps) {
   void _example;
   const [activeNodes, setActiveNodes] = useState<Set<string>>(new Set());
   const [completedNodes, setCompletedNodes] = useState<Set<string>>(new Set());
-  const [nodeResults, setNodeResults] = useState<Map<string, number>>(new Map());
+  const [nodeResults, setNodeResults] = useState<Map<string, number>>(
+    new Map()
+  );
   const [isPlaying, setIsPlaying] = useState(false);
   const [step, setStep] = useState(0);
   const [speed, setSpeed] = useState(800);
 
-  const buildFibTree = useCallback((n: number, depth: number = 0, pos: number = 0, id: string = '0'): TreeNode | null => {
-    if (n < 0) return null;
+  const buildFibTree = useCallback(
+    (
+      n: number,
+      depth: number = 0,
+      pos: number = 0,
+      id: string = "0"
+    ): TreeNode | null => {
+      if (n < 0) return null;
 
-    const node: TreeNode = {
-      id,
-      value: n,
-      depth,
-      position: pos,
-    };
+      const node: TreeNode = {
+        id,
+        value: n,
+        depth,
+        position: pos,
+      };
 
-    if (n <= 1) {
-      node.result = n;
+      if (n <= 1) {
+        node.result = n;
+        return node;
+      }
+
+      node.left =
+        buildFibTree(n - 1, depth + 1, pos * 2, `${id}L`) || undefined;
+      node.right =
+        buildFibTree(n - 2, depth + 1, pos * 2 + 1, `${id}R`) || undefined;
+
       return node;
-    }
-
-    node.left = buildFibTree(n - 1, depth + 1, pos * 2, `${id}L`) || undefined;
-    node.right = buildFibTree(n - 2, depth + 1, pos * 2 + 1, `${id}R`) || undefined;
-
-    return node;
-  }, []);
+    },
+    []
+  );
 
   const tree = useMemo(() => {
     const maxInput = Math.min(inputValue, 6);
     return buildFibTree(maxInput);
   }, [inputValue, buildFibTree]);
 
-  const generateExecutionOrder = useCallback((node: TreeNode | null | undefined): string[] => {
-    if (!node) return [];
+  const generateExecutionOrder = useCallback(
+    (node: TreeNode | null | undefined): string[] => {
+      if (!node) return [];
 
-    const order: string[] = [];
+      const order: string[] = [];
 
-    function traverse(n: TreeNode) {
-      order.push(`enter:${n.id}`);
+      function traverse(n: TreeNode) {
+        order.push(`enter:${n.id}`);
 
-      if (n.left) traverse(n.left);
-      if (n.right) traverse(n.right);
+        if (n.left) traverse(n.left);
+        if (n.right) traverse(n.right);
 
-      order.push(`exit:${n.id}`);
-    }
+        order.push(`exit:${n.id}`);
+      }
 
-    traverse(node);
-    return order;
-  }, []);
+      traverse(node);
+      return order;
+    },
+    []
+  );
 
   const executionOrder = useMemo(() => {
     return tree ? generateExecutionOrder(tree) : [];
   }, [tree, generateExecutionOrder]);
 
-  const calculateResult = useCallback((node: TreeNode): number => {
-    if (node.value <= 1) return node.value;
+  const calculateResult = useCallback(
+    (node: TreeNode): number => {
+      if (node.value <= 1) return node.value;
 
-    const leftResult = node.left ? nodeResults.get(node.left.id) ?? calculateResult(node.left) : 0;
-    const rightResult = node.right ? nodeResults.get(node.right.id) ?? calculateResult(node.right) : 0;
+      const leftResult = node.left
+        ? (nodeResults.get(node.left.id) ?? calculateResult(node.left))
+        : 0;
+      const rightResult = node.right
+        ? (nodeResults.get(node.right.id) ?? calculateResult(node.right))
+        : 0;
 
-    return leftResult + rightResult;
-  }, [nodeResults]);
+      return leftResult + rightResult;
+    },
+    [nodeResults]
+  );
 
   useEffect(() => {
     if (!isPlaying || step >= executionOrder.length) {
@@ -98,19 +120,22 @@ export default function RecursionTreeVisualizer({
 
     const timer = setTimeout(() => {
       const action = executionOrder[step];
-      const [type, nodeId] = action.split(':');
+      const [type, nodeId] = action.split(":");
 
-      if (type === 'enter') {
-        setActiveNodes(prev => new Set([...prev, nodeId]));
-      } else if (type === 'exit') {
-        setActiveNodes(prev => {
+      if (type === "enter") {
+        setActiveNodes((prev) => new Set([...prev, nodeId]));
+      } else if (type === "exit") {
+        setActiveNodes((prev) => {
           const next = new Set(prev);
           next.delete(nodeId);
           return next;
         });
-        setCompletedNodes(prev => new Set([...prev, nodeId]));
+        setCompletedNodes((prev) => new Set([...prev, nodeId]));
 
-        const findNode = (n: TreeNode | null | undefined, id: string): TreeNode | null => {
+        const findNode = (
+          n: TreeNode | null | undefined,
+          id: string
+        ): TreeNode | null => {
           if (!n) return null;
           if (n.id === id) return n;
           return findNode(n.left, id) || findNode(n.right, id);
@@ -118,17 +143,28 @@ export default function RecursionTreeVisualizer({
 
         const node = tree ? findNode(tree, nodeId) : null;
         if (node) {
-          const result = node.value <= 1 ? node.value :
-            (nodeResults.get(node.left?.id || '') ?? 0) + (nodeResults.get(node.right?.id || '') ?? 0);
-          setNodeResults(prev => new Map([...prev, [nodeId, result]]));
+          const result =
+            node.value <= 1
+              ? node.value
+              : (nodeResults.get(node.left?.id || "") ?? 0) +
+                (nodeResults.get(node.right?.id || "") ?? 0);
+          setNodeResults((prev) => new Map([...prev, [nodeId, result]]));
         }
       }
 
-      setStep(s => s + 1);
+      setStep((s) => s + 1);
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [isPlaying, step, executionOrder, speed, tree, nodeResults, calculateResult]);
+  }, [
+    isPlaying,
+    step,
+    executionOrder,
+    speed,
+    tree,
+    nodeResults,
+    calculateResult,
+  ]);
 
   const reset = () => {
     setStep(0);
@@ -138,7 +174,10 @@ export default function RecursionTreeVisualizer({
     setIsPlaying(false);
   };
 
-  const renderNode = (node: TreeNode | null | undefined, level: number = 0): React.ReactNode => {
+  const renderNode = (
+    node: TreeNode | null | undefined,
+    level: number = 0
+  ): React.ReactNode => {
     if (!node) return null;
 
     const isActive = activeNodes.has(node.id);
@@ -151,9 +190,9 @@ export default function RecursionTreeVisualizer({
           className={`
             w-12 h-12 rounded-full flex items-center justify-center font-mono text-sm font-bold
             border-2 transition-all duration-300 relative
-            ${isActive ? 'bg-yellow-500 border-yellow-400 text-black scale-110 shadow-lg shadow-yellow-500/50' : ''}
-            ${isCompleted && !isActive ? 'bg-green-500/20 border-green-500 text-green-400' : ''}
-            ${!isActive && !isCompleted ? 'bg-gray-800 border-gray-700 text-gray-400' : ''}
+            ${isActive ? "bg-yellow-500 border-yellow-400 text-black scale-110 shadow-lg shadow-yellow-500/50" : ""}
+            ${isCompleted && !isActive ? "bg-green-500/20 border-green-500 text-green-400" : ""}
+            ${!isActive && !isCompleted ? "bg-gray-800 border-gray-700 text-gray-400" : ""}
           `}
         >
           <span>f({node.value})</span>
@@ -167,25 +206,37 @@ export default function RecursionTreeVisualizer({
         {(node.left || node.right) && (
           <div className="flex mt-8 relative">
             {node.left && (
-              <svg className="absolute top-0 left-1/2 -translate-y-8 -translate-x-full" width="60" height="32">
+              <svg
+                className="absolute top-0 left-1/2 -translate-y-8 -translate-x-full"
+                width="60"
+                height="32"
+              >
                 <line
                   x1="60"
                   y1="0"
                   x2="30"
                   y2="32"
-                  stroke={completedNodes.has(node.left.id) ? '#22c55e' : '#374151'}
+                  stroke={
+                    completedNodes.has(node.left.id) ? "#22c55e" : "#374151"
+                  }
                   strokeWidth="2"
                 />
               </svg>
             )}
             {node.right && (
-              <svg className="absolute top-0 left-1/2 -translate-y-8" width="60" height="32">
+              <svg
+                className="absolute top-0 left-1/2 -translate-y-8"
+                width="60"
+                height="32"
+              >
                 <line
                   x1="0"
                   y1="0"
                   x2="30"
                   y2="32"
-                  stroke={completedNodes.has(node.right.id) ? '#22c55e' : '#374151'}
+                  stroke={
+                    completedNodes.has(node.right.id) ? "#22c55e" : "#374151"
+                  }
                   strokeWidth="2"
                 />
               </svg>
@@ -206,7 +257,7 @@ export default function RecursionTreeVisualizer({
   };
 
   const totalNodes = tree ? countNodes(tree) : 0;
-  const finalResult = nodeResults.get('0');
+  const finalResult = nodeResults.get("0");
 
   return (
     <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
@@ -214,7 +265,9 @@ export default function RecursionTreeVisualizer({
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           Recursion Tree Visualizer
         </h3>
-        <p className="text-gray-400 text-sm mt-1">See how Fibonacci creates a tree of recursive calls</p>
+        <p className="text-gray-400 text-sm mt-1">
+          See how Fibonacci creates a tree of recursive calls
+        </p>
       </div>
 
       <div className="p-4">
@@ -223,11 +276,11 @@ export default function RecursionTreeVisualizer({
             onClick={() => setIsPlaying(!isPlaying)}
             className={`px-4 py-2 rounded-lg font-medium transition ${
               isPlaying
-                ? 'bg-yellow-500 text-black hover:bg-yellow-400'
-                : 'bg-green-500 text-white hover:bg-green-400'
+                ? "bg-yellow-500 text-black hover:bg-yellow-400"
+                : "bg-green-500 text-white hover:bg-green-400"
             }`}
           >
-            {isPlaying ? '⏸ Pause' : '▶ Play'}
+            {isPlaying ? "⏸ Pause" : "▶ Play"}
           </button>
           <button
             onClick={reset}
@@ -255,12 +308,14 @@ export default function RecursionTreeVisualizer({
             <div className="text-xs text-gray-500">Total Calls</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
-            <div className="text-2xl font-bold text-green-400">{completedNodes.size}</div>
+            <div className="text-2xl font-bold text-green-400">
+              {completedNodes.size}
+            </div>
             <div className="text-xs text-gray-500">Completed</div>
           </div>
           <div className="bg-gray-800/50 rounded-lg p-3 text-center">
             <div className="text-2xl font-bold text-indigo-400">
-              {finalResult !== undefined ? finalResult : '—'}
+              {finalResult !== undefined ? finalResult : "—"}
             </div>
             <div className="text-xs text-gray-500">Result</div>
           </div>
@@ -289,8 +344,10 @@ export default function RecursionTreeVisualizer({
 
         <div className="mt-4 p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
           <p className="text-indigo-300 text-sm">
-            <strong>Observation:</strong> Notice how fib(3) is calculated multiple times? This is called
-            <strong> overlapping subproblems</strong> — the main reason we use Dynamic Programming to optimize!
+            <strong>Observation:</strong> Notice how fib(3) is calculated
+            multiple times? This is called
+            <strong> overlapping subproblems</strong> — the main reason we use
+            Dynamic Programming to optimize!
           </p>
         </div>
       </div>
