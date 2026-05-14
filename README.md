@@ -2,7 +2,10 @@
 
 A comprehensive DSA (Data Structures & Algorithms) interview preparation platform designed to help developers master coding patterns and ace FAANG interviews.
 
+**Live Demo:** [faangready-sigma.vercel.app](https://faangready-sigma.vercel.app)
+
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=flat-square&logo=vercel)
 ![Go](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat-square&logo=go)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=flat-square&logo=tailwind-css)
@@ -448,9 +451,8 @@ npm run start     # Start production server
 ## Deployment
 
 ### Frontend
-- **Vercel** (recommended)
-- Cloudflare Pages
-- Any static hosting
+- **Vercel** - Currently deployed at [faangready-sigma.vercel.app](https://faangready-sigma.vercel.app)
+- Supports automatic deployments from GitHub
 
 ### Backend
 - **Railway** (configured via `railway.json`)
