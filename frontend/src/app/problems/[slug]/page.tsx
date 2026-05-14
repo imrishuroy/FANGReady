@@ -1,7 +1,5 @@
 import ProblemPageClient from "./ProblemPageClient";
 
-export const runtime = "edge";
-
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
