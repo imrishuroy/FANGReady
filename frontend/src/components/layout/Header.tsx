@@ -82,7 +82,7 @@ export default function Header() {
               className="text-lg font-bold bg-clip-text text-transparent"
               style={{ backgroundImage: "var(--accent-gradient)" }}
             >
-              FANGReady
+              AlgoPatterns
             </span>
           </Link>
 

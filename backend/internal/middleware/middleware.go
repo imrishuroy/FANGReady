@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/imrishuroy/faangready-backend/pkg/response"
+	"github.com/imrishuroy/algopatterns/pkg/response"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/time/rate"
 )

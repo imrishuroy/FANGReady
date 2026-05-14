@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/imrishuroy/faangready-backend/internal/middleware"
-	"github.com/imrishuroy/faangready-backend/internal/models"
-	"github.com/imrishuroy/faangready-backend/internal/services"
-	"github.com/imrishuroy/faangready-backend/pkg/response"
+	"github.com/imrishuroy/algopatterns/internal/middleware"
+	"github.com/imrishuroy/algopatterns/internal/models"
+	"github.com/imrishuroy/algopatterns/internal/services"
+	"github.com/imrishuroy/algopatterns/pkg/response"
 	"github.com/rs/zerolog/log"
 )
 

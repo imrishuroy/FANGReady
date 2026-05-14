@@ -1,12 +1,12 @@
-# FANGReady Architecture: Judge0 Integration
+# AlgoPatterns Architecture: Judge0 Integration
 
-This document describes how FANGReady integrates with Judge0 for secure code execution.
+This document describes how AlgoPatterns integrates with Judge0 for secure code execution.
 
 ## System Architecture
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────┐
-│                           FANGReady Architecture                               │
+│                           AlgoPatterns Architecture                               │
 └────────────────────────────────────────────────────────────────────────────────┘
 
 ┌──────────────────────┐         ┌──────────────────────────────────────────────┐

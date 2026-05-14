@@ -1,6 +1,6 @@
-# FANGReady Backend API
+# AlgoPatterns Backend API
 
-Production-ready Go backend for the FANGReady DSA patterns platform, built with Gin and CockroachDB.
+Production-ready Go backend for the AlgoPatterns DSA patterns platform, built with Gin and CockroachDB.
 
 ## Tech Stack
 
@@ -41,7 +41,7 @@ cp .env.example .env
 ### 3. Run Migrations
 
 ```bash
-export DATABASE_URL="postgresql://user:pass@host:26257/faangready?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
+export DATABASE_URL="postgresql://user:pass@host:26257/algopatterns?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
 make migrate-up
 ```
 
@@ -126,7 +126,7 @@ Environment variables:
 | `DB_PORT` | `26257` | CockroachDB port |
 | `DB_USER` | `root` | Database user |
 | `DB_PASSWORD` | | Database password |
-| `DB_NAME` | `faangready` | Database name |
+| `DB_NAME` | `algopatterns` | Database name |
 | `DB_SSL_MODE` | `verify-full` | SSL mode |
 | `DB_SSL_ROOT_CERT` | | Path to CA certificate |
 | `RATE_LIMIT_RPS` | `100` | Requests per second |

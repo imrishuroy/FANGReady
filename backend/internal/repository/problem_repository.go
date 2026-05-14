@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/imrishuroy/faangready-backend/internal/models"
+	"github.com/imrishuroy/algopatterns/internal/models"
 	"github.com/jackc/pgx/v5"
 )
 

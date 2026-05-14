@@ -1,4 +1,4 @@
-module github.com/imrishuroy/faangready-backend
+module github.com/imrishuroy/algopatterns
 
 go 1.26
 

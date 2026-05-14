@@ -1,9 +1,9 @@
 .PHONY: all build run test clean deps lint docker-build docker-run migrate-up migrate-down help
 
 # Variables
-BINARY_NAME=faangready-api
+BINARY_NAME=algopatterns-api
 MAIN_PATH=./cmd/server
-DOCKER_IMAGE=faangready-api
+DOCKER_IMAGE=algopatterns-api
 VERSION?=1.0.0
 
 # Go parameters

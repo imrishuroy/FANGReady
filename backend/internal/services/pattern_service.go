@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/imrishuroy/faangready-backend/internal/models"
-	"github.com/imrishuroy/faangready-backend/internal/repository"
+	"github.com/imrishuroy/algopatterns/internal/models"
+	"github.com/imrishuroy/algopatterns/internal/repository"
 )
 
 type PatternService struct {

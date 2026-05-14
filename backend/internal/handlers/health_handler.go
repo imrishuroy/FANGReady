@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/imrishuroy/faangready-backend/internal/repository"
-	"github.com/imrishuroy/faangready-backend/pkg/response"
+	"github.com/imrishuroy/algopatterns/internal/repository"
+	"github.com/imrishuroy/algopatterns/pkg/response"
 )
 
 type HealthHandler struct {

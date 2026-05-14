@@ -19,7 +19,7 @@ COPY . .
 # Build the binary
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-w -s" \
-    -o /app/bin/faangready-api \
+    -o /app/bin/algopatterns-api \
     ./cmd/server
 
 # Final stage
@@ -36,7 +36,7 @@ RUN addgroup -g 1001 -S appgroup && \
 WORKDIR /app
 
 # Copy binary from builder
-COPY --from=builder /app/bin/faangready-api ./faangready-api
+COPY --from=builder /app/bin/algopatterns-api ./algopatterns-api
 
 # Copy migrations (for runtime migration support)
 COPY --from=builder /app/migrations ./migrations
@@ -55,4 +55,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8080/health/live || exit 1
 
 # Run the binary
-ENTRYPOINT ["./faangready-api"]
+ENTRYPOINT ["./algopatterns-api"]

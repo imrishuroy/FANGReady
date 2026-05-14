@@ -11,11 +11,11 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/imrishuroy/faangready-backend/internal/config"
-	"github.com/imrishuroy/faangready-backend/internal/handlers"
-	"github.com/imrishuroy/faangready-backend/internal/middleware"
-	"github.com/imrishuroy/faangready-backend/internal/repository"
-	"github.com/imrishuroy/faangready-backend/internal/services"
+	"github.com/imrishuroy/algopatterns/internal/config"
+	"github.com/imrishuroy/algopatterns/internal/handlers"
+	"github.com/imrishuroy/algopatterns/internal/middleware"
+	"github.com/imrishuroy/algopatterns/internal/repository"
+	"github.com/imrishuroy/algopatterns/internal/services"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )

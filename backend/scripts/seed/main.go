@@ -7,9 +7,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/imrishuroy/faangready-backend/internal/config"
-	"github.com/imrishuroy/faangready-backend/internal/models"
-	"github.com/imrishuroy/faangready-backend/internal/repository"
+	"github.com/imrishuroy/algopatterns/internal/config"
+	"github.com/imrishuroy/algopatterns/internal/models"
+	"github.com/imrishuroy/algopatterns/internal/repository"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
