@@ -2,9 +2,9 @@ import { questions } from "@/lib/questions";
 import Dashboard from "@/components/patterns/Dashboard";
 
 export const metadata = {
-  title: "FANGReady - Master DSA Patterns",
+  title: "AlgoPatterns - Master DSA Patterns",
   description:
-    "Curated DSA problems organized by pattern to ace your FAANG interviews.",
+    "Learn algorithms through interactive visualizations and pattern-based problem solving.",
 };
 
 export default function Home() {

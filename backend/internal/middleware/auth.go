@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/imrishuroy/faangready-backend/internal/services"
-	"github.com/imrishuroy/faangready-backend/pkg/response"
+	"github.com/imrishuroy/algopatterns/internal/services"
+	"github.com/imrishuroy/algopatterns/pkg/response"
 )
 
 const (

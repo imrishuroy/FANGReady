@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/imrishuroy/faangready-backend/internal/repository"
+	"github.com/imrishuroy/algopatterns/internal/repository"
 )
 
 type ProgressService struct {

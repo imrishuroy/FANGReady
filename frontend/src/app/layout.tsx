@@ -19,9 +19,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FANGReady - Your Path to Big Tech Offers",
+  title: "AlgoPatterns - Interactive Algorithm Learning",
   description:
-    "Master DSA patterns and ace your FAANG interviews with curated problems and tutorials.",
+    "Master DSA patterns with interactive visualizers and step-by-step algorithm animations.",
 };
 
 export default function RootLayout({

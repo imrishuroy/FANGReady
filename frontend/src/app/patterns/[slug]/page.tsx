@@ -19,7 +19,7 @@ export function generateMetadata({
   return params.then(({ slug }) => {
     const pattern = patterns.find((p) => p.id === slug);
     return {
-      title: pattern ? `${pattern.category} - FANGReady` : "Pattern Not Found",
+      title: pattern ? `${pattern.category} - AlgoPatterns` : "Pattern Not Found",
       description: pattern?.description || "",
     };
   });

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/imrishuroy/faangready-backend/internal/config"
+	"github.com/imrishuroy/algopatterns/internal/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
 )

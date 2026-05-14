@@ -3,9 +3,9 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/imrishuroy/faangready-backend/internal/models"
-	"github.com/imrishuroy/faangready-backend/internal/services"
-	"github.com/imrishuroy/faangready-backend/pkg/response"
+	"github.com/imrishuroy/algopatterns/internal/models"
+	"github.com/imrishuroy/algopatterns/internal/services"
+	"github.com/imrishuroy/algopatterns/pkg/response"
 )
 
 type PatternHandler struct {

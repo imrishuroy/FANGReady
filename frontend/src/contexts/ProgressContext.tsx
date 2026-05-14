@@ -11,7 +11,7 @@ import {
 import { useAuth } from "./AuthContext";
 import { apiClient } from "@/lib/api";
 
-const STORAGE_KEY = "faangready-completed";
+const STORAGE_KEY = "algopatterns-completed";
 
 interface ProgressContextType {
   completed: Set<string>;

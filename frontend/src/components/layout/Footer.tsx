@@ -8,11 +8,11 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto px-4 text-center text-sm">
         <p style={{ color: "var(--text-3)" }}>
-          FANGReady - Built for Big Tech Interview Preparation
+          AlgoPatterns - Interactive Algorithm Visualizations
         </p>
         <div className="mt-3 flex items-center justify-center gap-4">
           <a
-            href="https://github.com/imrishuroy/FANGReady"
+            href="https://github.com/imrishuroy/AlgoPatterns"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 transition-colors hover:opacity-80"
