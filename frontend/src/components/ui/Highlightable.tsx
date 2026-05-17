@@ -84,9 +84,11 @@ export function Highlightable({
       setContentHash(hash);
     };
 
-    // Small delay to ensure content is rendered
-    const timer = setTimeout(calculateHash, 200);
-    return () => clearTimeout(timer);
+    // Use requestAnimationFrame to ensure content is rendered
+    const frame = requestAnimationFrame(() => {
+      calculateHash();
+    });
+    return () => cancelAnimationFrame(frame);
   }, [children]);
 
   // Fetch highlights on mount
@@ -198,8 +200,11 @@ export function Highlightable({
   }, [highlights, contentHash]);
 
   useEffect(() => {
-    const timer = setTimeout(calculateOverlays, 100);
-    return () => clearTimeout(timer);
+    // Use requestAnimationFrame for immediate but safe DOM calculation
+    const frame = requestAnimationFrame(() => {
+      calculateOverlays();
+    });
+    return () => cancelAnimationFrame(frame);
   }, [calculateOverlays]);
 
   useEffect(() => {
@@ -318,6 +323,9 @@ export function Highlightable({
   const handleColorSelect = async (color: HighlightColor) => {
     if (!selection || !isAuthenticated) return;
 
+    // Clear browser selection first so user sees the highlight overlay replace it
+    window.getSelection()?.removeAllRanges();
+
     setIsSaving(true);
     await createHighlight({
       contentType,
@@ -331,7 +339,6 @@ export function Highlightable({
 
     setIsSaving(false);
     closeToolbar();
-    window.getSelection()?.removeAllRanges();
   };
 
   const handleEditNote = () => {
@@ -422,12 +429,13 @@ export function Highlightable({
                 overlay.isStale ? "border-2 border-dashed border-yellow-500/70" : ""
               }`}
               style={{
-                top: rect.top - 2,
-                left: rect.left - 6,
-                width: rect.width + 12,
-                height: rect.height + 4,
+                top: rect.top - 3,
+                left: rect.left - 8,
+                width: rect.width + 16,
+                height: rect.height + 6,
                 backgroundColor: overlay.isStale ? `${overlay.color.replace("0.4", "0.25")}` : overlay.color,
-                borderRadius: "5px",
+                borderRadius: "6px",
+                animation: "highlightFadeIn 250ms cubic-bezier(0.4, 0, 0.2, 1)",
               }}
               title={overlay.isStale
                 ? "⚠️ Content may have changed - click to review"

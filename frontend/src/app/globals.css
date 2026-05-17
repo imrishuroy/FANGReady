@@ -97,6 +97,20 @@ code, pre {
   animation: fadeIn 0.3s ease forwards;
 }
 
+@keyframes highlightFadeIn {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.92) scaleY(0.85);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
 /* Code styling */
 pre code { white-space: pre; tab-size: 2; }
 pre { line-height: 1.6; }
