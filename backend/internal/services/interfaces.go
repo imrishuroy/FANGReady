@@ -29,3 +29,12 @@ type PatternServiceInterface interface {
 	Export(ctx context.Context) ([]byte, error)
 	Search(ctx context.Context, query string) ([]models.Pattern, error)
 }
+
+type QuizServiceInterface interface {
+	GetQuestions(ctx context.Context, patternID string, sectionSlug *string) (*models.GetQuestionsResponse, error)
+	StartAttempt(ctx context.Context, userID *uuid.UUID, req *models.StartAttemptRequest) (*models.StartAttemptResponse, error)
+	SubmitResponse(ctx context.Context, attemptID uuid.UUID, userID *uuid.UUID, req *models.SubmitResponseRequest) (*models.SubmitResponseResponse, error)
+	CompleteAttempt(ctx context.Context, attemptID uuid.UUID, userID *uuid.UUID, req *models.CompleteAttemptRequest) (*models.CompleteAttemptResponse, error)
+	GetAttemptHistory(ctx context.Context, userID uuid.UUID, req *models.AttemptHistoryRequest) (*models.AttemptHistoryResponse, error)
+	GetAttemptByID(ctx context.Context, attemptID uuid.UUID, userID *uuid.UUID) (*models.QuizAttempt, error)
+}
