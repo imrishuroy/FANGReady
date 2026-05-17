@@ -48,6 +48,7 @@ import ContainerWaterVisualizer from "@/components/visualizers/ContainerWaterVis
 import RemoveDuplicatesVisualizer from "@/components/visualizers/RemoveDuplicatesVisualizer";
 import UnionFindVisualizer from "@/components/visualizers/UnionFindVisualizer";
 import ConnectedComponentsVisualizer from "@/components/visualizers/ConnectedComponentsVisualizer";
+import { QuizCard } from "@/components/quiz";
 import TwoSumHashMapVisualizer from "@/components/visualizers/TwoSumHashMapVisualizer";
 import KadaneVisualizer from "@/components/visualizers/KadaneVisualizer";
 import PrefixSumArrayVisualizer from "@/components/visualizers/PrefixSumArrayVisualizer";
@@ -858,6 +859,7 @@ export default function TutorialTab({ pattern }: TutorialTabProps) {
         </article>
       ))}
 
+      <QuizCard patternId={pattern.id} questionCount={15} />
     </div>
   );
 }
