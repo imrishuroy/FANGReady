@@ -9,10 +9,10 @@ import (
 )
 
 type PatternService struct {
-	repo *repository.PatternRepository
+	repo repository.PatternRepositoryInterface
 }
 
-func NewPatternService(repo *repository.PatternRepository) *PatternService {
+func NewPatternService(repo repository.PatternRepositoryInterface) *PatternService {
 	return &PatternService{repo: repo}
 }
 

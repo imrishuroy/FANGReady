@@ -256,3 +256,84 @@ export interface RunCodeResponse {
   totalPassed: number;
   totalTests: number;
 }
+
+// Highlight types
+export type HighlightColor = "yellow" | "green" | "blue" | "pink" | "purple";
+
+export interface Highlight {
+  id: string;
+  userId: string;
+  contentType: string;
+  contentId: string;
+  startOffset: number;
+  endOffset: number;
+  startLine?: number;
+  endLine?: number;
+  selectedText: string;
+  contentHash?: string;
+  color: HighlightColor;
+  note?: string;
+  createdAt: string;
+  updatedAt: string;
+  version: number;
+}
+
+export interface CreateHighlightRequest {
+  contentType: string;
+  contentId: string;
+  startOffset: number;
+  endOffset: number;
+  startLine?: number;
+  endLine?: number;
+  selectedText: string;
+  contentHash?: string;
+  color: HighlightColor;
+  note?: string;
+}
+
+export interface UpdateHighlightRequest {
+  color?: HighlightColor;
+  note?: string;
+  version: number;
+}
+
+export interface HighlightListResponse {
+  highlights: Highlight[];
+  nextCursor?: string;
+  totalCount: number;
+}
+
+export interface ContentHighlightsResponse {
+  highlights: Highlight[];
+  contentHash?: string;
+}
+
+// Batch sync types for offline support
+export type SyncOperationType = "create" | "update" | "delete";
+
+export interface SyncOperation {
+  op: SyncOperationType;
+  clientId?: string;
+  id?: string;
+  data?: CreateHighlightRequest;
+  update?: UpdateHighlightRequest;
+}
+
+export interface BatchSyncRequest {
+  operations: SyncOperation[];
+  lastSyncAt?: string;
+}
+
+export interface SyncOperationResult {
+  op: SyncOperationType;
+  clientId?: string;
+  id?: string;
+  success: boolean;
+  error?: string;
+  highlight?: Highlight;
+}
+
+export interface BatchSyncResponse {
+  results: SyncOperationResult[];
+  serverChanges?: Highlight[];
+}

@@ -27,7 +27,7 @@ var (
 )
 
 type AuthService struct {
-	userRepo *repository.UserRepository
+	userRepo repository.UserRepositoryInterface
 	config   *config.AuthConfig
 }
 
@@ -37,7 +37,7 @@ type JWTClaims struct {
 	jwt.RegisteredClaims
 }
 
-func NewAuthService(userRepo *repository.UserRepository, cfg *config.AuthConfig) *AuthService {
+func NewAuthService(userRepo repository.UserRepositoryInterface, cfg *config.AuthConfig) *AuthService {
 	return &AuthService{
 		userRepo: userRepo,
 		config:   cfg,

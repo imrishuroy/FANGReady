@@ -90,6 +90,21 @@ func Conflict(c *gin.Context, message string) {
 	})
 }
 
+// VersionConflict returns a 409 response with the current server state.
+// This allows clients to implement conflict resolution UI by comparing
+// their local version with the server's current version.
+func VersionConflict(c *gin.Context, message string, currentData interface{}) {
+	c.JSON(http.StatusConflict, Response{
+		Success: false,
+		Data:    currentData,
+		Error: &ErrorInfo{
+			Code:    "VERSION_CONFLICT",
+			Message: message,
+		},
+		Meta: getMeta(c),
+	})
+}
+
 func Unauthorized(c *gin.Context, message string) {
 	c.JSON(http.StatusUnauthorized, Response{
 		Success: false,

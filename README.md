@@ -11,7 +11,7 @@ A full-stack algorithm learning platform featuring a **production-ready Go backe
 ![JWT](https://img.shields.io/badge/JWT-Authentication-000000?style=flat-square)
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 
-## Backend Highlights
+## Backend
 
 ### Architecture & Design Patterns
 
@@ -38,7 +38,7 @@ A full-stack algorithm learning platform featuring a **production-ready Go backe
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                              AlgoPatterns                                    │
+│                              AlgoPatterns                                   │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
 │   ┌───────────────┐                ┌────────────────────────────────────┐   │
@@ -124,6 +124,15 @@ backend/
 ├── Makefile                      # Build automation
 └── railway.json                  # Railway deployment config
 ```
+
+## Design Documents
+
+Detailed design documents for major features:
+
+| Document | Description |
+|----------|-------------|
+| [Highlight Feature](docs/design/highlight-feature.md) | User highlights with offline support, conflict resolution, and three-tier caching |
+| [Judge0 Integration](docs/architecture-judge0-integration.md) | Secure code execution architecture with sandbox isolation |
 
 ## Code Execution Architecture
 
@@ -269,6 +278,25 @@ Error responses:
 | **React 19** | UI components |
 | **Monaco Editor** | VS Code-powered code editor |
 | **Tailwind CSS 4** | Styling |
+
+## Why CockroachDB?
+
+CockroachDB was chosen over AWS RDS PostgreSQL or other managed databases for several reasons:
+
+| Factor | CockroachDB Serverless | AWS RDS PostgreSQL |
+|--------|------------------------|-------------------|
+| **Free Tier** | 10 GiB storage, 50M RUs/month (permanent) | 750 hrs/month for 12 months only |
+| **Idle Costs** | $0 when not in use | ~$12-15/month minimum |
+| **High Availability** | Built-in, no extra cost | Multi-AZ doubles the price |
+| **Scaling** | Automatic, pay-per-use | Manual instance resizing |
+| **PostgreSQL Compatibility** | Yes (uses pgx driver) | Native |
+
+**Key benefits for this project:**
+
+- **Cost-effective** - Free tier covers learning/demo usage; pay-per-query model means no charges during idle periods
+- **Zero DevOps** - No need to manage replicas, failover, or backups
+- **PostgreSQL wire-compatible** - Works with standard `pgx` driver, same SQL syntax, easy migration path if needed
+- **Scales with usage** - From hobby project to production without infrastructure changes
 
 ## Security
 
