@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { HighlightableCode } from "./HighlightableCode";
 
 interface CodeBlockProps {
   code: string;
   language?: string;
   showCopy?: boolean;
   collapsible?: boolean;
+  highlightable?: boolean;
+  contentType?: string;
+  contentId?: string;
 }
 
 const languageMap: Record<string, string> = {
@@ -50,6 +54,9 @@ export default function CodeBlock({
   language = "java",
   showCopy = true,
   collapsible = false,
+  highlightable = false,
+  contentType,
+  contentId,
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(!collapsible);
@@ -166,32 +173,41 @@ export default function CodeBlock({
       {/* Code content - Collapsible */}
       {expanded && (
         <div className="overflow-auto scrollbar-thin">
-          <SyntaxHighlighter
-            language={normalizedLang}
-            style={customStyle}
-            showLineNumbers
-            lineNumberStyle={{
-              minWidth: "2.5em",
-              paddingRight: "1em",
-              textAlign: "right",
-              userSelect: "none",
-              color: "#4a5568",
-              fontSize: "0.75rem",
-            }}
-            customStyle={{
-              margin: 0,
-              background: "#011627",
-              borderRadius: 0,
-            }}
-            codeTagProps={{
-              style: {
-                fontFamily:
-                  "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-              },
-            }}
-          >
-            {code.trim()}
-          </SyntaxHighlighter>
+          {highlightable && contentType && contentId ? (
+            <HighlightableCode
+              code={code}
+              language={normalizedLang}
+              contentType={contentType}
+              contentId={contentId}
+            />
+          ) : (
+            <SyntaxHighlighter
+              language={normalizedLang}
+              style={customStyle}
+              showLineNumbers
+              lineNumberStyle={{
+                minWidth: "2.5em",
+                paddingRight: "1em",
+                textAlign: "right",
+                userSelect: "none",
+                color: "#4a5568",
+                fontSize: "0.75rem",
+              }}
+              customStyle={{
+                margin: 0,
+                background: "#011627",
+                borderRadius: 0,
+              }}
+              codeTagProps={{
+                style: {
+                  fontFamily:
+                    "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+                },
+              }}
+            >
+              {code.trim()}
+            </SyntaxHighlighter>
+          )}
         </div>
       )}
     </div>

@@ -13,6 +13,13 @@ import type {
   SubmitCodeRequest,
   RunCodeRequest,
   RunCodeResponse,
+  Highlight,
+  CreateHighlightRequest,
+  UpdateHighlightRequest,
+  HighlightListResponse,
+  ContentHighlightsResponse,
+  BatchSyncRequest,
+  BatchSyncResponse,
 } from "@/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -50,6 +57,25 @@ class ApiClient {
       credentials: "include",
     });
 
+    // Handle 204 No Content (empty response body)
+    if (response.status === 204) {
+      return { success: true } as ApiResponse<T>;
+    }
+
+    // Handle 409 Conflict (version conflict)
+    if (response.status === 409) {
+      const errorData = await response.json();
+      return {
+        success: false,
+        error: {
+          code: "VERSION_CONFLICT",
+          message: errorData.error?.message || "Resource was modified by another client",
+          details: errorData.data ? { serverVersion: JSON.stringify(errorData.data) } : undefined,
+        },
+        data: errorData.data as T,
+      };
+    }
+
     const data: ApiResponse<T> = await response.json();
 
     if (!response.ok && response.status === 401 && this.accessToken) {
@@ -62,6 +88,9 @@ class ApiClient {
           headers,
           credentials: "include",
         });
+        if (retryResponse.status === 204) {
+          return { success: true } as ApiResponse<T>;
+        }
         return retryResponse.json();
       }
     }
@@ -217,6 +246,70 @@ class ApiClient {
   async getSubmissions(problemId?: string): Promise<ApiResponse<Submission[]>> {
     const query = problemId ? `?problemId=${problemId}` : "";
     return this.request<Submission[]>(`/api/v1/submissions${query}`);
+  }
+
+  // Highlight endpoints
+  async createHighlight(
+    req: CreateHighlightRequest
+  ): Promise<ApiResponse<Highlight>> {
+    return this.request<Highlight>("/api/v1/highlights", {
+      method: "POST",
+      body: JSON.stringify(req),
+    });
+  }
+
+  async getHighlight(id: string): Promise<ApiResponse<Highlight>> {
+    return this.request<Highlight>(`/api/v1/highlights/${id}`);
+  }
+
+  async getHighlightsForContent(
+    contentType: string,
+    contentId: string
+  ): Promise<ApiResponse<ContentHighlightsResponse>> {
+    return this.request<ContentHighlightsResponse>(
+      `/api/v1/highlights/content/${encodeURIComponent(contentType)}/${encodeURIComponent(contentId)}`
+    );
+  }
+
+  async getHighlights(params?: {
+    limit?: number;
+    cursor?: string;
+    contentType?: string;
+  }): Promise<ApiResponse<HighlightListResponse>> {
+    const searchParams = new URLSearchParams();
+    if (params?.limit) searchParams.set("limit", params.limit.toString());
+    if (params?.cursor) searchParams.set("cursor", params.cursor);
+    if (params?.contentType)
+      searchParams.set("content_type", params.contentType);
+    const query = searchParams.toString();
+    return this.request<HighlightListResponse>(
+      `/api/v1/highlights${query ? `?${query}` : ""}`
+    );
+  }
+
+  async updateHighlight(
+    id: string,
+    req: UpdateHighlightRequest
+  ): Promise<ApiResponse<Highlight>> {
+    return this.request<Highlight>(`/api/v1/highlights/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(req),
+    });
+  }
+
+  async deleteHighlight(id: string): Promise<ApiResponse<void>> {
+    return this.request<void>(`/api/v1/highlights/${id}`, {
+      method: "DELETE",
+    });
+  }
+
+  async batchSyncHighlights(
+    req: BatchSyncRequest
+  ): Promise<ApiResponse<BatchSyncResponse>> {
+    return this.request<BatchSyncResponse>("/api/v1/highlights/sync", {
+      method: "POST",
+      body: JSON.stringify(req),
+    });
   }
 }
 

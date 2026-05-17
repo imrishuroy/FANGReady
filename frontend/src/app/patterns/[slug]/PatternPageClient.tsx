@@ -2,12 +2,13 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Pattern, Question } from "@/types";
+import { Pattern } from "@/types";
 import { questions, categoryToPatternId } from "@/lib/questions";
 import { useProgress } from "@/contexts/ProgressContext";
 import TutorialTab from "./tabs/TutorialTab";
 import ProblemsTab from "./tabs/ProblemsTab";
 import CheatsheetTab from "./tabs/CheatsheetTab";
+import { Highlightable } from "@/components/ui/Highlightable";
 
 type Tab = "tutorial" | "problems" | "cheatsheet";
 
@@ -182,7 +183,14 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
 
       {/* Tab Content */}
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {activeTab === "tutorial" && <TutorialTab pattern={pattern} />}
+        {activeTab === "tutorial" && (
+          <Highlightable
+            contentType="pattern_tutorial"
+            contentId={pattern.id}
+          >
+            <TutorialTab pattern={pattern} />
+          </Highlightable>
+        )}
         {activeTab === "problems" && (
           <ProblemsTab
             questions={patternQuestions}
@@ -190,7 +198,14 @@ export default function PatternPageClient({ pattern }: PatternPageClientProps) {
             onToggleComplete={toggleComplete}
           />
         )}
-        {activeTab === "cheatsheet" && <CheatsheetTab pattern={pattern} />}
+        {activeTab === "cheatsheet" && (
+          <Highlightable
+            contentType="pattern_cheatsheet"
+            contentId={pattern.id}
+          >
+            <CheatsheetTab pattern={pattern} />
+          </Highlightable>
+        )}
       </div>
     </div>
   );

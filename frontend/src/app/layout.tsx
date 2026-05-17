@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProgressProvider } from "@/contexts/ProgressContext";
 import { FilterProvider } from "@/contexts/FilterContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { HighlightProvider } from "@/contexts/HighlightContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,13 +41,15 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <AuthProvider>
-            <ProgressProvider>
-              <FilterProvider>
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </FilterProvider>
-            </ProgressProvider>
+            <HighlightProvider>
+              <ProgressProvider>
+                <FilterProvider>
+                  <Header />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                </FilterProvider>
+              </ProgressProvider>
+            </HighlightProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

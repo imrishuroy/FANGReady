@@ -98,7 +98,13 @@ export default function CheatsheetTab({ pattern }: CheatsheetTabProps) {
             size="sm"
           />
         </div>
-        <CodeBlock code={currentCode} language={currentLang} />
+        <CodeBlock
+          code={currentCode}
+          language={currentLang}
+          highlightable
+          contentType="pattern_code"
+          contentId={`${pattern.id}:${currentLang}`}
+        />
       </div>
 
       {/* Complexity */}

@@ -9,10 +9,10 @@ import (
 )
 
 type PatternHandler struct {
-	service *services.PatternService
+	service services.PatternServiceInterface
 }
 
-func NewPatternHandler(service *services.PatternService) *PatternHandler {
+func NewPatternHandler(service services.PatternServiceInterface) *PatternHandler {
 	return &PatternHandler{service: service}
 }
 

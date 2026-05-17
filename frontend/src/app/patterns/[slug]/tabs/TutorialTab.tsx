@@ -311,6 +311,9 @@ export default function TutorialTab({ pattern }: TutorialTabProps) {
                   }
                   language={currentLang}
                   collapsible={true}
+                  highlightable
+                  contentType="tutorial_code"
+                  contentId={`${pattern.id}:section-${idx}:${currentLang}`}
                 />
               </div>
             )}
@@ -855,29 +858,6 @@ export default function TutorialTab({ pattern }: TutorialTabProps) {
         </article>
       ))}
 
-      {/* Table of Contents - Floating */}
-      {pattern.tutorial!.length > 3 && (
-        <div className="hidden xl:block fixed right-8 top-1/2 -translate-y-1/2 w-56 bg-gray-900/95 backdrop-blur-sm rounded-lg border border-gray-800 p-4">
-          <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
-            Contents
-          </h4>
-          <ul className="space-y-1">
-            {pattern.tutorial!.map((section, idx) => (
-              <li key={idx}>
-                <a
-                  href={`#section-${idx}`}
-                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-indigo-400 transition-colors py-1"
-                >
-                  <span className="text-gray-600 font-mono text-xs w-4">
-                    {idx + 1}.
-                  </span>
-                  <span className="truncate">{section.title}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
