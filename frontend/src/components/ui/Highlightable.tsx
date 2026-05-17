@@ -419,11 +419,14 @@ export function Highlightable({
       </div>
 
       {/* Highlight Overlays */}
-      {overlays.map((overlay) => (
-        <div key={overlay.id} data-highlight-overlay={overlay.id}>
+      {overlays.map((overlay) => {
+        // Use stable key based on position to avoid re-animation when temp ID → server ID
+        const stableKey = `${overlay.highlight.startOffset}-${overlay.highlight.endOffset}`;
+        return (
+        <div key={stableKey} data-highlight-overlay={overlay.id}>
           {overlay.rects.map((rect, idx) => (
             <div
-              key={`${overlay.id}-${idx}`}
+              key={`${stableKey}-${idx}`}
               onClick={(e) => handleOverlayClick(overlay, e)}
               className={`absolute pointer-events-auto cursor-pointer transition-all hover:brightness-110 ${
                 overlay.isStale ? "border-2 border-dashed border-yellow-500/70" : ""
@@ -443,7 +446,8 @@ export function Highlightable({
             />
           ))}
         </div>
-      ))}
+        );
+      })}
 
       {/* Toolbar */}
       {toolbar && (
